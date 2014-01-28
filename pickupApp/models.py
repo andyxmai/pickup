@@ -6,3 +6,7 @@ class User(models.Model):
 	last_name = models.CharField(max_length=200, null=True)
 	email = models.EmailField()
 	password = models.CharField(max_length=50)
+
+class Games(models.Model):
+	sport = models.CharField(max_length=50, null=True)
+	
