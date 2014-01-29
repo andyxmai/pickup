@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^register/', 'pickupApp.views.register', name='register'),
     url(r'^home/', 'pickupApp.views.home', name='home'),
     url(r'^login/', 'pickupApp.views.user_login', name='user_login'),
+    
 )
