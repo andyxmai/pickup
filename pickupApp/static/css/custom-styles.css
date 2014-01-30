@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Insert Your Custom Styles Below. All styles located in this file will
+   override existing main.css stylesheets.
+   ========================================================================== */ 
+.no-bold {
+  font-weight: normal;
+  margin-bottom:13px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.small-margin {
+	margin:2px;
+}
+
+.modal-title {
+	/*color:black;*/
+}
+
+.modal-body label {
+	color:white;
+}
+
+.modal-header button {
+	color:white;
+}
