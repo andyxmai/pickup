@@ -13,7 +13,7 @@
   <meta property="og:description" content="">
 
   <!-- Styles -->
-  {% load staticfiles %}
+ {% load staticfiles %}
   <!-- Styles -->
   <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
@@ -86,36 +86,32 @@
         <div class="row margin-50">
           
           <div class="col-sm-6 col-sm-offset-3 text-center signup">
-            <h3>Sign Up</h3><br />
+            <h3>Log In</h3><br />
             
             <ul class="list-inline social-icons-signup">
               <li><a class="twitter" href="#" target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
               <li><a class="facebook" href="#" target="_blank"><i class="fa fa-facebook fa-lg"></i></a></li>
               <li><a class="google" href="#" target="_blank"><i class="fa fa-google-plus fa-lg"></i></a></li>
             </ul>
-             
-            <hr />
-            
-            <form role="form" id="signup" action="/register/" method="post">{% csrf_token %}
+  					 
+  					<hr />
+  					
+  					<form role="form" id="signup" action="/login/" method="post">{% csrf_token %}
               <div class="form-group">
-                {{registerForm.first_name}}
+                {{loginForm.email}}
+                <!-- <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email"> -->
               </div>
               <div class="form-group">
-                {{registerForm.last_name}}
-              </div>
-              <div class="form-group">
-                {{registerForm.email}}
-              </div>
-              <div class="form-group">
-                {{registerForm.password}}
+                {{loginForm.password}}
+                <!-- <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
               </div>
               <br />
               <div>
-                <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                <button type="submit" class="btn btn-primary btn-lg">Log In</button>
               </div>
-              <a class="small-message" href="#"><small>Already Have An Account?</small></a>
+              <a class="small-message" href="#"><small>Need An Account?</small></a>
             </form>
-          
+      	  
           </div><!--End Span6-->
           
         </div>

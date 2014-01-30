@@ -39,10 +39,7 @@
   <link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon-57-precomposed.png' %}">
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
 
-  <script type="text/javascript">
-    var heap=heap||[];heap.load=function(a){window._heapid=a;var b=document.createElement("script");b.type="text/javascript",b.async=!0,b.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.heapanalytics.com/js/heap.js";var c=document.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c);var d=function(a){return function(){heap.push([a].concat(Array.prototype.slice.call(arguments,0)))}},e=["identify","track"];for(var f=0;f<e.length;f++)heap[e[f]]=d(e[f])};
-    heap.load("769192654");
-  </script>
+  
 </head>
 
 <body>
@@ -148,8 +145,8 @@
         
         <div class="row animated fadeInUpBig">
           <div class="col-sm-6 col-sm-offset-3 text-center">
-          <a href="#main" class="btn btn-primary btn-lg">Sign Up</a>
-          <a href="#" class="btn btn-primary btn-lg" id="request_button">Log In</a>
+          <a href="/register" class="btn btn-primary btn-lg">Sign Up</a>
+          <a href="/login" class="btn btn-primary btn-lg" id="">Log In</a>
           </div>
         </div>
       </div>
