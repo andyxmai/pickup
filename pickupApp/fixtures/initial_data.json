@@ -1,0 +1,12 @@
+[
+{
+	"model" : "auth.user",
+	"pk" : 1,
+	"fields": {
+		"first_name" : "Ethan",
+		"last_name"	: "Myers",
+		"username" : "eymyers@stanford.edu",
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+}
+]
