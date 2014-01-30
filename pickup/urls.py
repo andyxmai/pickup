@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     url(r'^login/', 'pickupApp.views.user_login', name='user_login'),
     url(r'^create_game/', 'pickupApp.views.create_game', name='create_game'), 
     url(r'^logout/', 'pickupApp.views.logout', name='logout'),
-    
+    url(r'^team/', 'pickupApp.views.team', name='team'),   
 )

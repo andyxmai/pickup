@@ -89,7 +89,9 @@ def user_login(request):
 		form = LoginForm()
 		return render(request, 'login.html', {'loginForm':form})
 
-
 def logout(request):
 	logout(request)
 	return redirect("/")
+
+def team(request):
+	return render(request, 'team.html')

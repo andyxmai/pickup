@@ -1,5 +1,5 @@
 .trophy, .basketball, .baseball, .football, .racquetball, .soccer-ball, .weights, .volleyball, .tennis-ball{
-	background: url(sprites.png) no-repeat;
+	background: url(/static/images/soccer.jpeg) no-repeat;
 }
 
 .trophy{
