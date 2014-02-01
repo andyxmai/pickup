@@ -1,50 +1,3 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container">
-  <h1>Welcome to PickUp</h1>
-  <div class="form-group"></div>
-  <form class="form-horizontal" role="form" action="/register/" method="post">{% csrf_token %}
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">First Name</label>
-      <div class="col-sm-4">
-        <input type="text" name="first_name" class="form-control" id="inputEmail3" placeholder="First Name">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Last Name</label>
-      <div class="col-sm-4">
-        <input type="text" name="last_name" class="form-control" id="inputEmail3" placeholder="Last Name">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-      <div class="col-sm-4">
-        <input type="email" name="email" class="form-control" id="inputEmail3" placeholder="Email">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-      <div class="col-sm-4">
-        <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> Remember me
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-4">
-        <button type="submit" class="btn btn-success" href="home">Signup</button>
-      </div>
-    </div>
-  </form>
-
-{% endblock %}
 <!DOCTYPE html>
 <html lang="en"><head>
   <meta charset="utf-8">
@@ -60,25 +13,17 @@
   <meta property="og:description" content="">
 
   <!-- Styles -->
-  {% load staticfiles %}
-  <!-- Styles -->
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/sprites.css' %}">
-  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-  <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/animate.css">
   <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,300,700' rel='stylesheet' type='text/css'>
   
 
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <link rel="stylesheet" href="{% static 'css/colors/green.css' %}">
-  <link rel="stylesheet" href="{% static 'css//custom-styles.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
-  <!-- <link rel="stylesheet" href="/static/css/colors/green.css">
-  <link rel="stylesheet" href="/static/css/custom-styles.css"> -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/colors/red.css">
+  <link rel="stylesheet" href="css/custom-styles.css">
 
-  <script src="{% static 'js/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+  <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
   <!-- Fav and touch icons -->
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -127,48 +72,93 @@
     </div>
     
     
-    <!--Main-->
-    <section id="main" class="dark-gray-bg">
+    <!--Header Title-->
+    <section id="header-title">
       <div class="container">
-        <div class="row margin-50">
-          
-          <div class="col-sm-6 col-sm-offset-3 text-center signup">
-            <h3>Sign Up</h3><br />
-            
-            <ul class="list-inline social-icons-signup">
-              <li><a class="twitter" href="#" target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
-              <li><a class="facebook" href="#" target="_blank"><i class="fa fa-facebook fa-lg"></i></a></li>
-              <li><a class="google" href="#" target="_blank"><i class="fa fa-google-plus fa-lg"></i></a></li>
-            </ul>
-             
-            <hr />
-            
-            <form role="form" id="signup" action="/register/" method="post">{% csrf_token %}
-              <div class="form-group">
-                {{registerForm.first_name}}
-              </div>
-              <div class="form-group">
-                {{registerForm.last_name}}
-              </div>
-              <div class="form-group">
-                {{registerForm.email}}
-              </div>
-              <div class="form-group">
-                {{registerForm.password}}
-              </div>
-              <br />
-              <div>
-                <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
-              </div>
-              <a class="small-message" href="#"><small>Already Have An Account?</small></a>
-            </form>
-          
-          </div><!--End Span6-->
-          
+        <div class="row animated fadeInUpBig">
+          <div class="col-sm-12">
+            <h2 class="white">Project Title <span class="color">Client</span></h2>
+          </div>
         </div>
       </div>
     </section>
     
+    <!--Project Image Carousel-->
+    <section class="gray-bg">
+      <div class="container">
+        
+        <div class="row">
+          <div id="work" class="carousel slide">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#work" data-slide-to="0" class="active"></li>
+              <li data-target="#work" data-slide-to="1"></li>
+              <li data-target="#work" data-slide-to="2"></li>
+            </ol>
+          
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+          
+            <div class="item active"><!-- class of active since it's the first item -->
+              <img src="img/work1.jpg" class="img-responsive" alt="Title">    
+            </div><!--End Item-->
+            
+            <div class="item">
+              <img src="img/work2.jpg" class="img-responsive" alt="Title">    
+            </div><!--End Item-->
+            
+            <div class="item">
+              <img src="img/work2.jpg" class="img-responsive" alt="Title">    
+            </div><!--End Item-->
+          
+          </div><!--End Carousel-Inner-->
+          
+          <!-- Controls -->
+          <a class="left carousel-control" href="#work" data-slide="prev">
+            <span class="icon-prev"></span>
+          </a>
+          <a class="right carousel-control" href="#work" data-slide="next">
+            <span class="icon-next"></span>
+          </a>
+          </div>
+        </div>
+      
+      </div>
+    </section>
+    
+    
+    <!--Project Details-->
+    <section id="main" class="white-bg">
+      <div class="container">
+        
+        <div class="row">
+          
+          <div class="col-md-9 margin-30">
+            <h5>Info</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium diam quis ante scelerisque interdum. Praesent non orci nunc. Nulla sit amet felis in nibh ultricies blandit vel vitae ipsum. Aenean at dolor arcu, a commodo metus. In purus purus, egestas a hendrerit non, euismod ut tortor. Maecenas placerat nunc at eros tincidunt sagittis. Quisque facilisis dapibus ullamcorper. Phasellus ac mauris libero, vel placerat felis. Vestibulum non turpis sed diam volutpat scelerisque.</p><br />
+            <a href="#" class="btn btn-primary btn-sm">Launch Project</a>
+          </div>
+          
+          <div class="col-md-3">
+            <h5>Creative</h5>
+            <p>Lorem ipsum, dolor, sit amet, consectetur </p><br />
+            <h5>Share</h5>
+            
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+            <a class="addthis_button_twitter"></a>
+            <a class="addthis_button_facebook"></a>
+            <a class="addthis_button_google_plusone_share"></a>
+            <a class="addthis_button_email"></a>
+            <a class="addthis_button_compact"></a><a class="addthis_counter addthis_bubble_style"></a>
+            </div>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-52896a2c162edeea"></script>
+            <!-- AddThis Button END -->     
+            
+          </div>
+        </div>
+      </div>
+    </section>
         
     
     <!--Bottom-->
@@ -251,14 +241,10 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/jquery-1.10.1.min.js"><\/script>')</script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.navgoco.js' %}"></script>
-    <script src="{% static 'js/jquery.backstretch.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
-    
-         
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.navgoco.js"></script>
+    <script src="js/main.js"></script>
+        
+   
     </body>
 </html>

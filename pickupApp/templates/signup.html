@@ -1,50 +1,3 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container">
-  <h1>Welcome to PickUp</h1>
-  <div class="form-group"></div>
-  <form class="form-horizontal" role="form" action="/register/" method="post">{% csrf_token %}
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">First Name</label>
-      <div class="col-sm-4">
-        <input type="text" name="first_name" class="form-control" id="inputEmail3" placeholder="First Name">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Last Name</label>
-      <div class="col-sm-4">
-        <input type="text" name="last_name" class="form-control" id="inputEmail3" placeholder="Last Name">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-      <div class="col-sm-4">
-        <input type="email" name="email" class="form-control" id="inputEmail3" placeholder="Email">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-      <div class="col-sm-4">
-        <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> Remember me
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-4">
-        <button type="submit" class="btn btn-success" href="home">Signup</button>
-      </div>
-    </div>
-  </form>
-
-{% endblock %}
 <!DOCTYPE html>
 <html lang="en"><head>
   <meta charset="utf-8">
@@ -60,25 +13,17 @@
   <meta property="og:description" content="">
 
   <!-- Styles -->
-  {% load staticfiles %}
-  <!-- Styles -->
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/sprites.css' %}">
-  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-  <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/animate.css">
   <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,300,700' rel='stylesheet' type='text/css'>
   
 
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <link rel="stylesheet" href="{% static 'css/colors/green.css' %}">
-  <link rel="stylesheet" href="{% static 'css//custom-styles.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
-  <!-- <link rel="stylesheet" href="/static/css/colors/green.css">
-  <link rel="stylesheet" href="/static/css/custom-styles.css"> -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/colors/red.css">
+  <link rel="stylesheet" href="css/custom-styles.css">
 
-  <script src="{% static 'js/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+  <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
   <!-- Fav and touch icons -->
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
@@ -140,21 +85,18 @@
               <li><a class="facebook" href="#" target="_blank"><i class="fa fa-facebook fa-lg"></i></a></li>
               <li><a class="google" href="#" target="_blank"><i class="fa fa-google-plus fa-lg"></i></a></li>
             </ul>
-             
-            <hr />
-            
-            <form role="form" id="signup" action="/register/" method="post">{% csrf_token %}
+  					 
+  					<hr />
+  					
+  					<form role="form" id="signup">
               <div class="form-group">
-                {{registerForm.first_name}}
+                <input type="text" class="form-control" id="exampleInputName1" placeholder="Enter Your Name">
               </div>
               <div class="form-group">
-                {{registerForm.last_name}}
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
               </div>
               <div class="form-group">
-                {{registerForm.email}}
-              </div>
-              <div class="form-group">
-                {{registerForm.password}}
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
               </div>
               <br />
               <div>
@@ -162,7 +104,7 @@
               </div>
               <a class="small-message" href="#"><small>Already Have An Account?</small></a>
             </form>
-          
+      	  
           </div><!--End Span6-->
           
         </div>
@@ -251,13 +193,9 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/jquery-1.10.1.min.js"><\/script>')</script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.navgoco.js' %}"></script>
-    <script src="{% static 'js/jquery.backstretch.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.navgoco.js"></script>
+    <script src="js/main.js"></script>
     
          
     </body>

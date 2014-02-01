@@ -49,11 +49,11 @@
           
           <!--Include your navigation here-->
           <li class="text-right"><a href="#" id="nav-close">X</a></li>
-          <li><a href="/about">About <span class="icon"></span></a></li>
+          <li><a href="/about/">About <span class="icon"></span></a></li>
           <!-- <li><a href="features.html">Features <span class="icon"></span></a></li>
           <li><a href="services.html">Services <span class="icon"></span></a></li>
           <li><a href="portfolio.html">Portfolio <span class="icon"></span></a></li> -->
-          <li class="sub-nav"><a href="/team">Team <span class="icon"></span></a></li>
+          <li class="sub-nav"><a href="/team/">Team <span class="icon"></span></a></li>
           <!-- <li><a href="#">Pages</a>
             <ul class="list-unstyled">
                 <li class="sub-nav"><a href="blog-item.html">Blog Article <span class="icon"></span></a></li>
@@ -69,7 +69,7 @@
         </ul> 
       </nav>
    
-    <!-- Request Modal -->
+    <!-- SignUp Modal -->
     <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content signup">
@@ -78,54 +78,47 @@
             <h4 class="modal-title" id="myModalLabel">Registration</h4>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal" role="form" id="request_form" action="/signup/" method="post">{% csrf_token %}
+            <form class="form-horizontal" role="form" id="signup_form" action="/register/" method="POST">{% csrf_token %}
               <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">
                   <i class="fa fa-user">&nbsp;</i>First Name</label>
                 <div class="col-sm-8">
-                  <input type="text" name="first-name" class="form-control bfh-name">
-                 {{ signupForm.firstName }}
+                  <input type="text" name="first_name" class="form-control bfh-name">
+                 {{ registerForm.first_name }}
                 </div>
               </div>
               <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">
                   <i class="fa fa-user">&nbsp;</i>Last Name</label>
                 <div class="col-sm-8">
-                  <input type="text" name="first-name" class="form-control bfh-name">
-                 {{ signupForm.lastName }}
+                  <input type="text" name="last_name" class="form-control bfh-name">
+                 {{ registerForm.last_name }}
                 </div>
               </div>
-              <!-- <div class="form-group">
-                <label for="phone" class="col-sm-3 control-label"><i class="fa fa-phone">&nbsp;</i>Phone</label>
-                <div class="col-sm-8">
-                  <input type="text" name="phone" class="form-control bfh-phone" data-format="+1 (ddd) ddd-dddd">
-                  {{ signupForm.phone }}
-                </div>
-              </div> -->
               <div class="form-group">
                 <label for="location" class="col-sm-3 control-label"><i class="fa fa-envelope">&nbsp;</i>Email</label>
                 <div class="row-fluid col-sm-8">
-                  <input type="text" name="phone" class="form-control" value="@stanford.edu">
-                  {{ signupForm.email }}
+                  <input type="email" name="email" class="form-control" value="@stanford.edu">
+                  {{ registerForm.email }}
                 </div>
               </div>
               <div class="form-group">
                 <label for="time" class="col-sm-3 control-label"><i class="fa fa-lock">&nbsp;</i>Password</label>
                 <div class="row-fluid col-sm-8">
                   <input type="password" name="password" class="form-control">
-                  {{ signupForm.password }}
+                  {{ registerForm.password }}
                 </div>
               </div>
               <div class="form-group">
                 <label for="time" class="col-sm-3 control-label"><i class="fa fa-check">&nbsp;</i>Confirm</label>
                 <div class="row-fluid col-sm-8">
-                  <input type="password" name="password" class="form-control">
-                  {{ signupForm.password }}
+                  <input type="password" name="password2" class="form-control">
+                  {{ registerForm.password2 }}
                 </div>
               </div>
             </form>
           </div>
-            <div style="text-align: center;"><button type="button" class="btn btn-primary" id="request_submit" data-loading-text="Requesting...">Register</button>
+            <div style="text-align: center;"><button type="button" class="btn btn-primary" id="signup_submit" data-loading-text="Creating Account...">Register</button>
             </div>
         </div>
       </div>
@@ -155,26 +148,29 @@
             <hr>
             <h3 class="white">Your hub for pick-up sports.</h3>
             <div class="modal-body">
-            <form class="form-horizontal" role="form" id="request_form" action="/signup/" method="post">{% csrf_token %}
+            <form class="form-horizontal" role="form" 
+            id="signin_form" action="/user_login/" method="POST">{% csrf_token %}
               <div class="form-group">
                 <label for="location" class="col-sm-3 control-label"><i class="fa fa-envelope">&nbsp;</i>Email</label>
                 <div class="row-fluid col-sm-8">
-                  <input type="text" name="phone" class="form-control" value="@stanford.edu">
-                  {{ signupForm.email }}
+                  <input type="text" name="email" class="form-control" value="@stanford.edu">
+                  {{ signInForm.email }}
                 </div>
               </div>
               <div class="form-group">
                 <label for="time" class="col-sm-3 control-label"><i class="fa fa-lock">&nbsp;</i>Password</label>
                 <div class="row-fluid col-sm-8">
                   <input type="password" name="password" class="form-control">
-                  {{ signupForm.password }}
+                  {{ signInForm.password }}
                 </div>
               </div>
             </form>
           </div>
-            <div style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" id="request_submit" data-loading-text="Requesting...">Sign In</button>
+            <div style="text-align: center;"><button type="button"  class="btn btn-primary btn-lg" id="signin_submit" data-loading-text="Signing In...">Sign In</button>
             </div>
         </div>
+            </div>
+
             <!-- <h4 class="white no-bold">$6 base fee + $3/mile</h4> -->
             <!-- <h4 class="white no-bold">until end of January</h4> -->
             <!-- <h4 class="white no-bold">Call or text (650) 804-2467</h4> -->
@@ -275,7 +271,7 @@
             <div id="work-carousel" class="owl-carousel">
         
               <!--Project-->
-              <div class="thumbs">
+              <!-- <div class="thumbs">
                 <img src="img/portfolio1.jpg" class="img-responsive" alt="Image Title">
                   <a href="portfolio-item.html">
                     <span class="title">
@@ -285,10 +281,10 @@
                       </span>
                     </span> 
                   </a>
-              </div>
+              </div> -->
               
               <!--Project-->
-              <div class="thumbs">
+              <!-- <div class="thumbs">
                 <img src="img/portfolio2.jpg" class="img-responsive" alt="Image Title">
                   <a href="portfolio-item.html">
                     <span class="title">
@@ -298,10 +294,10 @@
                       </span>
                     </span> 
                   </a>
-              </div>
+              </div> -->
               
               <!--Project-->
-              <div class="thumbs">
+              <!-- <div class="thumbs">
                 <img src="img/portfolio3.jpg" class="img-responsive" alt="Image Title">
                   <a href="portfolio-item.html">
                     <span class="title">
@@ -311,10 +307,10 @@
                       </span>
                     </span> 
                   </a>
-              </div>
+              </div> -->
               
               <!--Project-->
-              <div class="thumbs">
+              <!-- <div class="thumbs">
                 <img src="img/portfolio4.jpg" class="img-responsive" alt="Image Title">
                   <a href="portfolio-item.html">
                     <span class="title">
@@ -324,7 +320,7 @@
                       </span>
                     </span> 
                   </a>
-              </div>
+              </div> -->
               
             </div>
             
@@ -504,34 +500,34 @@
       <div class="container">
         <div class="row">
           
-          <div class="col-sm-2">
+          <!-- <div class="col-sm-2">
             <h2>Where We Serve</h2>
-          </div>
+          </div> -->
           
           <!--Client-->
-          <div class="col-sm-2">
+          <!-- <div class="col-sm-2">
             <a href="#" class="clients"><img src="{% static 'img/paloalto.jpg' %}" class="img-responsive" alt="Title"></a>
-          </div>
+          </div> -->
           
           <!--Client-->
-          <div class="col-sm-2" style="display:none">
+          <!-- <div class="col-sm-2" style="display:none">
             <a href="#" class="clients"><img src="http://www.placehold.it/200x120" class="img-responsive" alt="Title"></a>
-          </div>
+          </div> -->
           
           <!--Client-->
-          <div class="col-sm-2" style="display:none">
+          <!-- <div class="col-sm-2" style="display:none">
             <a href="#" class="clients"><img src="http://www.placehold.it/200x120" class="img-responsive" alt="Title"></a>
-          </div>
+          </div> -->
           
           <!--Client-->
-          <div class="col-sm-2" style="display:none">
+          <!-- <div class="col-sm-2" style="display:none">
             <a href="#" class="clients"><img src="http://www.placehold.it/200x120" class="img-responsive" alt="Title"></a>
-          </div>
+          </div> -->
           
           <!--Client-->
-          <div class="col-sm-2" style="display:none">
+          <!-- <div class="col-sm-2" style="display:none">
             <a href="#" class="clients"><img src="http://www.placehold.it/200x120" class="img-responsive" alt="Title"></a>
-          </div>
+          </div> -->
 
         </div>
         <!-- <a class="" href="#bottom">
@@ -549,10 +545,12 @@
           
           <!--Section 1-->
           <div class="col-sm-3 margin-40">
-            <h3>About SafeDriven</h3>
+            <h3>About PickUp</h3>
             <div class="gray-box">
-              <p>SafeDriven is an on-demand designated driver service serving the Palo Alto area. All drivers are trained and screened to provide the highest customer satisfaction. The driver will be picked up by a separate car that follows at end of the service.</p>
-              <a class="more" href="/about">More</a>
+              <p>
+                Organizing a pick-up game for any sport is a nightmare. PickUp is a social network for pick-up sports games that lets you easily create, join, and interact with games being played in your area.
+              </p>
+              <a class="more" href="/about/">More</a>
             </div>
           </div>
           
@@ -582,9 +580,9 @@
           <!--Section 4-->
           <div class="col-sm-3 margin-40">
             <h3>Contact</h3>
-            <div class="gray-box">
+            <!-- <div class="gray-box">
               <p><i class="fa fa-phone fa-lg"></i> 650.804.2467</p>
-            </div>
+            </div> -->
             <div class="color-box">
               <p><a href="mailto:support@safedriven.com"><i class="fa fa-envelope-o fa-lg"></i> support@safedriven.com</a></p>
             </div>
@@ -608,7 +606,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6">
-            <p class="copyright">Copyright @ SafeDriven. All rights reserved.</p>
+            <p class="copyright">Copyright @ PickUp. All rights reserved.</p>
           </div>
         </div>
       </div>
@@ -644,12 +642,18 @@
       $('#request_button').click(function(){
         $('#requestModal').modal('show');
       });
-      $('#request_submit').click(function(){
-        $('#request_form').submit();
+
+      $('#signup_submit').click(function(){
+        $('#signup_form').submit();
+
+      });
+      $('#signin_submit').click(function(){
+        $('#signin_form').submit();
+
       });
       $('#request_submit').click(function () {
-            var btn = $(this)
-            btn.button('loading')
+            var btn = $(this);
+            btn.button('loading');
         });
       $("a[href^='#main']").on('click', function(e) {
          // prevent default anchor click behavior
