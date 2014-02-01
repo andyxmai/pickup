@@ -24,7 +24,7 @@
 
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <link rel="stylesheet" href="{% static 'css/colors/green.css' %}">
+  <link rel="stylesheet" href="{% static 'css/colors/orange.css' %}">
   <link rel="stylesheet" href="{% static 'css//custom-styles.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}">
   <!-- <link rel="stylesheet" href="/static/css/colors/green.css">
@@ -48,7 +48,7 @@
 <body>
 
       <nav>
-        <ul class="list-unstyled main-menu"> >
+        <ul class="list-unstyled main-menu">
           
           <!--Include your navigation here-->
           <li class="text-right"><a href="#" id="nav-close">X</a></li>
@@ -78,41 +78,50 @@
         <div class="modal-content signup">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Designated Driver Request</h4>
+            <h4 class="modal-title" id="myModalLabel">Registration</h4>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal" role="form" id="request_form" action="/requestride/" method="post">{% csrf_token %}
+            <form class="form-horizontal" role="form" id="request_form" action="/signup/" method="post">{% csrf_token %}
               <div class="form-group">
-                <label for="name" class="col-sm-3 control-label">Full Name</label>
+                <label for="name" class="col-sm-3 control-label">
+                  <i class="fa fa-user">&nbsp;</i>Full Name</label>
                 <div class="col-sm-8">
-                 {{ requestRideForm.name }}
+                  <input type="text" name="name" class="form-control bfh-name">
+                 {{ signupForm.name }}
                 </div>
               </div>
-              <div class="form-group">
-                <label for="phone" class="col-sm-3 control-label">Phone</label>
+              <!-- <div class="form-group">
+                <label for="phone" class="col-sm-3 control-label"><i class="fa fa-phone">&nbsp;</i>Phone</label>
                 <div class="col-sm-8">
-                  <!-- <input type="text" name="phone" class="form-control bfh-phone" data-format="+1 (ddd) ddd-dddd"> -->
-                  {{ requestRideForm.phone }}
+                  <input type="text" name="phone" class="form-control bfh-phone" data-format="+1 (ddd) ddd-dddd">
+                  {{ signupForm.phone }}
+                </div>
+              </div> -->
+              <div class="form-group">
+                <label for="location" class="col-sm-3 control-label"><i class="fa fa-envelope">&nbsp;</i>Email</label>
+                <div class="row-fluid col-sm-8">
+                  <input type="text" name="phone" class="form-control" value="@stanford.edu">
+                  {{ signupForm.email }}
                 </div>
               </div>
               <div class="form-group">
-                <label for="location" class="col-sm-3 control-label">Pickup Location</label>
+                <label for="time" class="col-sm-3 control-label"><i class="fa fa-lock">&nbsp;</i>Password</label>
                 <div class="row-fluid col-sm-8">
-                  {{ requestRideForm.location }}
+                  <input type="password" name="password" class="form-control">
+                  {{ signupForm.password }}
                 </div>
               </div>
               <div class="form-group">
-                <label for="time" class="col-sm-3 control-label">When</label>
+                <label for="time" class="col-sm-3 control-label"><i class="fa fa-check">&nbsp;</i>Confirm</label>
                 <div class="row-fluid col-sm-8">
-                  {{ requestRideForm.time }}
+                  <input type="password" name="password" class="form-control">
+                  {{ signupForm.password }}
                 </div>
               </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <p style="text-align:left; font-size:11px; line-height:125%">Disclaimer: By requesting a ride, I understand that, in the case of an accident, my insurance will only be liable for primary damage coverage in the unlikely event that a SafeDriven driver is at fault.</p>
-            <button type="button" class="btn btn-success" id="request_submit" data-loading-text="Requesting...">Request!</button>
-          </div>
+            <div style="text-align: center;"><button type="button" class="btn btn-primary" id="request_submit" data-loading-text="Requesting...">Register</button>
+            </div>
         </div>
       </div>
     </div>
@@ -137,9 +146,30 @@
             {% if ridemsg %}
             <div class="alert alert-success">{{ridemsg}}</div>  
             {% endif %}  
-            <h1 style="font-size: 60px;">PickUp</h1>
+            <h1 class="main"style="font-size: 60px;">PickUp</h1>
             <hr>
             <h3 class="white">Your hub for pick-up sports.</h3>
+            <div class="modal-body">
+            <form class="form-horizontal" role="form" id="request_form" action="/signup/" method="post">{% csrf_token %}
+              <div class="form-group">
+                <label for="location" class="col-sm-3 control-label"><i class="fa fa-envelope">&nbsp;</i>Email</label>
+                <div class="row-fluid col-sm-8">
+                  <input type="text" name="phone" class="form-control" value="@stanford.edu">
+                  {{ signupForm.email }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="time" class="col-sm-3 control-label"><i class="fa fa-lock">&nbsp;</i>Password</label>
+                <div class="row-fluid col-sm-8">
+                  <input type="password" name="password" class="form-control">
+                  {{ signupForm.password }}
+                </div>
+              </div>
+            </form>
+          </div>
+            <div style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" id="request_submit" data-loading-text="Requesting...">Sign In</button>
+            </div>
+        </div>
             <!-- <h4 class="white no-bold">$6 base fee + $3/mile</h4> -->
             <!-- <h4 class="white no-bold">until end of January</h4> -->
             <!-- <h4 class="white no-bold">Call or text (650) 804-2467</h4> -->
@@ -148,8 +178,8 @@
         
         <div class="row animated fadeInUpBig">
           <div class="col-sm-6 col-sm-offset-3 text-center">
-          <a href="#main" class="btn btn-primary btn-lg">Sign Up</a>
-          <a href="#" class="btn btn-primary btn-lg" id="request_button">Log In</a>
+          <a href="#main" class="btn btn-default btn-med">Play Now</a>
+          <a href="#" class="btn btn-default btn-med" id="request_button">Sign Up</a>
           </div>
         </div>
       </div>
@@ -163,29 +193,59 @@
           <!--Section-->
           <a class="col-link" href="#">
           <div class="col-sm-4 margin-30 animated fadeIn delay1">
-            <i class="trophy"></i>
-            <h3>Drive to Bar</h3>
-            <p>Drive in your own car! Forget figuring out a ride to the bar. Get rowdy with your friends and prepare for a good time.</p> 
+            <i class="fa fa-dribbble fa-4x home-icons"></i>
+            <h3>Football</h3>
+            <!-- this is where we want to pull from the database and count the number of games going on -->
+            <p>n Games Now!</p> 
           </div>
           </a>
           
           <!--Section-->
           <a class="col-link" href="#">
           <div class="col-sm-4 margin-30 animated fadeIn delay2">
-            <i class="fa fa-beer fa-4x home-icons"></i>
-            <h3>Have Fun</h3>
-            <p>Enjoy your time! Don't hold back on celebrating with friends and relaxing after that long week.</p> 
+            <i class="fa fa-dribbble fa-4x home-icons"></i>
+            <h3>Soccer</h3>
+            <p>n Games Now!</p>
           </div>
           </a>
           
           <!--Section-->
           <a class="col-link" href="#">          
           <div class="col-sm-4 margin-30 animated fadeIn delay3">
-            <i class="fa fa-phone fa-4x home-icons"></i>
-            <h3>Call Us</h3>
-            <p>Give us a ring when you leave! We will send a trained driver to drive you home in your car. No need to call a friend or take the wheel when you are not ready.</p>
+            <i class="fa fa-dribbble fa-4x home-icons"></i>
+            <h3>Basketball</h3>
+            <p>n Games Now!</p>
           </div>
-          </a>  
+          </a> 
+
+          <!--Section-->
+          <a class="col-link" href="#">          
+          <div class="col-sm-4 margin-30 animated fadeIn delay3">
+            <i class="fa fa-dribbble fa-4x home-icons"></i>
+            <h3>Volleyball</h3>
+            <p>n Games Now!</p>
+          </div>
+          </a> 
+
+          <!--Section-->
+          <a class="col-link" href="#">          
+          <div class="col-sm-4 margin-30 animated fadeIn delay3">
+            <i class="fa fa-dribbble fa-4x home-icons"></i>
+            <h3>Tennis</h3>
+            <p>n Games Now!</p>
+          </div>
+          </a> 
+
+          <!--Section-->
+          <a class="col-link" href="#">          
+          <div class="col-sm-4 margin-30 animated fadeIn delay3">
+            <i class="fa fa-dribbble fa-4x home-icons"></i>
+            <h3>Frisbee</h3>
+            <p>n Games Now!</p>
+          </div>
+          </a> 
+
+
       </div>
       <a class="" href="#featured-clients">
           <div class="text-center"><i class="glyphicon glyphicon-chevron-down" style="font-size:2.5em"></i>

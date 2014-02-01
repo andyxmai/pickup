@@ -27,6 +27,11 @@ h1 {
   letter-spacing: -3px;
 }
 
+h1.main {
+  line-height: 0px;
+  margin-top: -20px;
+}
+
 h2 {
   color: #6F7D8C;
   font-size: 36px;
@@ -209,7 +214,7 @@ a:hover {
 
 
 a.nav-expander {
-  background: #08090A;
+  background: #1E2633;
   color: #FFFFFF;
   display: block;
   font-size: 1em;

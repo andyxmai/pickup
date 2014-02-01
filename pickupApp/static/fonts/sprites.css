@@ -1,0 +1,58 @@
+.trophy, .basketball, .baseball, .football, .racquetball, .soccer-ball, .weights, .volleyball, .tennis-ball{
+	background: url("sprites.png") no-repeat;
+}
+
+.trophy{
+	background-position: 0 0;
+	width: 50px;
+	height: 50px;
+}
+
+.basketball{
+	background-position: -264px -2px ;
+	width: 50px;
+	height: 50px;
+}
+
+.baseball{
+	background-position: -214px -2px ;
+	width: 50px;
+	height: 50px;
+}
+
+.football{
+	background-position: -164px 0;
+	width: 50px;
+	height: 50px;
+}
+
+.racquetball{
+	background-position: -114px 0;
+	width: 50px;
+	height: 50px;
+}
+
+.soccer-ball{
+	background-position: -63px -2px ;
+	width: 50px;
+	height: 50px;
+}
+
+.weights{
+	background-position: -314px -2px ;
+	width: 50px;
+	height: 50px;
+}
+
+.volleyball{
+	background-position: -363px -2px ;
+	width: 50px;
+	height: 50px;
+}
+
+.tennis-ball{
+	background-position: -413px -3px ;
+	width: 50px;
+	height: 50px;
+}
+
