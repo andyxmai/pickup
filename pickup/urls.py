@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^features/', 'pickupApp.views.features', name='features'),
     url(r'^game/', 'pickupApp.views.game', name='game'),   
     url(r'^user_login/', 'pickupApp.views.user_login', name='user_login'),    
+    url(r'^team/', 'pickupApp.views.team', name='team'),    
 )
