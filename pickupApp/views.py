@@ -5,10 +5,15 @@ from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm
 from pickupApp.models import Game
 import datetime
+import json
+from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-	print 'index'
+	print request.user
+	if request.user.is_authenticated():
+		return redirect('/home')
+
 	return render(request, 'index.html')
 
 @login_required
@@ -25,30 +30,34 @@ def register(request):
 			last_name = form.cleaned_data['last_name']
 			email = form.cleaned_data['email']	
 			password = form.cleaned_data['password']
-			#password2 = form.cleaned_data['password2']
+			
+			if not User.objects.filter(username=email).count():
+				# need an if here to check if passwords match
+				new_user = User.objects.create_user(email, email, password)
+				new_user.first_name = first_name
+				new_user.last_name = last_name
+				new_user.save()
 
-			print first_name
-			print last_name
-			print email
-			# need an if here to check if passwords match
-			new_user = User.objects.create_user(email, email, password)
-			new_user.first_name = first_name
-			new_user.last_name = last_name
-			new_user.save()
+				user = authenticate(username=email, password=password)
+				login(request, user)
 
-			user = authenticate(username=email, password=password)
-			login(request, user)
-
-			return render(request, 'home.html', {'user': user})
+				#return render(request, 'home.html', {'user': user})
+				return redirect('/home')
+			else:
+				print form.errors
+				#return render(request, 'home.html', {'registerForm':form})
+				return redirect('/')
 		else:
 			print "INVALID FORM"
 			print form.errors
+			return redirect('/')
 	else:
 		print "GET"
 		first_name = form.cleaned_data['first_name']
 		last_name = form.cleaned_data['last_name']
-		registerForm = RegisterForm()
-		return render(request, 'home.html', {'registerForm':registerForm})
+		form = RegisterForm()
+		#return render(request, 'home.html', {'registerForm':form})
+		return redirect('/')
 	# first_name = request.POST.get('first_name')
 	# last_name = request.POST.get('last_name')
 	# email = request.POST.get('email')
@@ -76,8 +85,6 @@ def create_game(request):
 		gameForm = GameForm()
 		return render(request, 'game.html', {'gameForm':gameForm})
 
-	
-
 def user_login(request):
 	if request.method == 'POST': 
 		print "POSTING"
@@ -103,6 +110,24 @@ def user_login(request):
 
 		form = LoginForm()
 		return render(request, 'login.html', {'loginForm':form})
+
+def get_games(request):
+	all_games = Game.objects.all()
+	games_data = []
+	for game in all_games:
+		game_data = {}
+		game_data['name'] = game.name
+		game_data['latitude'] = game.latitude
+		game_data['longitude'] = game.longitude
+		game_data['creator'] = game.creator.first_name
+		game_data['description'] = game.description
+		#game_data['time_start'] = game.timeStart
+		game_data['sport'] = game.sport
+
+		games_data.append(game_data)
+
+	return HttpResponse(json.dumps(games_data))
+
 
 def logout(request):
 	logout(request)
