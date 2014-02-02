@@ -1,0 +1,26 @@
+Front End
+- game page
+    - Back end is passing json data of all games
+
+- player/user page
+    - Games played
+    - Games owned
+
+
+
+Back End
+- time stamp
+- add games to fixture file, will speed up testing
+- make game_locations
+    - allow a user to chooce a game location from a table or create a new one
+    - for the user to choose a new one, google search name -> lon,lat
+
+Current Pages
+- home.html
+- register.html
+- index.html
+
+Current Tables:
+- Users
+- Games
+- Game_Locations
