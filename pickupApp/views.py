@@ -8,7 +8,10 @@ import datetime
 
 # Create your views here.
 def index(request):
-	print 'index'
+	print request.user
+	if request.user.is_authenticated():
+		return redirect('/home')
+
 	return render(request, 'index.html')
 
 @login_required
@@ -25,30 +28,34 @@ def register(request):
 			last_name = form.cleaned_data['last_name']
 			email = form.cleaned_data['email']	
 			password = form.cleaned_data['password']
-			#password2 = form.cleaned_data['password2']
+			
+			if not User.objects.filter(username=email).count():
+				# need an if here to check if passwords match
+				new_user = User.objects.create_user(email, email, password)
+				new_user.first_name = first_name
+				new_user.last_name = last_name
+				new_user.save()
 
-			print first_name
-			print last_name
-			print email
-			# need an if here to check if passwords match
-			new_user = User.objects.create_user(email, email, password)
-			new_user.first_name = first_name
-			new_user.last_name = last_name
-			new_user.save()
+				user = authenticate(username=email, password=password)
+				login(request, user)
 
-			user = authenticate(username=email, password=password)
-			login(request, user)
-
-			return render(request, 'home.html', {'user': user})
+				#return render(request, 'home.html', {'user': user})
+				return redirect('/home')
+			else:
+				print form.errors
+				#return render(request, 'home.html', {'registerForm':form})
+				return redirect('/')
 		else:
 			print "INVALID FORM"
 			print form.errors
+			return redirect('/')
 	else:
 		print "GET"
 		first_name = form.cleaned_data['first_name']
 		last_name = form.cleaned_data['last_name']
-		registerForm = RegisterForm()
-		return render(request, 'home.html', {'registerForm':registerForm})
+		form = RegisterForm()
+		#return render(request, 'home.html', {'registerForm':form})
+		return redirect('/')
 	# first_name = request.POST.get('first_name')
 	# last_name = request.POST.get('last_name')
 	# email = request.POST.get('email')
