@@ -26,7 +26,9 @@
 // When the user clicks the marker, an info window opens.
 
 function initialize() {
+
   var myLatlng = new google.maps.LatLng(37.422, -122.16);
+
   var mapOptions = {
     zoom: 14,
     center: myLatlng
@@ -34,25 +36,38 @@ function initialize() {
 
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  var contentString = 'Wilbur Field';
+ // This array will eventually be dynamically filled with the locations of games and the titles of the games
 
-  var infowindow = new google.maps.InfoWindow({
-      content: contentString
-  });
+  var locations = [
+      ['Wilbur Field', 37.422,-122.16],
+      ['Arillaga', 37.421, -122.155],
+      ['Golf Course', 37.415, -122.15],
+    ];
 
-  var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Wilbur Field'
-  });
-  google.maps.event.addListener(marker, 'click', function() {
-    infowindow.open(map,marker);
-  });
+  for (i = 0; i < locations.length; i++) { 
+      var infowindow = new google.maps.InfoWindow({
+        content: locations[i][0]
+      });
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+      });
+  }
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+  // google.maps.event.addListener(marker, 'click', function() {
+  //  infowindow.open(map,marker);
+  // });
 
-    </script>
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+
+</script>
+
   </head>
   <body>
     <div id="map-canvas"></div>
