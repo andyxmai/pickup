@@ -124,4 +124,5 @@ def services(request):
 	return render(request, 'services.html')
 
 def home(request):
+	
 	return render(request, 'home.html')

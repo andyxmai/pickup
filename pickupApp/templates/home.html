@@ -2,10 +2,7 @@
 
 {% block content %}
 <div class="container">
-  <p>Welcome {{user.first_name}} {{user.last_name}}!</p>
+	<div style="margin:100px"></div>
+	<p style="text-align:center"><img src="http://maps.googleapis.com/maps/api/staticmap?center=Stanford University&zoom=15&size=450x300&sensor=false&markers=color:blue|Wilbur+Field+Stanford+CA|Arrillaga+Sports+Stanford|Taube+South+Stanford|Stanford+Stadium&scale=2"> </p>
 </div>
-
-<a href="/create_game" type="button" class="btn btn-primary">Create Game</a>
-<a href="/logout" type="button" class="btn btn-primary">Logout</a>
-
 {% endblock %}
