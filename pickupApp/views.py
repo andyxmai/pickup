@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm
 from pickupApp.models import Game
 import datetime
+import json
+from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
@@ -83,8 +85,6 @@ def create_game(request):
 		gameForm = GameForm()
 		return render(request, 'game.html', {'gameForm':gameForm})
 
-	
-
 def user_login(request):
 	if request.method == 'POST': 
 		print "POSTING"
@@ -110,6 +110,24 @@ def user_login(request):
 
 		form = LoginForm()
 		return render(request, 'login.html', {'loginForm':form})
+
+def get_games(request):
+	all_games = Game.objects.all()
+	games_data = []
+	for game in all_games:
+		game_data = {}
+		game_data['name'] = game.name
+		game_data['latitude'] = game.latitude
+		game_data['longitude'] = game.longitude
+		game_data['creator'] = game.creator.first_name
+		game_data['description'] = game.description
+		#game_data['time_start'] = game.timeStart
+		game_data['sport'] = game.sport
+
+		games_data.append(game_data)
+
+	return HttpResponse(json.dumps(games_data))
+
 
 def logout(request):
 	logout(request)
