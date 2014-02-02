@@ -1,8 +1,68 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-	<div style="margin:100px"></div>
-	<p style="text-align:center"><img src="http://maps.googleapis.com/maps/api/staticmap?center=Stanford University&zoom=15&size=450x300&sensor=false&markers=color:blue|Wilbur+Field+Stanford+CA|Arrillaga+Sports+Stanford|Taube+South+Stanford|Stanford+Stadium&scale=2"> </p>
-</div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple markers</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+function initialize() {
+  var myLatlng = new google.maps.LatLng(37.422, -122.16);
+  var mapOptions = {
+    zoom: 14,
+    center: myLatlng
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+  var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'PickUp Games Around You'
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
+
+
+// <script> 
+
+//  var infowindow = new google.maps.InfoWindow();
+
+//   for (var i = 0; i < arraylng.length-1; i++) {
+//     var marker = new google.maps.Marker({
+//       position: new google.maps.LatLng(arraylng[i], arraylat[i]),
+//       map: map
+//     });
+
+//     makeInfoWindowEvent(map, infowindow, "test" + i, marker);
+
+//     markers.push(marker);
+//   }
+// }
+
+// function makeInfoWindowEvent(map, infowindow, contentString, marker) {
+//   google.maps.event.addListener(marker, 'click', function() {
+//     infowindow.setContent(contentString);
+//     infowindow.open(map, marker);
+//   });
+// }
+// </script> 
+
 {% endblock %}
