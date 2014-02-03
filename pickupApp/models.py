@@ -15,4 +15,9 @@ class Game(models.Model):
 	creator = models.ForeignKey(User, related_name = "creator_of_game")
 	users = models.ManyToManyField(User) # Game will have users that have signed up for the game
 
+class game_location(models.Model):
+	locaiton_name = models.CharField(max_length=50)
+	latitude = models.FloatField(null=True)
+	longitude = models.FloatField(null=True)
+
 	
