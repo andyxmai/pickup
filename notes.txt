@@ -1,0 +1,13 @@
+Interactive shell to test commands or view database
+    - python manage.py shell
+
+
+Create the database
+    - python manage.py syncdb
+
+Running the webserver
+    - python manage.py runserver
+
+Dump the database
+    - This is useful for prepopulating the database with fixtures/
+    - python manage.py dumpdata
