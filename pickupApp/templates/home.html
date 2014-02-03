@@ -25,6 +25,8 @@
 // This example displays a marker at the center of Australia.
 // When the user clicks the marker, an info window opens.
 
+var infowindow=null;
+
 function initialize() {
 
   var myLatlng = new google.maps.LatLng(37.422, -122.16);
@@ -44,26 +46,32 @@ function initialize() {
       ['Golf Course', 37.415, -122.15],
     ];
 
+  var markers= new Array ();
+  var marker; 
+  var infowindow = new google.maps.InfoWindow({
+      maxWidth: 160
+    });
+  
   for (i = 0; i < locations.length; i++) { 
-      var infowindow = new google.maps.InfoWindow({
-        content: locations[i][0]
-      });
-      var marker = new google.maps.Marker({
+       marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][1], locations[i][2]),
         map: map
       });
 
-      google.maps.event.addListener(marker, 'click', function() {
+      markers.push(marker);
+
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
           infowindow.open(map, marker);
-      });
+        }
+      })(marker, i));
   }
 }
 
-  // google.maps.event.addListener(marker, 'click', function() {
-  //  infowindow.open(map,marker);
-  // });
 
-  google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initialize);
 
 
 </script>
