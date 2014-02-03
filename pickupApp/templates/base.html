@@ -67,84 +67,19 @@
       <li><a href="contact.php">Contact <span class="icon"></span></a></li> -->
     </ul> 
   </nav>
+  <div class="navbar navbar-inverse navbar-fixed-top">      
+        
+        <!--Include your brand here-->
+        <a class="navbar-brand" href="/"><img src="{% static 'img/logo2.png' %}" class="img-responsive" alt="Logo"></a>
+        <div class="navbar-header pull-right">
+          <a id="nav-expander" class="nav-expander fixed">
+            MENU &nbsp;<i class="fa fa-bars fa-lg white"></i>
+          </a>
+        </div>
+    </div>
   
   {% block content %}
-  {% endblock %}
-  <!--Bottom-->
-  <section id="bottom">
-    <div class="container">
-      <div class="row">
-        
-        <!--Section 1-->
-        <div class="col-sm-3 margin-40">
-          <h3>About PickUp</h3>
-          <div class="gray-box">
-            <p>
-              Organizing a pick-up game for any sport is a nightmare. PickUp is a social network for pick-up sports games that lets you easily create, join, and interact with games being played in your area.
-            </p>
-            <a class="more" href="/about/">More</a>
-          </div>
-        </div>
-        
-        <!--Section 2-->
-        <div class="col-sm-3 margin-40" style="display:none">
-          <h3>Email Sign Up</h3>
-          <form class="form-inline" role="form" id="email-signup">
-            <div class="form-group">
-              <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-chevron-right fa-lg"></i></button>
-          </form>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
-        </div>
-        
-        <!--Section 3-->
-        <div class="col-sm-3 margin-40" style="display:none">
-          <h3>Team</h3>
-          <ul class="list-unstyled bottom-links">
-            <li><a href="http://www.stanford.edu/~jrabbott" target="_blank">Joseph Abbott</a></li>
-            <li><a href="http://www.stanford.edu/~andymai" target="_blank">Andy Mai</a></li>
-            <li><a href="#">Kennan Murphy-Sierra</a></li>
-            <li><a href="#">Claire Negiar</a></li>
-          </ul>
-        </div>
-        
-        <!--Section 4-->
-        <div class="col-sm-3 margin-40">
-          <h3>Contact</h3>
-          <!-- <div class="gray-box">
-            <p><i class="fa fa-phone fa-lg"></i> 650.804.2467</p>
-          </div> -->
-          <div class="color-box">
-            <p><a href="mailto:support@safedriven.com"><i class="fa fa-envelope-o fa-lg"></i> support@safedriven.com</a></p>
-          </div>
-          <ul class="list-inline social-icons">
-            <li><a href="https://www.twitter.com/safedriven" target="_blank"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="https://www.facebook.com/safedriven" target="_blank"><i class="fa fa-facebook"></i></a></li>
-            <!-- <li><a href="#"><i class="fa fa-github"></i></a></li>
-            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#"><i class="fa fa-github"></i></a></li> -->
-          </ul>
-          
-        </div>
-        
-      </div>
-    </div>
-  </section>
-  
-  
-  <!--Footer-->
-  <section id="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-6">
-          <p class="copyright">Copyright @ PickUp. All rights reserved.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-     
+  {% endblock %}     
   
   <!-- Javascript
   ================================================== -->

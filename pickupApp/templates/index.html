@@ -199,7 +199,11 @@
             <i class="fa fa-dribbble fa-4x home-icons"></i>
             <h3>Football</h3>
             <!-- this is where we want to pull from the database and count the number of games going on -->
-            <p>n Games Now!</p> 
+            {% if 'Football' in num_games %}
+            <p>{{num_games.Football}} Games Now!</p>
+            {% else %}
+            <p>No Football Games Now</p>
+            {% endif %}
           </div>
           </a>
           
@@ -208,7 +212,11 @@
           <div class="col-sm-4 margin-30 animated fadeIn delay2">
             <i class="fa fa-dribbble fa-4x home-icons"></i>
             <h3>Soccer</h3>
-            <p>n Games Now!</p>
+            {% if 'Soccer' in num_games %}
+            <p>{{num_games.Soccer}} Games Now!</p>
+            {% else %}
+            <p>No Soccer Games Now</p>
+            {% endif %}
           </div>
           </a>
           
@@ -217,7 +225,11 @@
           <div class="col-sm-4 margin-30 animated fadeIn delay3">
             <i class="fa fa-dribbble fa-4x home-icons"></i>
             <h3>Basketball</h3>
-            <p>n Games Now!</p>
+            {% if 'Basketball' in num_games %}
+            <p>{{num_games.Basketball}} Games Now!</p>
+            {% else %}
+            <p>No Basketball Games Now</p>
+            {% endif %}
           </div>
           </a> 
 
@@ -226,7 +238,11 @@
           <div class="col-sm-4 margin-30 animated fadeIn delay3">
             <i class="fa fa-dribbble fa-4x home-icons"></i>
             <h3>Volleyball</h3>
-            <p>n Games Now!</p>
+            {% if 'Volleyball' in num_games %}
+            <p>{{num_games.Volleyball}} Games Now!</p>
+            {% else %}
+            <p>No Volleyball Games Now</p>
+            {% endif %}
           </div>
           </a> 
 
@@ -235,7 +251,11 @@
           <div class="col-sm-4 margin-30 animated fadeIn delay3">
             <i class="fa fa-dribbble fa-4x home-icons"></i>
             <h3>Tennis</h3>
-            <p>n Games Now!</p>
+            {% if 'Tennis' in num_games %}
+            <p>{{num_games.Tennis}} Games Now!</p>
+            {% else %}
+            <p>No Tennis Games Now</p>
+            {% endif %}
           </div>
           </a> 
 
@@ -244,7 +264,11 @@
           <div class="col-sm-4 margin-30 animated fadeIn delay3">
             <i class="fa fa-dribbble fa-4x home-icons"></i>
             <h3>Frisbee</h3>
-            <p>n Games Now!</p>
+            {% if 'Frisbee' in num_games %}
+            <p>{{num_games.Frisbee}} Games Now!</p>
+            {% else %}
+            <p>No Frisbee Games Now</p>
+            {% endif %}
           </div>
           </a> 
 
