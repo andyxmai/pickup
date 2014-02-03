@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en"><head>
   <meta charset="utf-8">
@@ -32,153 +30,223 @@
   <!-- <link rel="stylesheet" href="/static/css/colors/green.css">
   <link rel="stylesheet" href="/static/css/custom-styles.css"> -->
 
+  <script src="{% static 'js/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+
   <!-- Fav and touch icons -->
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'apple-touch-icon-144-precomposed.png' %}">
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'apple-touch-icon-114-precomposed.png' %}">
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'apple-touch-icon-72-precomposed.png' %}">
   <link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon-57-precomposed.png' %}">
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-  <html lang="en">
-  <head>
-    <title>Pickup</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="/static/img/firstLetter.png" />
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-    <!-- <link rel="stylesheet" href="/static/css/colors/green.css">
-    <link rel="stylesheet" href="/static/css/custom-styles.css"> -->
 
+  
+</head>
 
-   <div class="navbar navbar-inverse navbar-fixed-top">      
+<body>
+  <nav>
+    <ul class="list-unstyled main-menu">
+      
+      <!--Include your navigation here-->
+      <li class="text-right"><a href="#" id="nav-close">X</a></li>
+      <li><a href="/about/">About <span class="icon"></span></a></li>
+      <!-- <li><a href="features.html">Features <span class="icon"></span></a></li>
+      <li><a href="services.html">Services <span class="icon"></span></a></li>
+      <li><a href="portfolio.html">Portfolio <span class="icon"></span></a></li> -->
+      <li class="sub-nav"><a href="/team/">Team <span class="icon"></span></a></li>
+      <!-- <li><a href="#">Pages</a>
+        <ul class="list-unstyled">
+            <li class="sub-nav"><a href="blog-item.html">Blog Article <span class="icon"></span></a></li>
+            <li class="sub-nav"><a href="blog-sidebar.html">Blog Sidebar <span class="icon"></span></a></li>
+            <li class="sub-nav"><a href="pricing.html">Pricing Charts <span class="icon"></span></a></li>
+            <li class="sub-nav"><a href="portfolio-item.html">Portfolio Item <span class="icon"></span></a></li>
+            <li class="sub-nav"><a href="login.html">Log In <span class="icon"></span></a></li>
+            <li class="sub-nav"><a href="signup.html">Sign Up <span class="icon"></span></a></li>
+        </ul>
+      </li>
+      <li><a href="blog.html">Blog <span class="icon"></span></a></li>
+      <li><a href="contact.php">Contact <span class="icon"></span></a></li> -->
+    </ul> 
+  </nav>
+  
+  {% block content %}
+  {% endblock %}
+  <!--Bottom-->
+  <section id="bottom">
+    <div class="container">
+      <div class="row">
         
-        <!--Include your brand here-->
-        <a class="navbar-brand" href="/"><img src="{% static 'img/logo2.png' %}" class="img-responsive" alt="Logo"></a>
-        <div class="navbar-header pull-right">
-          <a id="nav-expander" class="nav-expander fixed">
-            MENU &nbsp;<i class="fa fa-bars fa-lg white"></i>
-          </a>
+        <!--Section 1-->
+        <div class="col-sm-3 margin-40">
+          <h3>About PickUp</h3>
+          <div class="gray-box">
+            <p>
+              Organizing a pick-up game for any sport is a nightmare. PickUp is a social network for pick-up sports games that lets you easily create, join, and interact with games being played in your area.
+            </p>
+            <a class="more" href="/about/">More</a>
+          </div>
         </div>
+        
+        <!--Section 2-->
+        <div class="col-sm-3 margin-40" style="display:none">
+          <h3>Email Sign Up</h3>
+          <form class="form-inline" role="form" id="email-signup">
+            <div class="form-group">
+              <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-chevron-right fa-lg"></i></button>
+          </form>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore</p>
+        </div>
+        
+        <!--Section 3-->
+        <div class="col-sm-3 margin-40" style="display:none">
+          <h3>Team</h3>
+          <ul class="list-unstyled bottom-links">
+            <li><a href="http://www.stanford.edu/~jrabbott" target="_blank">Joseph Abbott</a></li>
+            <li><a href="http://www.stanford.edu/~andymai" target="_blank">Andy Mai</a></li>
+            <li><a href="#">Kennan Murphy-Sierra</a></li>
+            <li><a href="#">Claire Negiar</a></li>
+          </ul>
+        </div>
+        
+        <!--Section 4-->
+        <div class="col-sm-3 margin-40">
+          <h3>Contact</h3>
+          <!-- <div class="gray-box">
+            <p><i class="fa fa-phone fa-lg"></i> 650.804.2467</p>
+          </div> -->
+          <div class="color-box">
+            <p><a href="mailto:support@safedriven.com"><i class="fa fa-envelope-o fa-lg"></i> support@safedriven.com</a></p>
+          </div>
+          <ul class="list-inline social-icons">
+            <li><a href="https://www.twitter.com/safedriven" target="_blank"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="https://www.facebook.com/safedriven" target="_blank"><i class="fa fa-facebook"></i></a></li>
+            <!-- <li><a href="#"><i class="fa fa-github"></i></a></li>
+            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fa fa-github"></i></a></li> -->
+          </ul>
+          
+        </div>
+        
+      </div>
     </div>
-   <body>
-   <nav>
-        <ul class="list-unstyled main-menu">
-          
-          <!--Include your navigation here-->
-          <li class="text-right"><a href="#" id="nav-close">X</a></li>
-          <li><a href="/about/">About <span class="icon"></span></a></li>
-      
-          <li class="sub-nav"><a href="/team/">Team <span class="icon"></span></a></li>
-       
-        </ul> 
-      </nav>
+  </section>
+  
+  
+  <!--Footer-->
+  <section id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <p class="copyright">Copyright @ PickUp. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
      
-    {% block content %}
-    {% endblock %}
-
-  </body>
-
- <!-- Javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.10.1.min.js"><\/script>')</script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.navgoco.js' %}"></script>
-    <script src="{% static 'js/jquery.backstretch.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
-    
-    <script>
-    {% load staticfiles %}
-    //Backstretch
-    $(document).ready(function() {   
-      $.backstretch([
-          "/static/img/header1.jpg",
-          "/static/img/header2.jpg"
-          
-          ], {
-            fade: 400,
-            duration: 5000
-      });
-      $('#request_button').click(function(){
-        $('#requestModal').modal('show');
-      });
-
-      $('#signup_submit').click(function(){
-        $('#signup_form').submit();
-
-      });
-      $('#signin_submit').click(function(){
-        $('#signin_form').submit();
-
-      });
-      $('#request_submit').click(function () {
-            var btn = $(this);
-            btn.button('loading');
-        });
-      $("a[href^='#main']").on('click', function(e) {
-         // prevent default anchor click behavior
-         e.preventDefault();
-         // store hash
-         var hash = this.hash;
-         // animate
-         $('html, body').animate({
-             scrollTop: $(this.hash).offset().top
-           }, 500, function(){
-             // when done, add hash to url
-             // (default click behaviour)
-             window.location.hash = hash;
-           });
-      });
-      $("a[href^='#bottom']").on('click', function(e) {
-         // prevent default anchor click behavior
-         e.preventDefault();
-         // store hash
-         var hash = this.hash;
-         // animate
-         $('html, body').animate({
-             scrollTop: $(this.hash).offset().top
-           }, 500, function(){
-             // when done, add hash to url
-             // (default click behaviour)
-             window.location.hash = hash;
-          });
-      });
-      $("a[href^='#featured-clients']").on('click', function(e) {
-         // prevent default anchor click behavior
-         e.preventDefault();
-         // store hash
-         var hash = this.hash;
-         // animate
-         $('html, body').animate({
-             scrollTop: $(this.hash).offset().top
-           }, 500, function(){
-             // when done, add hash to url
-             // (default click behaviour)
-             window.location.hash = hash;
-          });
-      });
+  
+  <!-- Javascript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/jquery-1.10.1.min.js"><\/script>')</script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/jquery.navgoco.js' %}"></script>
+  <script src="{% static 'js/jquery.backstretch.js' %}"></script>
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
+  
+  <script>
+  {% load staticfiles %}
+  //Backstretch
+  $(document).ready(function() {   
+    $.backstretch([
+        "/static/img/header1.jpg",
+        "/static/img/header2.jpg"
+        
+        ], {
+          fade: 400,
+          duration: 5000
     });
-    </script>
-    
-    <script>
-    //Home Work Carousel
-      var owl = $("#work-carousel");
+    $('#request_button').click(function(){
+      $('#requestModal').modal('show');
+    });
 
-      owl.owlCarousel({
-      items : 2, //10 items above 1000px browser width
-      itemsDesktop : [1000,2], //5 items between 1000px and 901px
-      itemsDesktopSmall : [900,2], // betweem 900px and 601px
-      itemsTablet: [600,1], //2 items between 600 and 0
-      itemsMobile : [0,1], // itemsMobile disabled - inherit from itemsTablet option
-      navigation : false,
-      pagination : true,
-      autoHeight : true
+    $('#signup_submit').click(function(){
+      $('#signup_form').submit();
+
+    });
+    $('#signin_submit').click(function(){
+      $('#signin_form').submit();
+
+    });
+    $('#request_submit').click(function () {
+          var btn = $(this);
+          btn.button('loading');
       });
-      
-    </script>
+    $("a[href^='#main']").on('click', function(e) {
+       // prevent default anchor click behavior
+       e.preventDefault();
+       // store hash
+       var hash = this.hash;
+       // animate
+       $('html, body').animate({
+           scrollTop: $(this.hash).offset().top
+         }, 500, function(){
+           // when done, add hash to url
+           // (default click behaviour)
+           window.location.hash = hash;
+         });
+    });
+    $("a[href^='#bottom']").on('click', function(e) {
+       // prevent default anchor click behavior
+       e.preventDefault();
+       // store hash
+       var hash = this.hash;
+       // animate
+       $('html, body').animate({
+           scrollTop: $(this.hash).offset().top
+         }, 500, function(){
+           // when done, add hash to url
+           // (default click behaviour)
+           window.location.hash = hash;
+        });
+    });
+    $("a[href^='#featured-clients']").on('click', function(e) {
+       // prevent default anchor click behavior
+       e.preventDefault();
+       // store hash
+       var hash = this.hash;
+       // animate
+       $('html, body').animate({
+           scrollTop: $(this.hash).offset().top
+         }, 500, function(){
+           // when done, add hash to url
+           // (default click behaviour)
+           window.location.hash = hash;
+        });
+    });
+  });
+  </script>
+  
+  <script>
+  //Home Work Carousel
+    var owl = $("#work-carousel");
 
-
+    owl.owlCarousel({
+    items : 2, //10 items above 1000px browser width
+    itemsDesktop : [1000,2], //5 items between 1000px and 901px
+    itemsDesktopSmall : [900,2], // betweem 900px and 601px
+    itemsTablet: [600,1], //2 items between 600 and 0
+    itemsMobile : [0,1], // itemsMobile disabled - inherit from itemsTablet option
+    navigation : false,
+    pagination : true,
+    autoHeight : true
+    });
+    
+  </script> 
+  </body>
 </html>

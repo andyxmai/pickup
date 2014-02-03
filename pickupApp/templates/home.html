@@ -1,27 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Info windows</title>
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
+<style>
+  html, body, #map-canvas {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+  }
 
-      #map-canvas {
-        margin:100px 0px 0px 50px;
-        width:1000px;
-        height:500px;
-      }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <script>
+  #map-canvas {
+    margin:100px 0px 0px 50px;
+    width:1000px;
+    height:500px;
+  }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>
 // This example displays a marker at the center of Australia.
 // When the user clicks the marker, an info window opens.
 
@@ -75,12 +69,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 </script>
-
-  </head>
-  <body>
     <div id="map-canvas"></div>
     <a href="/create_game" type="button" class="btn btn-success">Create Game</a>
     <a href="/logout" type="button" class="btn btn-primary">Logout</a> 
-  </body>
-</html>
 {%endblock%}
