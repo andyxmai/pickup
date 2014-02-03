@@ -9,6 +9,7 @@ class Game(models.Model):
 	description = models.CharField(max_length=400)
 	latitude = models.FloatField(null=True)
 	longitude = models.FloatField(null=True)
+	location = models.CharField(max_length=300, null=True)
 	dateCreated = models.DateTimeField(null=True)
 	timeStart = models.DateTimeField(null=True)
 	# Need an owner (user) of the game
