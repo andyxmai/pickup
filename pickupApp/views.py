@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm
 from pickupApp.models import Game
@@ -126,7 +126,7 @@ def get_games(request):
 		game_data['longitude'] = game.longitude
 		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
 		game_data['description'] = game.description
-		#game_data['time_start'] = game.timeStart
+		game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
 		game_data['latitude'] = game.latitude
 		game_data['longitude'] = game.longitude
@@ -137,7 +137,7 @@ def get_games(request):
 	return HttpResponse(json.dumps(games_data))
 
 
-def logout(request):
+def logout_view(request):
 	logout(request)
 	return redirect("/")
 
