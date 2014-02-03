@@ -7,6 +7,7 @@ from pickupApp.models import Game
 import datetime
 import json
 from django.http import HttpResponse
+from pickupApp.constants import location_to_coordinates
 
 # Create your views here.
 def index(request):
@@ -56,12 +57,7 @@ def register(request):
 		first_name = form.cleaned_data['first_name']
 		last_name = form.cleaned_data['last_name']
 		form = RegisterForm()
-		#return render(request, 'home.html', {'registerForm':form})
 		return redirect('/')
-	# first_name = request.POST.get('first_name')
-	# last_name = request.POST.get('last_name')
-	# email = request.POST.get('email')
-	# password = request.POST['password']
 
 @login_required
 def create_game(request):
@@ -75,8 +71,12 @@ def create_game(request):
 
 			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user)
 			newGame.dateCreated = datetime.datetime.now()
-			#newGame.creator_of_game = request.user
-
+			location = form.cleaned_data['location']
+			(latitude, longitude) = parse_location(location_to_coordinates[location])
+			newGame.latitude = latitude
+			newGame.longitude = longitude
+			newGame.location = location
+		
 			newGame.save()
 			return redirect('/home')
 		else:
@@ -84,6 +84,10 @@ def create_game(request):
 	else:
 		gameForm = GameForm()
 		return render(request, 'game.html', {'gameForm':gameForm})
+
+def parse_location(location):
+	coordinates = location.split(',')
+	return (float(coordinates[0]),float(coordinates[1]))
 
 def user_login(request):
 	if request.method == 'POST': 
@@ -111,6 +115,7 @@ def user_login(request):
 		form = LoginForm()
 		return render(request, 'login.html', {'loginForm':form})
 
+@login_required
 def get_games(request):
 	all_games = Game.objects.all()
 	games_data = []
@@ -119,10 +124,13 @@ def get_games(request):
 		game_data['name'] = game.name
 		game_data['latitude'] = game.latitude
 		game_data['longitude'] = game.longitude
-		game_data['creator'] = game.creator.first_name
+		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
+		game_data['latitude'] = game.latitude
+		game_data['longitude'] = game.longitude
+		game_data['location'] = game.location
 
 		games_data.append(game_data)
 
