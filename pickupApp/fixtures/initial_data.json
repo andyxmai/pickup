@@ -8,5 +8,22 @@
 		"username" : "eymyers@stanford.edu",
 		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
 	}
-}
+},
+
+	{
+	"pk": 1, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "Ethans Game", 
+		"creator": 1, 
+		"longitude": null, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-01-30T08:54:42Z", 
+		"latitude": null, 
+		"users": [], 
+		"sport": "Basketball", 
+		"description": "fratpad"
+		}
+	}
+
 ]
