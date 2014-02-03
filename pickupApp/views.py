@@ -8,14 +8,25 @@ import datetime
 import json
 from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
+from collections import defaultdict
 
 # Create your views here.
+def get_num_games():
+	num_games = defaultdict(lambda:0)
+	all_games = Game.objects.all()
+	for game in all_games:
+		num_games[game.sport] += 1
+
+	return num_games
+
 def index(request):
 	print request.user
 	if request.user.is_authenticated():
 		return redirect('/home')
 
-	return render(request, 'index.html')
+	num_games = get_num_games()	
+	print num_games
+	return render(request, 'index.html', {'num_games': num_games})
 
 @login_required
 def home(request):
