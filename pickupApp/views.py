@@ -26,14 +26,42 @@ def get_num_games():
 		num_games[game.sport] += 1
 
 	return num_games
+#@login_required
+def get_games():
+	all_games = Game.objects.all()
+	games_data = {}
+	for game in all_games:
+		location = game.location.name
+		
+		if not location in games_data:
+			info = {}
+			games_info = []
+			location_info = {}
+			location_info['latitude'] = game.location.latitude
+			location_info['longitude'] = game.location.longitude
+			info['location_info'] = location_info
+			info['games'] = games_info
+			
+			games_data[location] = info
+
+		game_data = {}
+		game_data['name'] = game.name
+		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
+		game_data['description'] = game.description
+		#game_data['time_start'] = game.timeStart
+		game_data['sport'] = game.sport
+		#game_data['location'] = game.location
+
+		games_data[location]['games'].append(game_data)
+	return games_data
+	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
 @login_required
 def home(request):
-	print request
-	print request.user.first_name
 
-	games_json = get_games()
-	return render(request, 'home.html', {'user':request.user, 'games_json':games_json})
+	games_data = get_games()
+	#print games_data
+	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data)})
 
 def register(request):
 	if request.method == 'POST':
@@ -172,23 +200,12 @@ def join_game(request):
 	form = joinGameForm(request.POST)
 
 
-
-
 def logout_view(request):
 	logout(request)
 	return redirect("/")
 
 def team(request):
 	return render(request, 'team.html')
-
-def game(request):
-	return render(request, 'game.html')
-
-def features(request):
-	return render(request, 'features.html')
-
-def base(request):
-	return render(request, 'base.html')
 
 def services(request):
 	return render(request, 'services.html')
