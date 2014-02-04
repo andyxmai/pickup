@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm
-from pickupApp.models import Game
+from pickupApp.models import Game, Location
 import datetime
 import json
 from django.http import HttpResponse
@@ -78,14 +78,15 @@ def create_game(request):
 			name = form.cleaned_data['name']
 			description = form.cleaned_data['description']
 			timeStart = form.cleaned_data['timeStart']
-
-			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user)
+			location_name = form.cleaned_data['location']
+			location = Location.objects.get(name=location_name)
+			
+			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user, location=location)
 			newGame.dateCreated = datetime.datetime.now()
-			location = form.cleaned_data['location']
-			(latitude, longitude) = parse_location(location_to_coordinates[location])
-			newGame.latitude = latitude
-			newGame.longitude = longitude
-			newGame.location = location
+			#(latitude, longitude) = parse_location(location_to_coordinates[location])
+			# newGame.latitude = latitude
+			# newGame.longitude = longitude
+			#newGame.location = location
 		
 			newGame.save()
 			return redirect('/home')
@@ -128,21 +129,30 @@ def user_login(request):
 @login_required
 def get_games(request):
 	all_games = Game.objects.all()
-	games_data = []
+	games_data = {}
 	for game in all_games:
+		location = game.location.name
+		
+		if not location in games_data:
+			info = {}
+			games_info = []
+			location_info = {}
+			location_info['latitude'] = game.location.latitude
+			location_info['longitude'] = game.location.longitude
+			info['location_info'] = location_info
+			info['games'] = games_info
+			
+			games_data[location] = info
+
 		game_data = {}
 		game_data['name'] = game.name
-		game_data['latitude'] = game.latitude
-		game_data['longitude'] = game.longitude
 		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
 		game_data['description'] = game.description
-		game_data['time_start'] = game.timeStart
+		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
-		game_data['latitude'] = game.latitude
-		game_data['longitude'] = game.longitude
-		game_data['location'] = game.location
+		#game_data['location'] = game.location
 
-		games_data.append(game_data)
+		games_data[location]['games'].append(game_data)
 
 	return HttpResponse(json.dumps(games_data))
 

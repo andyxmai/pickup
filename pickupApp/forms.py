@@ -18,4 +18,4 @@ class GameForm(forms.Form):
 	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Name'}))
 	location = forms.ChoiceField(location_choices, widget=forms.Select(attrs={'class':'form-control', 'placeholder':'Location'}))
 	description = forms.CharField(max_length=400, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Description'}))
-	timeStart = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Time'}))
+	timeStart = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Time'}),initial=datetime.datetime.now)
