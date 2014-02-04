@@ -10,19 +10,23 @@
     <button type="button" class="btn btn-success" id="join">Join Game</button>    
   </div>
 </section>
-<script>
+{%endblock%}
+
+{% block javascript %}
+<script type="text/javascript">
 $(document).ready(function() {   
   $("#join").click(function(e){
     $this = $(this);
     //$this.val("joining") // or: this.value = "processing";  
     //$this.prop('disabled', true); // no double submit ;)
     $.ajax({
-       type: "POST",
-       url: "/join_quit_game",
-       data:{
-        id: {{game.id}},
+      type: "POST",
+      url: "/join_quit_game/",
+      data:{
+        'id': {{game.id}},
+        'csrfmiddlewaretoken':'{{csrf_token}}'
         },
-       success: function(msg){
+      success: function(msg){
         if (msg == 'join') {
           $this.val("Leave Game");
           $this.addClass('btn-default');
@@ -30,9 +34,9 @@ $(document).ready(function() {
           $this.val("Join Game");
           $this.addClass('btn-success');
         }
-       }
+      }
     })
   });
 });
 </script>
-{%endblock%}
+{% endblock %}

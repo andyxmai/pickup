@@ -197,19 +197,16 @@ def join_quit_game(request):
 	#userID = request.user.id
 	response = ""
 	if request.method == 'POST': 
-		form = joinGameForm(request.POST)
-		if form.is_valid():
-			gameID = form.cleaned_data['id']
-			choice = form.cleaned_data['choice']
-			game = Game.objects.get(id=gameID)
-			if choice == "join":
-				response = "Joinging game"
-				game.users.add(request.user)
-			elif choice == "leave":
-				response = "Leaving game"
-				game.users.remove(request.user)
-			else:
-				print "Bad 'choice' passback"
+		game_id = request.POST['id']
+		print game_id
+		
+		game = Game.objects.get(id=game_id)
+		if request.user in game.users:
+			game.users.remove(request.user)
+			reponse = 'leave'
+		else:
+			game.users.add(request.user)
+			response = 'join'
 	
 	return HttpResponse(response)
 	
