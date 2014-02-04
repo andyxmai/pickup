@@ -18,4 +18,10 @@ class GameForm(forms.Form):
 	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Name'}))
 	location = forms.ChoiceField(location_choices, widget=forms.Select(attrs={'class':'form-control', 'placeholder':'Location'}))
 	description = forms.CharField(max_length=400, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Description'}))
-	timeStart = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Time'}),initial=datetime.datetime.now)
+	timeStart = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class':'form-control', 'placeholder':'Game Time'}),initial=datetime.datetime.now())
+
+
+# Need form to search and filter, then automatically populate lat/lon
+# Additionally Need user to be able to add a new location name
+# class GameLocationForm(forms.Form):
+

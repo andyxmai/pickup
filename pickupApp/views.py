@@ -156,6 +156,64 @@ def user_login(request):
 		form = LoginForm()
 		return render(request, 'login.html', {'loginForm':form})
 
+#@login_required
+def get_games():
+	all_games = Game.objects.all()
+	games_data = {}
+	for game in all_games:
+		location = game.location.name
+		
+		if not location in games_data:
+			info = {}
+			games_info = []
+			location_info = {}
+			location_info['latitude'] = game.location.latitude
+			location_info['longitude'] = game.location.longitude
+			info['location_info'] = location_info
+			info['games'] = games_info
+			
+			games_data[location] = info
+
+		game_data = {}
+		game_data['name'] = game.name
+		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
+		game_data['description'] = game.description
+		#game_data['time_start'] = game.timeStart
+		game_data['sport'] = game.sport
+		#game_data['location'] = game.location
+
+		games_data[location]['games'].append(game_data)
+	return json.dumps(games_data)
+
+	#return HttpResponse(json.dumps(games_data), content_type="application/json")
+
+@login_required
+def game(request,id):
+	game = Game.objects.get(id=id)
+	return render(request, 'game.html', {'game':game})
+
+@login_required
+def join_quit_game(request):
+	#userID = request.user.id
+	response = ""
+	if request.method == 'POST': 
+		form = joinGameForm(request.POST)
+		if form.is_valid():
+			gameID = form.cleaned_data['id']
+			choice = form.cleaned_data['choice']
+			game = Game.objects.get(id=gameID)
+			if choice == "join":
+				response = "Joinging game"
+				game.users.add(request.user)
+			elif choice == "leave":
+				response = "Leaving game"
+				game.users.remove(request.user)
+			else:
+				print "Bad 'choice' passback"
+	
+	return HttpResponse(response)
+	
+
 def logout_view(request):
 	logout(request)
 	return redirect("/")
@@ -163,12 +221,6 @@ def logout_view(request):
 def team(request):
 	return render(request, 'team.html')
 
-def game(request):
-	return render(request, 'game.html')
-
-def features(request):
-	return render(request, 'features.html')
-
-def base(request):
-	return render(request, 'base.html')
+def services(request):
+	return render(request, 'services.html')
 
