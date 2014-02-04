@@ -187,11 +187,8 @@ def get_games():
 
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
+@login_required
 def game(request,id):
-	if not id in request.session:
-		print "ID not in session"
-		return redirect('/')
-
 	game = Game.objects.get(id=id)
 	return render(request, 'game.html', {'game':game})
 

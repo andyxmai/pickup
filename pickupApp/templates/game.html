@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <h2>{{game.name}}</h2>
+    <p>Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p>Location: {{game.location.name}}</p>
+    <p>Time: {{game.timeStart}}</p>
+    <button type="button" class="btn btn-success" id="join">Join Game</button>    
+  </div>
+</section>
+<script>
+$(document).ready(function() {   
+  $("#join").click(function(e){
+    $this = $(this);
+    //$this.val("joining") // or: this.value = "processing";  
+    //$this.prop('disabled', true); // no double submit ;)
+    $.ajax({
+       type: "POST",
+       url: "/join_quit_game",
+       data:{
+        id: {{game.id}},
+        },
+       success: function(msg){
+        if (msg == 'join') {
+          $this.val("Leave Game");
+          $this.addClass('btn-default');
+        } else {
+          $this.val("Join Game");
+          $this.addClass('btn-success');
+        }
+       }
+    })
+  });
+});
+</script>
+{%endblock%}
