@@ -154,7 +154,7 @@ def get_games(request):
 
 		games_data[location]['games'].append(game_data)
 
-	return HttpResponse(json.dumps(games_data))
+	return HttpResponse(json.dumps(games_data), content_type="application/json")
 
 
 def logout_view(request):
