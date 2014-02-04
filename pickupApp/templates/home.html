@@ -65,8 +65,11 @@ function initialize() {
       games_by_loc[key][i]=new Array();
       var curr_game = (games[key][key_2]);
       for (var key_3 in curr_game) {
-        games_by_loc[key][i].push(curr_game[key_3]);
-        games_by_loc[key][i].push(' ');
+        if (key_3=='name' || key_3=='sport'){
+          game_string = curr_game[key_3];
+          games_by_loc[key][i].push(game_string);
+          games_by_loc[key][i].push(' ');
+        }   
       }
       i+=1;
     }
