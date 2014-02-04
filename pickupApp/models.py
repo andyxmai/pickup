@@ -6,13 +6,11 @@ class Location(models.Model):
 	name = models.CharField(max_length=300)
 	latitude = models.FloatField()
 	longitude = models.FloatField()
-	
+
 class Game(models.Model):
 	sport = models.CharField(max_length=50, null=True)
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=400)
-	# latitude = models.FloatField(null=True)
-	# longitude = models.FloatField(null=True)
 	location = models.CharField(max_length=300, null=True)
 	dateCreated = models.DateTimeField(null=True)
 	timeStart = models.DateTimeField(null=True)
