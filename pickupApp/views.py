@@ -80,7 +80,7 @@ def create_game(request):
 			timeStart = form.cleaned_data['timeStart']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
-			
+
 			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user, location=location)
 			newGame.dateCreated = datetime.datetime.now()
 			#(latitude, longitude) = parse_location(location_to_coordinates[location])
@@ -94,7 +94,7 @@ def create_game(request):
 			return render(request, 'game.html', {'gameForm':form})
 	else:
 		gameForm = GameForm()
-		return render(request, 'game.html', {'gameForm':gameForm})
+		return render(request, 'create_game.html', {'gameForm':gameForm})
 
 def parse_location(location):
 	coordinates = location.split(',')
