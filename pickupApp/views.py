@@ -45,6 +45,7 @@ def get_games():
 			games_data[location] = info
 
 		game_data = {}
+		game_data['id'] = game.id
 		game_data['name'] = game.name
 		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
 		game_data['description'] = game.description
