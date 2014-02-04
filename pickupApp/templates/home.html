@@ -24,21 +24,58 @@ function initialize() {
     center: myLatlng
   };
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  
+  var locations = new Array();
+  var games={};
 
- // This array will eventually be dynamically filled with the locations of games and the titles of the games
+  var json = '{{games_json|safe}}';
+  var json_game_string = JSON.parse(json);
+  //console.log(json_game_string);
 
-  var locations = [
-      ['Wilbur Field', 37.422,-122.16],
-      ['Arillaga', 37.421, -122.155],
-      ['Golf Course', 37.415, -122.15],
-    ];
+  var i=0
+  for (var key in json_game_string) {
+    if (json_game_string.hasOwnProperty(key)) {
+      var hash_key = key;
+      var object = json_game_string[key];
+      var lat = object['location_info']['latitude'];
+      var longi = object ['location_info']['longitude'];
+      games[hash_key]= object['games']
+      locations[i]= new Array();
+      locations[i].push(hash_key);
+      locations[i].push(lat);
+      locations[i].push(longi);
+      i+=1;
+    }
+  }
+
+
 
   var markers= new Array ();
   var marker; 
-  var infowindow = new google.maps.InfoWindow({
-      maxWidth: 160
-    });
+  var infowindow = new google.maps.InfoWindow;
   
+  var games_by_loc = {};
+
+  for (var key in games) {
+    if (json_game_string.hasOwnProperty(key)) {
+      games_by_loc[key] = [new Array()];
+    }
+    var i=0;
+    for (var key_2 in games[key]) {
+      games_by_loc[key][i]=new Array();
+      var curr_game = (games[key][key_2]);
+      for (var key_3 in curr_game) {
+        games_by_loc[key][i].push(curr_game[key_3]);
+        games_by_loc[key][i].push(' ');
+      }
+      i+=1;
+    }
+  }
+
+
+  var content_1;
+  var content_2; 
+
   for (i = 0; i < locations.length; i++) { 
        marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][1], locations[i][2]),
@@ -47,10 +84,16 @@ function initialize() {
 
       markers.push(marker);
 
-
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
-          infowindow.setContent(locations[i][0]);
+          var content_1 = '<div style="font-weight:bold; text-align:center">' + locations[i][0] + '</div>';
+          loc = locations[i][0]
+          
+          for (j=0; j<games_by_loc[loc].length; j++){
+              console.log(games_by_loc[loc][j]);
+              content_1 += '<p>' + games_by_loc[loc][j] + '</p>';
+          }
+          infowindow.setContent(content_1);
           infowindow.open(map, marker);
         }
       })(marker, i));
