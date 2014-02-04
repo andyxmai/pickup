@@ -159,6 +159,20 @@ def get_games():
 
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
+def game(request,id):
+	if not id in request.session:
+		print "ID not in session"
+		return redirect('/')
+
+	game = Game.objects.get(id=id)
+	return render(request, 'game.html', {'game':game})
+
+def join_game(request):
+	
+	form = joinGameForm(request.POST)
+
+
+
 
 def logout_view(request):
 	logout(request)
@@ -179,6 +193,3 @@ def base(request):
 def services(request):
 	return render(request, 'services.html')
 
-def home(request):
-	
-	return render(request, 'home.html')
