@@ -3,40 +3,67 @@
 {% block content %}
 <section>
   <div class="container">
-    <h2>{{game.name}}</h2>
+    <h2>{{game.name}}
+      {% if is_creator %}
+      (creator)
+      {% endif %}
+    </h2>
+    {% if is_creator %}
+      <button type="button" class="btn btn-danger" id="join">Delete Game</button> 
+    {% else %} 
+      <form role="form" action="/join_quit_game/" method="POST" id="join_form">{% csrf_token %}
+        <input type="hidden" name="game_id" value="{{game.id}}">
+      </form>
+      {% if not joined %}
+        <button type="button" class="btn btn-success join_button" id="join">Join</button>    
+      {% else %}
+        <button type="button" class="btn btn-default join_button">Leave</button> 
+      {% endif %}
+    {% endif %}
     <p>Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
     <p>Location: {{game.location.name}}</p>
     <p>Time: {{game.timeStart}}</p>
-    <button type="button" class="btn btn-success" id="join">Join Game</button>    
+    <p>Description: {{game.description}}</p>
+    <p>Players:
+      <ol id="players">
+        <li id="{{game.creator.id}}">{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
+        {% for player in game.users.all %}
+        <li id="{{player.id}}">{{player.first_name}} {{player.last_name}}</li>
+        {% endfor %}
+      </ol>
   </div>
 </section>
 {%endblock%}
 
 {% block javascript %}
 <script type="text/javascript">
-$(document).ready(function() {   
-  $("#join").click(function(e){
-    $this = $(this);
-    //$this.val("joining") // or: this.value = "processing";  
-    //$this.prop('disabled', true); // no double submit ;)
-    $.ajax({
-      type: "POST",
-      url: "/join_quit_game/",
-      data:{
-        'id': {{game.id}},
-        'csrfmiddlewaretoken':'{{csrf_token}}'
-        },
-      success: function(msg){
-        if (msg == 'join') {
-          $this.val("Leave Game");
-          $this.addClass('btn-default');
-        } else {
-          $this.val("Join Game");
-          $this.addClass('btn-success');
-        }
-      }
-    })
+$(document).ready(function() { 
+  $(".join_button").click(function(e){
+    $( "#join_form" ).submit();
   });
+  // $(".join_button").click(function(e){
+  //   $this = $(this);
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "/join_quit_game/",
+  //     data:{
+  //       'id': {{game.id}},
+  //       'csrfmiddlewaretoken':'{{csrf_token}}'
+  //       },
+  //     success: function(msg){
+  //       console.log(msg);
+  //       if (msg == 'joined') {
+  //         $this.html("Leave");
+  //         $this.removeClass('btn-success').addClass('btn-default');
+  //         $("#players").append('<li id="{{user.id}}">{{user.first_name}} {{user.last_name}}</li>');
+  //       } else {
+  //         $this.html("Join");
+  //         $this.removeClass('btn-default').addClass('btn-success');
+  //         $("#players li:last").remove();
+  //       }
+  //     }
+  //   })
+  // });
 });
 </script>
 {% endblock %}
