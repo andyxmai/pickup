@@ -24,3 +24,4 @@ class GameForm(forms.Form):
 # Need form to search and filter, then automatically populate lat/lon
 # Additionally Need user to be able to add a new location name
 # class GameLocationForm(forms.Form):
+
