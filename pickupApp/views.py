@@ -192,10 +192,27 @@ def game(request,id):
 	game = Game.objects.get(id=id)
 	return render(request, 'game.html', {'game':game})
 
-def join_game(request):
+@login_required
+def join_quit_game(request):
+	#userID = request.user.id
+	response = ""
+	if request.method == 'POST': 
+		form = joinGameForm(request.POST)
+		if form.is_valid():
+			gameID = form.cleaned_data['id']
+			choice = form.cleaned_data['choice']
+			game = Game.objects.get(id=gameID)
+			if choice == "join":
+				response = "Joinging game"
+				game.users.add(request.user)
+			elif choice == "leave":
+				response = "Leaving game"
+				game.users.remove(request.user)
+			else:
+				print "Bad 'choice' passback"
 	
-	form = joinGameForm(request.POST)
-
+	return HttpResponse(response)
+	
 
 def logout_view(request):
 	logout(request)
