@@ -10,6 +10,46 @@
 	}
 },
 {
+	"model" : "auth.user",
+	"pk" : 2,
+	"fields": {
+		"first_name" : "Andy",
+		"last_name"	: "Mai",
+		"username" : "andymai@stanford.edu",
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+},
+{
+	"model" : "auth.user",
+	"pk" : 3,
+	"fields": {
+		"first_name" : "Claire",
+		"last_name"	: "Negiar",
+		"username" : "cnegiar@stanford.edu",
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+},
+{
+	"model" : "auth.user",
+	"pk" : 4,
+	"fields": {
+		"first_name" : "Joe",
+		"last_name"	: "Abbott",
+		"username" : "jrabbott@stanford.edu",
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+},
+{
+	"model" : "auth.user",
+	"pk" : 4,
+	"fields": {
+		"first_name" : "Kennan",
+		"last_name"	: "Murphy-Sierra",
+		"username" : "kennan@stanford.edu",
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+},
+{
 	"pk": 1, 
 	"model": "pickupApp.location", 
 	"fields": {

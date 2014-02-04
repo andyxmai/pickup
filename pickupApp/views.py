@@ -160,25 +160,34 @@ def user_login(request):
 @login_required
 def game(request,id):
 	game = Game.objects.get(id=id)
-	return render(request, 'game.html', {'game':game})
+
+	is_creator = False
+	if request.user == game.creator:
+		is_creator = True
+
+	joined = False
+	if request.user in game.users.all() or is_creator:
+		joined = True
+	return render(request, 'game.html', {'game':game, 'joined':joined, 'is_creator':is_creator, 'user':request.user})
 
 @login_required
 def join_quit_game(request):
 	#userID = request.user.id
-	response = ""
+	response = ''
 	if request.method == 'POST': 
-		game_id = request.POST['id']
+		game_id = request.POST['game_id']
 		print game_id
 		
 		game = Game.objects.get(id=game_id)
-		if request.user in game.users:
+		if request.user in game.users.all():
 			game.users.remove(request.user)
-			reponse = 'leave'
+			response = 'left'
 		else:
 			game.users.add(request.user)
-			response = 'join'
+			response = 'joined'
 	
-	return HttpResponse(response)
+	#return HttpResponse(response)
+	return redirect('/game/'+game_id)
 	
 
 def logout_view(request):
