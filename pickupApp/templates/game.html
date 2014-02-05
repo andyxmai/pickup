@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
 <section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg)">
   <div class="container" >
-    <h2>{{game.name}}
+    <h2 style="color:white">{{game.name}}
       {% if is_creator %}
       (creator)
       {% endif %}
     </h2>
+    <div> 
     {% if is_creator %}
       <button type="button" class="btn btn-danger" id="join">Delete Game</button> 
     {% else %} 
@@ -20,14 +23,17 @@
         <button type="button" class="btn btn-default join_button">Leave</button> 
       {% endif %}
     {% endif %}
+  </div> 
+
     <div class="transbox">
-    <p >Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
-    <p >Sport: {{game.sport}}</p>
-    <p >Location: {{game.location.name}}</p>
-    <p >Time: {{game.timeStart}}</p>
-    <p >Description: {{game.description}}</p>
-    <p>Players
-      <ol id="players">
+    <div class="left">
+    <p class="players">Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p  class="players">Sport: {{game.sport}}</p>
+    <p  class="players">Location: {{game.location.name}}</p>
+    <p  class="players">Time: {{game.timeStart}}</p>
+    <p  class="players">Description: {{game.description}}</p>
+    <p  class="players">Players
+      <ol>
         <li id="{{game.creator.id}}" class="players" >{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
         {% for player in game.users.all %}
         <li id="{{player.id}}" class="players">{{player.first_name}} {{player.last_name}}</li>
@@ -36,7 +42,40 @@
     </p>
   </div> 
 </div> 
+   <div id='map-canvas'></div>
+
+ 
+
+<style type="text/css">
+ #map-canvas {
+    width: 500px;
+    height: 400px;
+    float:right;
+  }
+</style> 
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script>
+  function initialize() {
+    var myLatlng = new google.maps.LatLng({{game.location.latitude}}, {{game.location.longitude}});
+    var mapOptions = {
+    zoom: 14,
+    center: myLatlng,
+    }
+    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+    });
+
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+ </script> 
+ 
+
 </section>
+
 {%endblock%}
 
 {% block javascript %}
@@ -45,29 +84,7 @@ $(document).ready(function() {
   $(".join_button").click(function(e){
     $( "#join_form" ).submit();
   });
-  // $(".join_button").click(function(e){
-  //   $this = $(this);
-  //   $.ajax({
-  //     type: "POST",
-  //     url: "/join_quit_game/",
-  //     data:{
-  //       'id': {{game.id}},
-  //       'csrfmiddlewaretoken':'{{csrf_token}}'
-  //       },
-  //     success: function(msg){
-  //       console.log(msg);
-  //       if (msg == 'joined') {
-  //         $this.html("Leave");
-  //         $this.removeClass('btn-success').addClass('btn-default');
-  //         $("#players").append('<li id="{{user.id}}">{{user.first_name}} {{user.last_name}}</li>');
-  //       } else {
-  //         $this.html("Join");
-  //         $this.removeClass('btn-default').addClass('btn-success');
-  //         $("#players li:last").remove();
-  //       }
-  //     }
-  //   })
-  // });
+  
 });
 </script>
 {% endblock %}
