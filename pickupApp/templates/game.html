@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section style="background-image: url(/static/images/{{game.sport}}.jpg);">
+<section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg)">
   <div class="container" >
     <h2>{{game.name}}
       {% if is_creator %}
@@ -20,19 +20,22 @@
         <button type="button" class="btn btn-default join_button">Leave</button> 
       {% endif %}
     {% endif %}
-    <p class="white-font">Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
-    <p class="white-font">Sport: {{game.sport}}</p>
-    <p class="white-font">Location: {{game.location.name}}</p>
-    <p class="white-font">Time: {{game.timeStart}}</p>
-    <p class="white-font">Description: {{game.description}}</p>
-    <p class="white-font">Players
+    <div class="transbox">
+    <p >Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p >Sport: {{game.sport}}</p>
+    <p >Location: {{game.location.name}}</p>
+    <p >Time: {{game.timeStart}}</p>
+    <p >Description: {{game.description}}</p>
+    <p>Players
       <ol id="players">
-        <li id="{{game.creator.id}}" class="white-font" >{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
+        <li id="{{game.creator.id}}" class="players" >{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
         {% for player in game.users.all %}
-        <li id="{{player.id}}" class="white-font">{{player.first_name}} {{player.last_name}}</li>
+        <li id="{{player.id}}" class="players">{{player.first_name}} {{player.last_name}}</li>
         {% endfor %}
       </ol>
     </p>
+  </div> 
+</div> 
 </section>
 {%endblock%}
 
