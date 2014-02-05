@@ -67,7 +67,7 @@ function initialize() {
       var game_id = curr_game['id'];
       var sport = curr_game['sport'];
       var name = curr_game['name'];
-      var game_string = '<div>'+sport+': '+ "<a href ='/game/"+game_id+"' style='color:red; text-decoration:underline'>"+ name+"</a></div>"
+      var game_string = '<div>'+sport+': '+ "<a href ='/game/"+game_id+"' style='color:red; text-decoration:underline'>"+ name+"</a> Spots remaining: 5/8</div>"
       games_by_loc[key][i].push(game_string);
       i+=1;
     }

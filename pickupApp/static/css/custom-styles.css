@@ -26,3 +26,8 @@
 .modal-header button {
 	color:white;
 }
+
+.white-font {
+	color:white; !important
+	font-weight: bold;
+}

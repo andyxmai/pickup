@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
-  <div class="container">
+<section style="background-image: url(/static/images/{{game.sport}}.jpg);">
+  <div class="container" >
     <h2>{{game.name}}
       {% if is_creator %}
       (creator)
@@ -20,18 +20,19 @@
         <button type="button" class="btn btn-default join_button">Leave</button> 
       {% endif %}
     {% endif %}
-    <p>Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
-    <p>Location: {{game.location.name}}</p>
-    <p>Time: {{game.timeStart}}</p>
-    <p>Description: {{game.description}}</p>
-    <p>Players:
+    <p class="white-font">Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p class="white-font">Sport: {{game.sport}}</p>
+    <p class="white-font">Location: {{game.location.name}}</p>
+    <p class="white-font">Time: {{game.timeStart}}</p>
+    <p class="white-font">Description: {{game.description}}</p>
+    <p class="white-font">Players
       <ol id="players">
-        <li id="{{game.creator.id}}">{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
+        <li id="{{game.creator.id}}" class="white-font" >{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
         {% for player in game.users.all %}
-        <li id="{{player.id}}">{{player.first_name}} {{player.last_name}}</li>
+        <li id="{{player.id}}" class="white-font">{{player.first_name}} {{player.last_name}}</li>
         {% endfor %}
       </ol>
-  </div>
+    </p>
 </section>
 {%endblock%}
 
