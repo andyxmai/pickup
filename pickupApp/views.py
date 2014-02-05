@@ -9,6 +9,7 @@ import json
 from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
+from pickupApp.constants import sports_dict
 
 # Create your views here.
 def index(request):
@@ -107,12 +108,15 @@ def create_game(request):
 		if form.is_valid():
 			sport = form.cleaned_data['sport']
 			name = form.cleaned_data['name']
-			description = form.cleaned_data['description']
-			timeStart = form.cleaned_data['timeStart']
+			#description = form.cleaned_data['description']
+			#timeStart = form.cleaned_data['timeStart']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
-			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user, location=location)
+			datetimeStart = request.POST['datetime']
+			print datetimeStart
+
+			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location)
 			newGame.dateCreated = datetime.datetime.now()
 			#(latitude, longitude) = parse_location(location_to_coordinates[location])
 			# newGame.latitude = latitude
@@ -120,9 +124,10 @@ def create_game(request):
 			#newGame.location = location
 		
 			newGame.save()
-			return redirect('/home')
+			return redirect('/game/'+newGame.id)
 		else:
-			return render(request, 'game.html', {'gameForm':form})
+			print 'invalid form'
+			return render(request, 'create_game.html', {'gameForm':form})
 	else:
 		gameForm = GameForm()
 		return render(request, 'create_game.html', {'gameForm':gameForm})
@@ -199,4 +204,14 @@ def team(request):
 
 def services(request):
 	return render(request, 'services.html')
+
+@login_required
+def sport(request, sport):
+	sport = sport.lower()
+	if sport in sports_dict:
+		games_with_sport = Game.objects.filter(sport=sport)
+		sport = sports_dict[sport]
+		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport})
+	else:
+		return redirect('/')
 
