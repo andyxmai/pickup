@@ -1,8 +1,17 @@
 sport_choices = (
-	('Basketball', 'Basketball'),
-	('Soccer','Soccer'),
-	('Tennis','Tennis'),
+	('basketball', 'Basketball'),
+	('soccer','Soccer'),
+	('tennis','Tennis'),
 )
+
+sports_dict = {
+	'basketball':'Basketball',
+	'football':'Football',
+	'frisbee':'Frisbee',
+	'soccer':'Soccer',
+	'tennis':'Tennis',
+	'volleyball':'Volleyball',
+}
 
 location_choices = (
 	('Arillaga Gym', 'Arillaga Gym'),

@@ -20,5 +20,5 @@ urlpatterns = patterns('',
     url(r'^get_games/', 'pickupApp.views.get_games', name='get_games'),
     url(r'^game/(\d+)$', 'pickupApp.views.game'), 
     url(r'^join_quit_game/', 'pickupApp.views.join_quit_game', name='join_quit_game'),
-
+    url(r'^sport/(\w+)$', 'pickupApp.views.sport', name='join_quit_game'),
 )
