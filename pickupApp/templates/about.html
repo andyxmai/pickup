@@ -1,81 +1,6 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-  <meta charset="utf-8">
-  <title>SafeDriven</title>
-  <meta name="keywords" content="flat bootstrap, bootstrap themes, HTML themes, CSS3 animation, creative responsive websites, illustration bootstrap design, blue responsive themes, mobile menu website, slide bootstrap navigation, apple inspired theme, mobile website theme">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width">
-  
-  <meta property="og:title" content="">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="">
-  <meta property="og:site_name" content="">
-  <meta property="og:description" content="">
-
-  {% load staticfiles %}
-  <!-- Styles -->
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-  <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
-  <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,200,300,700' rel='stylesheet' type='text/css'>
-  
-
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <link rel="stylesheet" href="{% static 'css/colors/green.css' %}">
-  <link rel="stylesheet" href="{% static 'css//custom-styles.css' %}">
-  <!-- <link rel="stylesheet" href="/static/css/colors/green.css">
-  <link rel="stylesheet" href="/static/css/custom-styles.css"> -->
-
-  <script src="{% static 'js/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
-
-  <!-- Fav and touch icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'apple-touch-icon-144-precomposed.png' %}">
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'apple-touch-icon-114-precomposed.png' %}">
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'apple-touch-icon-72-precomposed.png' %}">
-  <link rel="apple-touch-icon-precomposed" href="{% static 'apple-touch-icon-57-precomposed.png' %}">
-  <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-</head>
-
-<body>
-  
-      <nav>
-        <ul class="list-unstyled main-menu">
-          
-          <!--Include your navigation here-->
-          <li class="text-right"><a href="#" id="nav-close">X</a></li>
-          <li><a href="/about">About <span class="icon"></span></a></li>
-          <!--<li><a href="features.html">Features <span class="icon"></span></a></li>
-          <li><a href="services.html">Services <span class="icon"></span></a></li>
-          <li><a href="portfolio.html">Portfolio <span class="icon"></span></a></li> -->
-          <li class="sub-nav"><a href="/team">Team <span class="icon"></span></a></li>
-          <!-- <li><a href="#">Pages</a>
-            <ul class="list-unstyled">
-                <li class="sub-nav"><a href="blog-item.html">Blog Article <span class="icon"></span></a></li>
-                <li class="sub-nav"><a href="blog-sidebar.html">Blog Sidebar <span class="icon"></span></a></li> -->
-                <!-- <li class="sub-nav"><a href="pricing.html">Pricing Charts <span class="icon"></span></a></li>
-                <li class="sub-nav"><a href="portfolio-item.html">Portfolio Item <span class="icon"></span></a></li>
-                <li class="sub-nav"><a href="login.html">Log In <span class="icon"></span></a></li>
-                <li class="sub-nav"><a href="signup.html">Sign Up <span class="icon"></span></a></li>
-            </ul>
-          </li>
-          <li><a href="blog.html">Blog <span class="icon"></span></a></li>
-          <li><a href="contact.php">Contact <span class="icon"></span></a></li> -->
-        </ul>
-      </nav>
-          
-    <div class="navbar navbar-inverse navbar-fixed-top">      
-        
-        <!--Include your brand here-->
-        <a class="navbar-brand" href="/"><img src="{% static 'img/logo2.png' %}" class="img-responsive" alt="Logo"></a>
-        <div class="navbar-header pull-right">
-          <a id="nav-expander" class="nav-expander fixed">
-            MENU &nbsp;<i class="fa fa-bars fa-lg white"></i>
-          </a>
-        </div>
-    </div>
+{% extends "base.html" %}
     
-    
+{% block content %}      
     <!--Header Title-->
     <section id="header-title">
       <div class="container">
@@ -95,7 +20,7 @@
           <div class="col-sm-6 col-sm-offset-3 text-center">
             <h3>Our Story</h3>
             <hr>
-            <p>SafeDriven is revoutionizing how suburbanites can enjoy their evenings by bringing comfort and peace of mind. As an alternative transportation method, SafeDriven brings safety. </p>
+            <p>Pickup is revolutionizing how college students setup and join matches. Organizing games goes beyond your immediate friend group.</p>
             <br /><br />
             <!-- <a href="" class="btn btn-primary btn-lg">How It Works</a> -->
           </div>          
@@ -109,8 +34,8 @@
       <div class="container">
         <div class="row margin-30">
           <div class="col-sm-12 text-center">
-            <h2 class="white">“Imagination is more important than knowledge.”</h2>
-            <p class="white"><em>Albert Einstein</em></p>
+            <h2 class="white">“If winning isn't everything, why do they keep score?”</h2>
+            <p class="white"><em>Vince Lombardi</em></p>
           </div>
         </div>
       </div>
@@ -145,13 +70,13 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        Requesting a Ride
+                        Sign Up
                       </a><i class="fa fa-chevron-down  pull-right"></i>
                     </h4>
                   </div>
                   <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body">
-                      Click "Request a Ride" on the homepage and enter in your information. Our dispatcher pairs you with a responsbile and pre-screened driver. When you leave your evening festivities, our driver ensures you arrive home safely in your own car. 
+                      Create a user profile and input your pickup preferences.
                     </div>
                   </div>
                 </div>
@@ -160,13 +85,13 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                        During the Ride
+                        Join or Create a Game
                       </a><i class="fa fa-chevron-right  pull-right"></i>
                     </h4>
                   </div>
                   <div id="collapseTwo" class="panel-collapse collapse">
                     <div class="panel-body">
-                      Let the driver know your address, and we'll take care of the rest! Sit back and enjoy a ride in your own car. Feel free to play any music, interact with your driver, or even lean the chair back and sleep. As long as your car is protected with insurance, you have nothing to worry about.
+                      Browse games from the home screen and join. You can also create your own game, set the time, and decide how many other players you want.
                     </div>
                   </div>
                 </div>
@@ -175,13 +100,13 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                        After the Ride
+                        Have Fun!
                       </a><i class="fa fa-chevron-right  pull-right"></i>
                     </h4>
                   </div>
                   <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body">
-                      You and your car have arrived safely at your house. Our dispatcher sends our car to pickup the driver. The driver is then taken back downtown to help others get back home safely.
+                      When game time approaches, head over to meet up at the event location. 
                     </div>
                   </div>
                 </div>
@@ -210,13 +135,13 @@
           <!--Stat-->
           <div class="col-sm-2 margin-30 text-center">
             <i class="fa fa-calendar fa-4x black margin-20"></i>
-            <h6>Started in <strong>Jan 2014</strong></h6>
+            <h6>Simple <strong>Scheduling</strong></h6>
           </div>
           
           <!--Stat-->
           <div class="col-sm-2 margin-30 text-center">
             <i class="fa fa-users fa-4x black margin-20"></i>
-            <h6>5 amazing <strong>Users</strong></h6>
+            <h6>Connecting <strong>Users</strong></h6>
           </div>
           
           <!--Stat-->
@@ -228,7 +153,7 @@
           <!--Stat-->
           <div class="col-sm-2 margin-30 text-center">
             <i class="fa fa-map-marker fa-4x black margin-20"></i>
-            <h6>3 convenient <strong>Pickup Locations</strong></h6>
+            <h6>View <strong>Locations</strong></h6>
           </div>
           
           <!--Stat-->
@@ -322,32 +247,4 @@
       </div>
     </section>
 
-   
-      
-    
-    <!-- Javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.10.1.min.js"><\/script>')</script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.navgoco.js' %}"></script>
-    <script src="{% static 'js/jquery.backstretch.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    
-    <script>
-        function toggleChevron(e) {
-          $(e.target)
-              .prev('.panel-heading')
-              .find("i.fa")
-              .toggleClass('fa-chevron-down fa-chevron-right');
-      }
-      $('#accordion').on('hidden.bs.collapse', toggleChevron);
-      $('#accordion').on('shown.bs.collapse', toggleChevron); 
-    </script>
-    
-    
-   
-    </body>
-</html>
+{% endblock %}   

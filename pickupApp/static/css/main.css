@@ -406,7 +406,7 @@ section {
 }
 
 #message {
-  background: url(../img/message-bg.jpg) no-repeat center center fixed;
+  background: url(../img/quote-bg.jpg) no-repeat center center fixed;
   min-height: 300px;
   -webkit-background-size: cover;
   -moz-background-size: cover;

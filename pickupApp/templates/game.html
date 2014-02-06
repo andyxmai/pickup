@@ -28,12 +28,17 @@
       <ol id="players">
         <li id="{{game.creator.id}}">{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
         {% for player in game.users.all %}
-        <li id="{{player.id}}">{{player.first_name}} {{player.last_name}}</li>
+          <li id="{{player.id}}">{{player.first_name}} {{player.last_name}}</li>
         {% endfor %}
       </ol>
   </div>
 </section>
+<!-- <div>
+    <button onclick="window.location.href='/home'" type="button" class="btn btn-lg">Back To Games</button>
+</div> -->
 {%endblock%}
+
+
 
 {% block javascript %}
 <script type="text/javascript">
