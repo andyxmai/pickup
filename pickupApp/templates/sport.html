@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class= "overlay" style="background-image: url(/static/images/{{sport}}.jpg)">
+  <div class="container" >
+    <h2 style="color:red">{{sport}}</h2>
+    <div style="margin:20px"></div>
+    {% for game in games_with_sport %}
+     <div class="transbox">
+    <h5 class="players"> <u>Details for {{game.name}}</u></h5>
+    <p class="players">Creator : {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p class="players">Location: {{game.location.name}}</p>
+   </div>
+    {% endfor %}
+  </div>
+</section>
+{%endblock%}
+
+{% block javascript %}
+<script type="text/javascript">
+</script>
+{% endblock %}

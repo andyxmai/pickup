@@ -10,8 +10,7 @@
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <script>
-// This example displays a marker at the center of Australia.
-// When the user clicks the marker, an info window opens.
+
 
 var infowindow=null;
 
@@ -67,7 +66,12 @@ function initialize() {
       var game_id = curr_game['id'];
       var sport = curr_game['sport'];
       var name = curr_game['name'];
-      var game_string = '<div>'+sport+': '+ "<a href ='/game/"+game_id+"' style='color:red; text-decoration:underline'>"+ name+"</a></div>"
+      var remaining= curr_game['curr_num_players'];
+      var total = curr_game['max_num_players'];
+      if (!total){
+        total="Unlimited"
+      }
+      var game_string = '<div>'+sport+': '+ "<a href ='/game/"+game_id+"' style='color:red; text-decoration:underline'>"+ name+"</a> Spots remaining:" + remaining + " of " + total +"</div>"
       games_by_loc[key][i].push(game_string);
       i+=1;
     }

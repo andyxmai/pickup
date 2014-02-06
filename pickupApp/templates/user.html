@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <h2>{{user.first_name}} {{user.last_name}}</h2>
+    <h5>Games Created</h5>
+    {% for game in games_created %}
+    <p>{{game.name}}</p>
+    {% endfor %}
+    <h5>Games Participated</h5>
+    {% for game in games_played %}
+    <p>{{game.name}}</p>
+    {% endfor %}
+  </div>
+</section>
+{%endblock%}
+
+{% block javascript %}
+<script type="text/javascript">
+</script>
+{% endblock %}

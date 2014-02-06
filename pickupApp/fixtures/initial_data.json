@@ -41,7 +41,7 @@
 },
 {
 	"model" : "auth.user",
-	"pk" : 4,
+	"pk" : 5,
 	"fields": {
 		"first_name" : "Kennan",
 		"last_name"	: "Murphy-Sierra",
@@ -63,8 +63,8 @@
 	"model": "pickupApp.location", 
 	"fields": {
 		"name": "Arillaga Gym", 
-		"longitude": -122.155, 
-		"latitude": 37.421
+		"longitude": -122.1610399, 
+		"latitude": 37.4289119
 	}
 },
 {
@@ -72,8 +72,8 @@
 	"model": "pickupApp.location", 
 	"fields": {
 		"name": "Golf Course", 
-		"longitude": -122.15, 
-		"latitude": 37.415
+		"longitude": -122.1800939, 
+		"latitude": 37.4234518
 	}
 },
 {
@@ -84,10 +84,11 @@
 		"creator": 1, 
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
-		"users": [], 
-		"sport": "Frisbee", 
+		"users": [1,2,5], 
+		"sport": "frisbee", 
 		"description": "fratpad",
-		"location":1
+		"location":1,
+		"cap":0
 	}
 },
 {
@@ -99,9 +100,10 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [], 
-		"sport": "Soccer", 
+		"sport": "soccer", 
 		"description": "fratpad",
-		"location":1
+		"location":1,
+		"cap":0
 	}
 },
 {
@@ -113,9 +115,10 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [], 
-		"sport": "Golf", 
+		"sport": "golf", 
 		"description": "fratpad",
-		"location":3
+		"location":3,
+		"cap":3
 	}
 },
 {
@@ -127,9 +130,10 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [], 
-		"sport": "Basketball", 
+		"sport": "basketball", 
 		"description": "fratpad",
-		"location":2
+		"location":2,
+		"cap":10
 	}
 }
 ]

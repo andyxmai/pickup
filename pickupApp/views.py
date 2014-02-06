@@ -9,6 +9,9 @@ import json
 from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
+from pickupApp.constants import sports_dict
+import smtplib # For sending emails
+import datetime
 
 # Create your views here.
 def index(request):
@@ -26,6 +29,7 @@ def get_num_games():
 		num_games[game.sport] += 1
 
 	return num_games
+
 #@login_required
 def get_games():
 	all_games = Game.objects.all()
@@ -51,6 +55,8 @@ def get_games():
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
+		game_data['curr_num_players'] = game.users.count()+1
+		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
 
 		games_data[location]['games'].append(game_data)
@@ -107,22 +113,22 @@ def create_game(request):
 		if form.is_valid():
 			sport = form.cleaned_data['sport']
 			name = form.cleaned_data['name']
-			description = form.cleaned_data['description']
-			timeStart = form.cleaned_data['timeStart']
+			cap = form.cleaned_data['cap']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
-			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user, location=location)
+			#Need to handle time zones
+			datetimeStart = request.POST['dtp_input1']
+			
+			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
-			#(latitude, longitude) = parse_location(location_to_coordinates[location])
-			# newGame.latitude = latitude
-			# newGame.longitude = longitude
-			#newGame.location = location
-		
+	
 			newGame.save()
-			return redirect('/home')
+			return redirect('/game/'+str(newGame.id))
 		else:
-			return render(request, 'game.html', {'gameForm':form})
+			print 'invalid form'
+			error_msg = 'Could not create your game. Please try again!'
+			return render(request, 'create_game.html', {'gameForm':form, 'error_msg':error_msg})
 	else:
 		gameForm = GameForm()
 		return render(request, 'create_game.html', {'gameForm':gameForm})
@@ -188,7 +194,43 @@ def join_quit_game(request):
 	
 	#return HttpResponse(response)
 	return redirect('/game/'+game_id)
-	
+
+def send_an_email(receivers,subj,msg):
+	sender = "ReqTime <debugsafedriven@gmail.com>"
+	server = smtplib.SMTP('smtp.gmail.com:587')
+	username = 'debugsafedriven'
+	password = 'fratpad2014'
+	server.ehlo()
+	server.starttls()
+	server.login(username,password)
+	date = datetime.datetime.now().strftime( "%d/%m/%Y %H:%M" )
+	fullMsg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, receivers, subj, date, msg )
+	print receivers
+	server.sendmail(sender,receivers,fullMsg)
+	server.quit()
+
+@login_required
+def delete_game(request):
+	if request.method == 'POST':
+		game_id = request.POST['game_id']
+		g = Game.objects.get(id=game_id)
+
+		receivers = []
+		for user in g.users.all():
+			print user
+
+			receivers.append(user.username)
+
+		game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
+		msg = "Unfortunately, %s has deleted %s." % (game_maker, g.name)
+		subj = "Game Cancellation"
+		send_an_email(receivers,subj,msg)
+
+		g.delete()
+
+
+
+	return redirect('/home')
 
 def logout_view(request):
 	logout(request)
@@ -202,3 +244,20 @@ def services(request):
 
 def about(request):
 	return render(request, 'about.html')
+
+@login_required
+def sport(request, sport):
+	sport = sport.lower()
+	if sport in sports_dict:
+		games_with_sport = Game.objects.filter(sport=sport)
+		sport = sports_dict[sport]
+		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport})
+	else:
+		return redirect('/')
+
+def user(request, id):
+	user = User.objects.get(pk=id)
+	games_created = Game.objects.filter(creator=user)
+	games_played = user.game_set.all()
+
+	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created})
