@@ -9,7 +9,7 @@
           
           <div class="col-sm-6 col-sm-offset-3 text-center signup">
             <h3>Create Game</h3><br />
-  					<form role="form" id="signup" action="/create_game/" method="post">{% csrf_token %}
+  					<form role="form" id="signup" class="form-horizontal" action="/create_game/" method="post">{% csrf_token %}
               <div class="form-group">
                 {{gameForm.sport}}
                </div>
@@ -29,14 +29,13 @@
   <input class="span2" size="16" type="text" value="12-02-2012">
  </div>
               </div> -->
-              <div class="form-group">
-                <!-- <div class="controls input-append date form_datetime" data-date="{{datetime.datetime.now}}" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1"> -->
-                <div class="controls input-append date form_datetime" data-date="{{datetime.datetime.now}}" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
-                    <input size="50" type="text" value="" name="datetime" readonly placeholder="Date and Time">
+              <div class="control-group">
+                <div class=" input-append date form_datetime" data-date="{{datetime.datetime.now}}" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                    <input size="50" type="text" name="datetime" value="" readonly placeholder="Date and Time">
                     <span class="add-on"><i class="icon-remove"></i></span>
                     <span class="add-on"><i class="icon-th"></i></span>
                 </div>
-                <input type="hidden" id="dtp_input1" value="" /><br/>
+                <input type="hidden" id="dtp_input1" name="dtp_input1" value="" /><br/>
               </div>
 
               <br />

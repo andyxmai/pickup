@@ -113,7 +113,7 @@ def create_game(request):
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
-			datetimeStart = request.POST['datetime']
+			datetimeStart = request.POST['dtp_input1']
 			print datetimeStart
 
 			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location)
@@ -124,7 +124,7 @@ def create_game(request):
 			#newGame.location = location
 		
 			newGame.save()
-			return redirect('/game/'+newGame.id)
+			return redirect('/game/'+str(newGame.id))
 		else:
 			print 'invalid form'
 			return render(request, 'create_game.html', {'gameForm':form})
