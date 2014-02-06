@@ -27,6 +27,7 @@ def get_num_games():
 		num_games[game.sport] += 1
 
 	return num_games
+	
 #@login_required
 def get_games():
 	all_games = Game.objects.all()
