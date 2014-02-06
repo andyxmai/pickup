@@ -15,10 +15,12 @@ Back End
     - allow a user to chooce a game location from a table or create a new one
     - for the user to choose a new one, google search name -> lon,lat
 
+
 Current Pages
 - home.html
 - register.html
 - index.html
+
 
 Current Tables:
 - Users
