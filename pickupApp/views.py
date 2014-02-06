@@ -10,6 +10,8 @@ from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
 from pickupApp.constants import sports_dict
+import smtplib # For sending emails
+import datetime
 
 # Create your views here.
 def index(request):
@@ -192,7 +194,43 @@ def join_quit_game(request):
 	
 	#return HttpResponse(response)
 	return redirect('/game/'+game_id)
-	
+
+def send_an_email(receivers,subj,msg):
+	sender = "ReqTime <debugsafedriven@gmail.com>"
+	server = smtplib.SMTP('smtp.gmail.com:587')
+	username = 'debugsafedriven'
+	password = 'fratpad2014'
+	server.ehlo()
+	server.starttls()
+	server.login(username,password)
+	date = datetime.datetime.now().strftime( "%d/%m/%Y %H:%M" )
+	fullMsg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, receivers, subj, date, msg )
+	print receivers
+	server.sendmail(sender,receivers,fullMsg)
+	server.quit()
+
+@login_required
+def delete_game(request):
+	if request.method == 'POST':
+		game_id = request.POST['game_id']
+		g = Game.objects.get(id=game_id)
+
+		receivers = []
+		for user in g.users.all():
+			print user
+
+			receivers.append(user.username)
+
+		game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
+		msg = "Unfortunately, %s has deleted %s." % (game_maker, g.name)
+		subj = "Game Cancellation"
+		send_an_email(receivers,subj,msg)
+
+		g.delete()
+
+
+
+	return redirect('/home')
 
 def logout_view(request):
 	logout(request)

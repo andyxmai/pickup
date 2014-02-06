@@ -11,7 +11,10 @@
     </h2>
     <div> 
     {% if is_creator %}
-      <button type="button" class="btn btn-danger" id="join">Delete Game</button> 
+      <form role="form" action="/delete_game/" method="POST" id="delete_form">{% csrf_token %}
+        <input type="hidden" name="game_id" value="{{game.id}}">
+      </form>
+      <button type="button" class="btn btn-danger delete_button" id="delete">Delete Game</button> 
     {% else %} 
       <form role="form" action="/join_quit_game/" method="POST" id="join_form">{% csrf_token %}
         <input type="hidden" name="game_id" value="{{game.id}}">
@@ -19,7 +22,7 @@
       {% if not joined %}
         <button type="button" class="btn btn-success join_button" id="join">Join</button>    
       {% else %}
-        <button type="button" class="btn btn-default join_button">Leave</button> 
+        <button type="button" class="btn btn-default join_button" id="leave">Leave</button> 
       {% endif %}
     {% endif %}
   </div> 
@@ -92,5 +95,12 @@ $(document).ready(function() {
   });
   
 });
+
+$(document).ready(function(){
+  $(".delete_button").click(function(e){
+    $("#delete_form").submit();
+  });
+});
+
 </script>
 {% endblock %}

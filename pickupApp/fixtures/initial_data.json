@@ -41,7 +41,7 @@
 },
 {
 	"model" : "auth.user",
-	"pk" : 4,
+	"pk" : 5,
 	"fields": {
 		"first_name" : "Kennan",
 		"last_name"	: "Murphy-Sierra",
@@ -84,7 +84,7 @@
 		"creator": 1, 
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
-		"users": [], 
+		"users": [1,2,5], 
 		"sport": "frisbee", 
 		"description": "fratpad",
 		"location":1,
