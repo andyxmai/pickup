@@ -215,3 +215,10 @@ def sport(request, sport):
 	else:
 		return redirect('/')
 
+def user(request, id):
+	user = User.objects.get(pk=id)
+	games_created = Game.objects.filter(creator=user)
+	games_played = user.game_set.all()
+
+	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created})
+
