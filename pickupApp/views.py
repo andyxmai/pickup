@@ -9,6 +9,7 @@ import json
 from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
+from pickupApp.constants import sports_dict
 
 # Create your views here.
 def index(request):
@@ -26,6 +27,7 @@ def get_num_games():
 		num_games[game.sport] += 1
 
 	return num_games
+
 #@login_required
 def get_games():
 	all_games = Game.objects.all()
@@ -45,11 +47,14 @@ def get_games():
 			games_data[location] = info
 
 		game_data = {}
+		game_data['id'] = game.id
 		game_data['name'] = game.name
 		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
+		game_data['curr_num_players'] = game.users.count()+1
+		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
 
 		games_data[location]['games'].append(game_data)
@@ -106,22 +111,22 @@ def create_game(request):
 		if form.is_valid():
 			sport = form.cleaned_data['sport']
 			name = form.cleaned_data['name']
-			description = form.cleaned_data['description']
-			timeStart = form.cleaned_data['timeStart']
+			cap = form.cleaned_data['cap']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
-			newGame = Game.objects.create(sport=sport,name=name,description=description,timeStart=timeStart, creator=request.user, location=location)
+			#Need to handle time zones
+			datetimeStart = request.POST['dtp_input1']
+			
+			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
-			#(latitude, longitude) = parse_location(location_to_coordinates[location])
-			# newGame.latitude = latitude
-			# newGame.longitude = longitude
-			#newGame.location = location
-		
+	
 			newGame.save()
-			return redirect('/home')
+			return redirect('/game/'+str(newGame.id))
 		else:
-			return render(request, 'game.html', {'gameForm':form})
+			print 'invalid form'
+			error_msg = 'Could not create your game. Please try again!'
+			return render(request, 'create_game.html', {'gameForm':form, 'error_msg':error_msg})
 	else:
 		gameForm = GameForm()
 		return render(request, 'create_game.html', {'gameForm':gameForm})
@@ -156,62 +161,37 @@ def user_login(request):
 		form = LoginForm()
 		return render(request, 'login.html', {'loginForm':form})
 
-#@login_required
-def get_games():
-	all_games = Game.objects.all()
-	games_data = {}
-	for game in all_games:
-		location = game.location.name
-		
-		if not location in games_data:
-			info = {}
-			games_info = []
-			location_info = {}
-			location_info['latitude'] = game.location.latitude
-			location_info['longitude'] = game.location.longitude
-			info['location_info'] = location_info
-			info['games'] = games_info
-			
-			games_data[location] = info
-
-		game_data = {}
-		game_data['name'] = game.name
-		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
-		game_data['description'] = game.description
-		#game_data['time_start'] = game.timeStart
-		game_data['sport'] = game.sport
-		#game_data['location'] = game.location
-
-		games_data[location]['games'].append(game_data)
-	return json.dumps(games_data)
-
-	#return HttpResponse(json.dumps(games_data), content_type="application/json")
-
 @login_required
 def game(request,id):
 	game = Game.objects.get(id=id)
-	return render(request, 'game.html', {'game':game})
+
+	is_creator = False
+	if request.user == game.creator:
+		is_creator = True
+
+	joined = False
+	if request.user in game.users.all() or is_creator:
+		joined = True
+	return render(request, 'game.html', {'game':game, 'joined':joined, 'is_creator':is_creator, 'user':request.user})
 
 @login_required
 def join_quit_game(request):
 	#userID = request.user.id
-	response = ""
+	response = ''
 	if request.method == 'POST': 
-		form = joinGameForm(request.POST)
-		if form.is_valid():
-			gameID = form.cleaned_data['id']
-			choice = form.cleaned_data['choice']
-			game = Game.objects.get(id=gameID)
-			if choice == "join":
-				response = "Joinging game"
-				game.users.add(request.user)
-			elif choice == "leave":
-				response = "Leaving game"
-				game.users.remove(request.user)
-			else:
-				print "Bad 'choice' passback"
+		game_id = request.POST['game_id']
+		print game_id
+		
+		game = Game.objects.get(id=game_id)
+		if request.user in game.users.all():
+			game.users.remove(request.user)
+			response = 'left'
+		else:
+			game.users.add(request.user)
+			response = 'joined'
 	
-	return HttpResponse(response)
+	#return HttpResponse(response)
+	return redirect('/game/'+game_id)
 	
 
 def logout_view(request):
@@ -223,4 +203,21 @@ def team(request):
 
 def services(request):
 	return render(request, 'services.html')
+
+@login_required
+def sport(request, sport):
+	sport = sport.lower()
+	if sport in sports_dict:
+		games_with_sport = Game.objects.filter(sport=sport)
+		sport = sports_dict[sport]
+		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport})
+	else:
+		return redirect('/')
+
+def user(request, id):
+	user = User.objects.get(pk=id)
+	games_created = Game.objects.filter(creator=user)
+	games_played = user.game_set.all()
+
+	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created})
 
