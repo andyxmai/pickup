@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section>
-  <div class="container">
-    <h2>{{sport}}</h2>
+<section class= "overlay" style="background-image: url(/static/images/{{sport}}.jpg)">
+  <div class="container" >
+    <h2 style="color:red">{{sport}}</h2>
+    <div style="margin:20px"></div>
     {% for game in games_with_sport %}
-    <h5>{{game.name}}</h5>
-    <p>{{game.creator.first_name}} {{game.creator.last_name}}</p>
-    <p>{{game.location.name}}</p>
+     <div class="transbox">
+    <h5 class="players"> <u>Details for {{game.name}}</u></h5>
+    <p class="players">Creator : {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p class="players">Location: {{game.location.name}}</p>
+   </div>
     {% endfor %}
   </div>
 </section>
