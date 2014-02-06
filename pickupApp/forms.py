@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from pickupApp.constants import sport_choices, location_choices
+from pickupApp.constants import sport_choices, location_choices, num_choices
 import datetime
 
 class RegisterForm(forms.Form):
@@ -17,6 +17,7 @@ class GameForm(forms.Form):
 	sport = forms.ChoiceField(sport_choices, widget=forms.Select(attrs={'class':'form-control', 'placeholder':'Basketball'}))
 	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Game Name'}))
 	location = forms.ChoiceField(location_choices, widget=forms.Select(attrs={'class':'form-control', 'placeholder':'Location'}))
+	cap = forms.ChoiceField(num_choices, widget=forms.Select(attrs={'class':'form-control', 'placeholder':'Number of Players'}))
 	#description = forms.CharField(max_length=400, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Description'}))
 	#timeStart = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class':'form-control', 'placeholder':'Game Time'}),initial=datetime.datetime.now())
 

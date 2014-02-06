@@ -14,6 +14,7 @@ class Game(models.Model):
 	location = models.CharField(max_length=300, null=True)
 	dateCreated = models.DateTimeField(null=True)
 	timeStart = models.DateTimeField(null=True)
+	cap = models.IntegerField()
 	# Need an owner (user) of the game
 	creator = models.ForeignKey(User, related_name = "creator_of_game")
 	location = models.ForeignKey(Location)

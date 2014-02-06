@@ -27,7 +27,7 @@ def get_num_games():
 		num_games[game.sport] += 1
 
 	return num_games
-	
+
 #@login_required
 def get_games():
 	all_games = Game.objects.all()
@@ -53,6 +53,8 @@ def get_games():
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
+		game_data['curr_num_players'] = game.users.count()+1
+		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
 
 		games_data[location]['games'].append(game_data)
@@ -109,26 +111,22 @@ def create_game(request):
 		if form.is_valid():
 			sport = form.cleaned_data['sport']
 			name = form.cleaned_data['name']
-			#description = form.cleaned_data['description']
-			#timeStart = form.cleaned_data['timeStart']
+			cap = form.cleaned_data['cap']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
+			#Need to handle time zones
 			datetimeStart = request.POST['dtp_input1']
-			print datetimeStart
-
-			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location)
+			
+			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
-			#(latitude, longitude) = parse_location(location_to_coordinates[location])
-			# newGame.latitude = latitude
-			# newGame.longitude = longitude
-			#newGame.location = location
-		
+	
 			newGame.save()
 			return redirect('/game/'+str(newGame.id))
 		else:
 			print 'invalid form'
-			return render(request, 'create_game.html', {'gameForm':form})
+			error_msg = 'Could not create your game. Please try again!'
+			return render(request, 'create_game.html', {'gameForm':form, 'error_msg':error_msg})
 	else:
 		gameForm = GameForm()
 		return render(request, 'create_game.html', {'gameForm':gameForm})
