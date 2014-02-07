@@ -10,8 +10,10 @@ from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
 from pickupApp.constants import sports_dict
-import smtplib # For sending emails
-import datetime
+#import smtplib # For sending emails
+#import datetime
+from django.core.mail import send_mail
+
 
 # Create your views here.
 def index(request):
@@ -196,18 +198,21 @@ def join_quit_game(request):
 	return redirect('/game/'+game_id)
 
 def send_an_email(receivers,subj,msg):
+	# sender = "ReqTime <debugsafedriven@gmail.com>"
+	# server = smtplib.SMTP('smtp.gmail.com',587)
+	# username = 'debugsafedriven'
+	# password = 'fratpad2014'
+	# server.starttls()
+	# server.ehlo()
+	# server.login(username,password)
+	# date = datetime.datetime.now().strftime( "%d/%m/%Y %H:%M" )
+	# fullMsg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, receivers, subj, date, msg )
+	# print receivers
+	# server.sendmail(sender,receivers,fullMsg)
+	# server.quit()
+
 	sender = "ReqTime <debugsafedriven@gmail.com>"
-	server = smtplib.SMTP('smtp.gmail.com:587')
-	username = 'debugsafedriven'
-	password = 'fratpad2014'
-	server.ehlo()
-	server.starttls()
-	server.login(username,password)
-	date = datetime.datetime.now().strftime( "%d/%m/%Y %H:%M" )
-	fullMsg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, receivers, subj, date, msg )
-	print receivers
-	server.sendmail(sender,receivers,fullMsg)
-	server.quit()
+	send_mail(subj, msg, sender, receivers, fail_silently=False)
 
 @login_required
 def delete_game(request):
@@ -216,15 +221,16 @@ def delete_game(request):
 		g = Game.objects.get(id=game_id)
 
 		receivers = []
-		for user in g.users.all():
-			print user
+		allUsers = g.users.all()
+		if len(allUsers) != 0:
+			for user in g.users.all():
+				print user
+				receivers.append(user.username)
 
-			receivers.append(user.username)
-
-		game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
-		msg = "Unfortunately, %s has deleted %s." % (game_maker, g.name)
-		subj = "Game Cancellation"
-		send_an_email(receivers,subj,msg)
+			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
+			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
+			subj = "%s Game Cancellation" % (g.name)
+			send_an_email(receivers,subj,msg)
 
 		g.delete()
 

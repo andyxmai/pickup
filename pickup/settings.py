@@ -93,3 +93,13 @@ LOGIN_URL = '/'
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Email Settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'debugsafedriven@gmail.com'
+EMAIL_HOST_PASSWORD = 'fratpad2014'
+
+
+
