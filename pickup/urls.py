@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'pickupApp.views.index', name='index'),
+    url(r'^about/', 'pickupApp.views.about', name='about'),
     url(r'^register/', 'pickupApp.views.register', name='register'),
     url(r'^home/', 'pickupApp.views.home', name='home'),
     url(r'^login/', 'pickupApp.views.user_login', name='user_login'),

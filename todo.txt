@@ -1,4 +1,24 @@
+Tuesday Deliverables
+- View Profiles & Games
+- Create/Delete Games
+- Join/Unjoin Games
+- Quality testing on Navigation
+
+
+
 Front End
+- All
+	- Navication quality testing
+- Joe
+	- User Profile
+	- Logo
+	- Navigation
+- Claire
+	- Continued map improvements
+- Kennan
+	- Create Game Button on Map
+	- Upload Photos on User Page (Sunday)
+
 - game page
     - Back end is passing json data of all games
 
@@ -7,20 +27,27 @@ Front End
     - Games owned
 
 
-
 Back End
+- Notifications (EthAndy)
 - time stamp
 - add games to fixture file, will speed up testing
 - make game_locations
     - allow a user to chooce a game location from a table or create a new one
     - for the user to choose a new one, google search name -> lon,lat
 
+Upcoming Deliverables
+- Enable Filtering on Map
+- Search Bar (search for games, players etc.)
+- Player ratings & history of games
+
+
+
+
 
 Current Pages
 - home.html
 - register.html
 - index.html
-
 
 Current Tables:
 - Users
