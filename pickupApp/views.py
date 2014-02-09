@@ -13,6 +13,8 @@ from pickupApp.constants import sports_dict
 #import smtplib # For sending emails
 #import datetime
 from django.core.mail import send_mail
+from django.contrib import messages
+from django.contrib.messages import get_messages
 
 
 # Create your views here.
@@ -22,7 +24,8 @@ def index(request):
 		return redirect('/home')
 
 	num_games = get_num_games()
-	return render(request, 'index.html', {'num_games':num_games})
+	messages = get_messages(request)
+	return render(request, 'index.html', {'num_games':num_games, 'messages':messages})
 
 def get_num_games():
 	num_games = defaultdict(lambda:0)
@@ -70,7 +73,8 @@ def home(request):
 
 	games_data = get_games(request)
 	#print games_data
-	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data)})
+	messages = get_messages(request)
+	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data), 'messages':messages})
 
 def register(request):
 	if request.method == 'POST':
@@ -141,13 +145,10 @@ def parse_location(location):
 
 def user_login(request):
 	if request.method == 'POST': 
-		print "POSTING"
 		form = LoginForm(request.POST)
 		if form.is_valid():
 			email = form.cleaned_data['email']	
 			password = form.cleaned_data['password']
-			print email
-			print "SUCCESS"
 
 			user = authenticate(username=email, password=password)
 			if user is not None:
@@ -155,15 +156,21 @@ def user_login(request):
 					login(request, user)
 					return redirect('/home')
 				else:
-					return render(request, 'login.html', {'loginForm':form})
+					return render(request, 'in.html', {'loginForm':form})
 			else:
-				return render(request, 'login.html', {'loginForm':form})
+				msg = 'Invalid username and password.'
+				messages.success(request, msg)
+				return redirect('/')
+				#return render(request, 'login.html', {'loginForm':form, 'message':message})
 		else:
-			return render(request, 'login.html', {'loginForm':form})
+			msg = 'Invalid username and password.'
+			messages.success(request, msg)
+			return redirect('/')
+			#return render(request, 'login.html', {'loginForm':form, 'message':message})
 	else:
-
-		form = LoginForm()
-		return render(request, 'login.html', {'loginForm':form})
+		return redirect('/')
+		#form = LoginForm()
+		#return render(request, 'login.html', {'loginForm':form})
 
 @login_required
 def game(request,id):
@@ -232,9 +239,9 @@ def delete_game(request):
 			subj = "%s Game Cancellation" % (g.name)
 			send_an_email(receivers,subj,msg)
 
+		msg = g.name + ' (' + g.sport + ')' + ' was deleted.'
 		g.delete()
-
-
+		messages.success(request, msg)
 
 	return redirect('/home')
 

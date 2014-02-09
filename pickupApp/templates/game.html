@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg)">
+<section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg); overflow:scroll" >
   <div class="container" >
     <h2 style="color:white">{{game.name}}
       {% if is_creator %}
@@ -26,10 +25,10 @@
       {% endif %}
     {% endif %}
   </div> 
-
-    <div class="transbox">
-    <div class="left">
-    <p  class="players"><a href="/user/{{game.creator.id}}">Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p></a>
+ 
+  <div>
+    <div class="transbox left" >
+    <p  class="players">Creator: <a href="/user/{{game.creator.id}}">{{game.creator.first_name}} {{game.creator.last_name}}</a></p>
     <p  class="players">Sport: {{game.sport}}</p>
     <p  class="players">Location: {{game.location.name}}</p>
     <p  class="players">Time: {{game.timeStart}}</p>
@@ -42,9 +41,9 @@
         {% endfor %}
       </ol>
     </p>
-  </div> 
 </div> 
-   <div id='map-canvas'></div>
+   <div id='map-canvas' style="width:45%; margin-left:2px"></div>
+ </div> 
 
  
 
@@ -61,7 +60,7 @@
   function initialize() {
     var myLatlng = new google.maps.LatLng({{game.location.latitude}}, {{game.location.longitude}});
     var mapOptions = {
-    zoom: 14,
+    zoom: 15,
     center: myLatlng,
     }
     var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);

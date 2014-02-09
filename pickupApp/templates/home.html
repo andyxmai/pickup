@@ -48,7 +48,6 @@ function initialize() {
   }
 
 
-
   var markers= new Array ();
   var marker; 
   var infowindow = new google.maps.InfoWindow;
@@ -110,7 +109,21 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 </script>
-    <div id="map-canvas"></div>
-    <!-- <a href="/create_game" type="button" class="btn btn-success">Create Game</a> -->
+  {% if messages %}
+  <section style="padding-bottom:0">
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissable" style="margin-bottom:0; text-align: center">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{message}}
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+  <div id="map-canvas" style= "position:relative; z-index:1"></div>
+  <div>
+    <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">Create Game</a>
+  </div> 
+      
+
     <!-- <a href="/logout" type="button" class="btn btn-primary">Logout</a>  -->
 {%endblock%}
