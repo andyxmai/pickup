@@ -15,6 +15,7 @@ from pickupApp.constants import sports_dict
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.messages import get_messages
+from notifications import notify
 
 
 # Create your views here.
@@ -74,6 +75,9 @@ def home(request):
 	games_data = get_games(request)
 	#print games_data
 	messages = get_messages(request)
+	unread = request.user.notifications.unread()
+	for note in unread:
+		print note.verb
 	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data), 'messages':messages})
 
 def register(request):
@@ -197,9 +201,13 @@ def join_quit_game(request):
 		if request.user in game.users.all():
 			game.users.remove(request.user)
 			response = 'left'
+			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
+			notify.send(request.user,recipient=game.creator, verb=verb)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
+			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
+			notify.send(request.user,recipient=game.creator, verb=verb)
 	
 	#return HttpResponse(response)
 	return redirect('/game/'+game_id)
@@ -233,6 +241,8 @@ def delete_game(request):
 			for user in g.users.all():
 				print user
 				receivers.append(user.username)
+				verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name
+				notify.send(request.user,recipient=user, verb=verb)
 
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
@@ -274,3 +284,8 @@ def user(request, id):
 	games_played = user.game_set.all().order_by('-timeStart');
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
 	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games})
+
+def remove_notifications(request):
+	request.user.notifications.mark_all_as_read()
+	return HttpResponse('')
+

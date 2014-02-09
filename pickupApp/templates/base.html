@@ -46,6 +46,8 @@
 </head>
 
 <body>
+  {% load notifications_tags %}
+  {% notifications_unread as unread_count %}
   <nav>
     <ul class="list-unstyled main-menu">
       
@@ -77,6 +79,19 @@
         <a class="navbar-brand" href="/"><img src="{% static 'img/logo-main.png' %}" class="img-responsive" alt="Logo"></a>
         <div id="navbar-links" class="navbar-header pull-left">
         <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+            <i class="fa fa-dribbble fa-lg"></i>
+            {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
+          </a>
+          {% if unread_count %}
+          <ul class="dropdown-menu">
+            {% for note in user.notifications.unread %}
+            <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
         <li class="active"><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
         <li><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
         <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
@@ -194,6 +209,18 @@
            // (default click behaviour)
            window.location.hash = hash;
         });
+    });
+    $('#notification').click(function(){
+      $.ajax({
+        type: "POST",
+        url: "/remove_notifications/",
+        data: { 
+          'csrfmiddlewaretoken':'{{csrf_token}}' 
+        },
+        success: function(data) {
+          $( "span.badge" ).remove();
+        },
+      });
     });
   });
   </script>
