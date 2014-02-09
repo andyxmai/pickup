@@ -158,7 +158,6 @@ def user_login(request):
 			if user is not None:
 				if user.is_active:
 					login(request, user)
-					notify.send(user,recipient=user, verb='Login motherfucker')
 					return redirect('/home')
 				else:
 					return render(request, 'in.html', {'loginForm':form})
@@ -202,9 +201,13 @@ def join_quit_game(request):
 		if request.user in game.users.all():
 			game.users.remove(request.user)
 			response = 'left'
+			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
+			notify.send(request.user,recipient=game.creator, verb=verb)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
+			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
+			notify.send(request.user,recipient=game.creator, verb=verb)
 	
 	#return HttpResponse(response)
 	return redirect('/game/'+game_id)
@@ -238,6 +241,8 @@ def delete_game(request):
 			for user in g.users.all():
 				print user
 				receivers.append(user.username)
+				verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name
+				notify.send(request.user,recipient=user, verb=verb)
 
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
@@ -279,3 +284,8 @@ def user(request, id):
 	games_played = user.game_set.all().order_by('-timeStart');
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
 	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games})
+
+def remove_notifications(request):
+	request.user.notifications.mark_all_as_read()
+	return HttpResponse('')
+

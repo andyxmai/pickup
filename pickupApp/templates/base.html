@@ -80,14 +80,14 @@
         <div id="navbar-links" class="navbar-header pull-left">
         <ul class="nav navbar-nav">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
             <i class="fa fa-dribbble fa-lg"></i>
-            <span class="badge">{{unread_count}}</span>
+            {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
           </a>
           {% if unread_count %}
           <ul class="dropdown-menu">
             {% for note in user.notifications.unread %}
-            <li><a href="#">{{note.verb}}</a></li>
+            <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
             {% endfor %}
           </ul>
           {% endif %}
@@ -209,6 +209,18 @@
            // (default click behaviour)
            window.location.hash = hash;
         });
+    });
+    $('#notification').click(function(){
+      $.ajax({
+        type: "POST",
+        url: "/remove_notifications/",
+        data: { 
+          'csrfmiddlewaretoken':'{{csrf_token}}' 
+        },
+        success: function(data) {
+          $( "span.badge" ).remove();
+        },
+      });
     });
   });
   </script>
