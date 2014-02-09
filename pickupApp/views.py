@@ -163,12 +163,12 @@ def user_login(request):
 					return render(request, 'in.html', {'loginForm':form})
 			else:
 				msg = 'Invalid username and password.'
-				messages.success(request, msg)
+				messages.error(request, msg)
 				return redirect('/')
 				#return render(request, 'login.html', {'loginForm':form, 'message':message})
 		else:
 			msg = 'Invalid username and password.'
-			messages.success(request, msg)
+			messages.error(request, msg)
 			return redirect('/')
 			#return render(request, 'login.html', {'loginForm':form, 'message':message})
 	else:
