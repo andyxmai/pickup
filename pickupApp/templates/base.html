@@ -74,14 +74,16 @@
       <li><a href="contact.php">Contact <span class="icon"></span></a></li> -->
     </ul> 
   </nav>
+  
   <div class="navbar navbar-inverse navbar-fixed-top">      
-        <!--Include your brand here-->
-        <a class="navbar-brand" href="/"><img src="{% static 'img/logo-main.png' %}" class="img-responsive" alt="Logo"></a>
-        <div id="navbar-links" class="navbar-header pull-left">
-        <ul class="nav navbar-nav">
+    <!--Include your brand here-->
+    <a class="navbar-brand" href="/"><img src="{% static 'img/logo-main.png' %}" class="img-responsive" alt="Logo"></a>
+    {% block navbar %}
+    <div id="navbar-links" class="navbar-header pull-left">
+      <ul class="nav navbar-nav">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
-            <i class="fa fa-dribbble fa-lg"></i>
+            <i class="fa fa-inbox fa-lg"></i>
             {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
           </a>
           {% if unread_count %}
@@ -109,19 +111,17 @@
           </ul> -->
         </li>
       </ul>
-        </div>
-        <div id="nav-div">
-          <form class="navbar-form navbar-center" role="search">
-            <div id="nav-search" class="input-group input-group-sm col-xs-4">
-              <input type="text" class="form-control"></input>
-            </div>
-              <button id="search-button" type="submit" class="btn btn-default">SEARCH</button>
-          </form>
-      </div>
-
-
-
     </div>
+      <div id="nav-div">
+        <form class="navbar-form navbar-center" role="search">
+          <div id="nav-search" class="input-group input-group-sm col-xs-4">
+            <input type="text" class="form-control"></input>
+          </div>
+            <button id="search-button" type="submit" class="btn btn-default">SEARCH</button>
+        </form>
+    </div>
+    {% endblock %}
+  </div>
   
   {% block content %}
   {% endblock %}     

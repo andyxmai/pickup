@@ -268,7 +268,7 @@ def services(request):
 def about(request):
 	return render(request, 'about.html')
 
-@login_required
+#@login_required
 def sport(request, sport):
 	sport = sport.lower()
 	if sport in sports_dict:
