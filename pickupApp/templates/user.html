@@ -11,46 +11,44 @@
     </div>
 
     <div class="games-feed col-md-8">
+        
         <h3>Upcoming Games</h3>
-        <div id="accordion">
-        {% for game in games_created %}
-        <div>
-        <h5><a href="/game/{{game.id}}">{{game.name}}</a></h5>
-
-        <p><b>Sport:</b> {{game.sport}}</p>
-        <p><b>Description:</b> {{game.description}}</p>
-        <p><b>Start Time:</b> {{game.timeStart}}</p>
-        <p><b>Time/Date:</b> {{game.dateCreated}}</p>
-        <p><b>Location:</b> {{game.location}}</p>   
-        <p><b>Max Players:</b> {{game.cap}}</p>
-        <p><b>Creator:</b> {{game.creator}}</p>
-        <p><b>Players:</b>
-        <ul>
-        {% for player in game.users.all %}
-
-        <li><a href="#">{{player.first_name}} {{player.last_name}}</a></li>
-        </ul>
-        {% endfor %}
-        </div>
-        <hr>
-        {% endfor %}
-        </div>
-        <h3>Games Played</h3>
-        {% for game in games_played %}
-        <h5><a href="/game/{{game.id}}">{{game.name}}</a></h5>
-        <p><b>Sport:</b> {{game.sport}}</p>
-        <p><b>Description:</b> {{game.description}}</p>
-        <p><b>Time/Date:</b> {{game.dateCreated}}</p>
-        <p><b>Location:</b> {{game.location}}</p>   
-        <p><b>Max Players:</b> {{game.cap}}</p>
-        <p><b>Creator:</b> {{game.creator}}</p>
-        <p><b>Players:</b> {{game.users}}</p>
-
-        {% endfor %}
-    </div>
-  </div>
+        
+        <table id="games">
+            {% for game in games_played %}
+            <tr class="{% cycle 'odd' 'even' %}"><td>
+        <div class="single-game">     
+        <div class="accordion" id="accordion{{game.id}}">
+            <div class="accordion-group">
+             <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{game.id}}" href="#collapse{{game.id}}"> 
+                    <h5 class="game-name">
+                        <i class="fa fa-dribbble fa-lg"></i> &nbsp;{{game.name}} ({{game.timeStart.date}})
+                    </h5>
+                </a>
+                <div id="collapse{{game.id}}" class="accordion-body collapse">
+                        <div class="details-left col-md-6">
+                            <p><b>Sport:</b> {{game.sport}}</p>
+                            <p><b>Description:</b> {{game.description}}</p>
+                            <p><b>Start Time:</b> {{game.timeStart.time}}</p>
+                        </div>
+                        <div class="details-right col-md-6">
+                            <p><b>Location:</b> {{game.location}}</p>   
+                            <p><b>Max Players:</b> {{game.cap}}</p>
+                            <p><b>Creator:</b> {{game.creator}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                </div>
+            </div>
+    </div></td></tr>
+</table>
 </section>
 {%endblock%}
+
+
+
 
 {% block javascript %}
 <script type="text/javascript">

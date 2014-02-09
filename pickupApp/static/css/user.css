@@ -5,12 +5,46 @@
 .prof-info {
 	margin-top: 5%;
 	text-align: center;
-	border: 1px solid black;
 	background-color: lightgray;
 }
 
 .games-feed {
 	margin-top: 5%;
 	text-align: center;
-	border: 1px solid black;
+	margin-left: 5%
+}
+
+.details-left, .details-right {
+	padding: 10px;
+	text-align: left;
+	background-color: white;
+	font-color: black;
+}
+
+.games-feed .col-md-8 {
+}
+
+h5.game-name {
+	text-align: left;
+	width: 725px;
+	padding: 10px;
+	padding-top: 20px;
+}
+
+table#games td{
+	width: 725px;
+	border-bottom: 1px solid white;
+
+}
+
+table#games .odd {
+	background-color: lightred;
+}
+table#games .even {
+	background-color: lightgray;
+
+}
+
+table#games td {
+	/*border-radius: 10px 10px 0px 0px;*/
 }
