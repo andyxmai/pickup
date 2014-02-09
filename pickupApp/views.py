@@ -15,6 +15,7 @@ from pickupApp.constants import sports_dict
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.messages import get_messages
+from notifications import notify
 
 
 # Create your views here.
@@ -74,6 +75,9 @@ def home(request):
 	games_data = get_games(request)
 	#print games_data
 	messages = get_messages(request)
+	unread = request.user.notifications.unread()
+	for note in unread:
+		print note.verb
 	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data), 'messages':messages})
 
 def register(request):
@@ -154,6 +158,7 @@ def user_login(request):
 			if user is not None:
 				if user.is_active:
 					login(request, user)
+					notify.send(user,recipient=user, verb='Login motherfucker')
 					return redirect('/home')
 				else:
 					return render(request, 'in.html', {'loginForm':form})

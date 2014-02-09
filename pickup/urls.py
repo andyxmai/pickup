@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+import notifications
 
 from django.contrib import admin
 admin.autodiscover()
@@ -24,4 +25,11 @@ urlpatterns = patterns('',
     url(r'^delete_game/', 'pickupApp.views.delete_game', name='delete_game'),
     url(r'^sport/(\w+)$', 'pickupApp.views.sport', name='join_quit_game'),
     url(r'^user/(\d+)$', 'pickupApp.views.user', name='user'), 
+    url(r'^inbox/notifications/', include(notifications.urls)),
+
 )
+
+# urlpatterns = urlpatterns + 
+#     patterns('',
+#         url(r'^inbox/notifications/', include(notifications.urls)),
+#     )
