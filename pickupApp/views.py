@@ -32,8 +32,8 @@ def get_num_games():
 
 	return num_games
 
-#@login_required
-def get_games():
+@login_required
+def get_games(request):
 	all_games = Game.objects.all()
 	games_data = {}
 	for game in all_games:
@@ -68,7 +68,7 @@ def get_games():
 @login_required
 def home(request):
 
-	games_data = get_games()
+	games_data = get_games(request)
 	#print games_data
 	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data)})
 
@@ -264,6 +264,6 @@ def sport(request, sport):
 def user(request, id):
 	user = User.objects.get(pk=id)
 	games_created = Game.objects.filter(creator=user)
-	games_played = user.game_set.all()
-
-	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created})
+	games_played = user.game_set.all().order_by('-timeStart');
+	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
+	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games})

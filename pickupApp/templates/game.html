@@ -29,16 +29,16 @@
 
     <div class="transbox">
     <div class="left">
-    <p  class="players">Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p>
+    <p  class="players"><a href="/user/{{game.creator.id}}">Creator: {{game.creator.first_name}} {{game.creator.last_name}}</p></a>
     <p  class="players">Sport: {{game.sport}}</p>
     <p  class="players">Location: {{game.location.name}}</p>
     <p  class="players">Time: {{game.timeStart}}</p>
     <p  class="players">Description: {{game.description}}</p>
     <p  class="players">Players
       <ol>
-        <li id="{{game.creator.id}}" class="players" >{{ game.creator.first_name }} {{ game.creator.last_name }}</li>
+        <li id="{{game.creator.id}}" class="players" ><a href="/user/{{game.creator.id}}">{{ game.creator.first_name }} {{ game.creator.last_name }}</a></li>
         {% for player in game.users.all %}
-        <li id="{{player.id}}" class="players">{{player.first_name}} {{player.last_name}}</li>
+        <li id="{{player.id}}" class="players"><a href="/user/{{player.id}}">{{player.first_name}} {{player.last_name}}</a></li>
         {% endfor %}
       </ol>
     </p>

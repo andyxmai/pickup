@@ -203,18 +203,18 @@ a:hover {
    ========================================================================== */
 .navbar {
   height: 70px;
-  background: #1E2633;
+  background: #8C1515;
   margin-bottom: 0px;
 }
 
 .navbar-inverse {
-  background-color: #1E2633;
+  background-color: #8C1515;
   border-color: transparent;
 }
 
 
 a.nav-expander {
-  background: #1E2633;
+  background: #8C1515;
   color: #FFFFFF;
   display: block;
   font-size: 1em;
@@ -251,7 +251,7 @@ a.nav-expander.fixed {
 }
 
 nav {
-  background: #1C2330;
+  background: #8C1515;
   display: block;
   height: 100%;
   overflow: auto;

@@ -1,0 +1,16 @@
+#prof-pic {
+	max-width: 200px;
+}
+
+.prof-info {
+	margin-top: 5%;
+	text-align: center;
+	border: 1px solid black;
+	background-color: lightgray;
+}
+
+.games-feed {
+	margin-top: 5%;
+	text-align: center;
+	border: 1px solid black;
+}

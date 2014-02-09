@@ -3,15 +3,51 @@
 {% block content %}
 <section>
   <div class="container">
+    <div class="prof-info col-md-3">
     <h2>{{user.first_name}} {{user.last_name}}</h2>
-    <h5>Games Created</h5>
-    {% for game in games_created %}
-    <p>{{game.name}}</p>
-    {% endfor %}
-    <h5>Games Participated</h5>
-    {% for game in games_played %}
-    <p>{{game.name}}</p>
-    {% endfor %}
+    <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
+    <br></br>
+    <p><a href="mailto:{{user.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{user.username}}</a></p>
+    </div>
+
+    <div class="games-feed col-md-8">
+        <h3>Upcoming Games</h3>
+        <div id="accordion">
+        {% for game in games_created %}
+        <div>
+        <h5><a href="/game/{{game.id}}">{{game.name}}</a></h5>
+
+        <p><b>Sport:</b> {{game.sport}}</p>
+        <p><b>Description:</b> {{game.description}}</p>
+        <p><b>Start Time:</b> {{game.timeStart}}</p>
+        <p><b>Time/Date:</b> {{game.dateCreated}}</p>
+        <p><b>Location:</b> {{game.location}}</p>   
+        <p><b>Max Players:</b> {{game.cap}}</p>
+        <p><b>Creator:</b> {{game.creator}}</p>
+        <p><b>Players:</b>
+        <ul>
+        {% for player in game.users.all %}
+
+        <li><a href="#">{{player.first_name}} {{player.last_name}}</a></li>
+        </ul>
+        {% endfor %}
+        </div>
+        <hr>
+        {% endfor %}
+        </div>
+        <h3>Games Played</h3>
+        {% for game in games_played %}
+        <h5><a href="/game/{{game.id}}">{{game.name}}</a></h5>
+        <p><b>Sport:</b> {{game.sport}}</p>
+        <p><b>Description:</b> {{game.description}}</p>
+        <p><b>Time/Date:</b> {{game.dateCreated}}</p>
+        <p><b>Location:</b> {{game.location}}</p>   
+        <p><b>Max Players:</b> {{game.cap}}</p>
+        <p><b>Creator:</b> {{game.creator}}</p>
+        <p><b>Players:</b> {{game.users}}</p>
+
+        {% endfor %}
+    </div>
   </div>
 </section>
 {%endblock%}

@@ -1,0 +1,20 @@
+#nav-search {
+	padding-top: 2px;
+	width: 400px;
+	font-family: Arial;
+	font-size: 14px;
+}
+
+#nav-div {
+	padding-top: 10px;
+}
+
+#navbar-links {
+	margin-right: 10%;
+	margin-top: 7px;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+	color: white;
+	background-color: transparent;
+}
