@@ -24,7 +24,8 @@ def index(request):
 		return redirect('/home')
 
 	num_games = get_num_games()
-	return render(request, 'index.html', {'num_games':num_games})
+	messages = get_messages(request)
+	return render(request, 'index.html', {'num_games':num_games, 'messages':messages})
 
 def get_num_games():
 	num_games = defaultdict(lambda:0)
@@ -144,13 +145,10 @@ def parse_location(location):
 
 def user_login(request):
 	if request.method == 'POST': 
-		print "POSTING"
 		form = LoginForm(request.POST)
 		if form.is_valid():
 			email = form.cleaned_data['email']	
 			password = form.cleaned_data['password']
-			print email
-			print "SUCCESS"
 
 			user = authenticate(username=email, password=password)
 			if user is not None:
@@ -158,15 +156,21 @@ def user_login(request):
 					login(request, user)
 					return redirect('/home')
 				else:
-					return render(request, 'login.html', {'loginForm':form})
+					return render(request, 'in.html', {'loginForm':form})
 			else:
-				return render(request, 'login.html', {'loginForm':form})
+				msg = 'Invalid username and password.'
+				messages.success(request, msg)
+				return redirect('/')
+				#return render(request, 'login.html', {'loginForm':form, 'message':message})
 		else:
-			return render(request, 'login.html', {'loginForm':form})
+			msg = 'Invalid username and password.'
+			messages.success(request, msg)
+			return redirect('/')
+			#return render(request, 'login.html', {'loginForm':form, 'message':message})
 	else:
-
-		form = LoginForm()
-		return render(request, 'login.html', {'loginForm':form})
+		return redirect('/')
+		#form = LoginForm()
+		#return render(request, 'login.html', {'loginForm':form})
 
 @login_required
 def game(request,id):
