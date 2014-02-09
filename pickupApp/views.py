@@ -13,6 +13,8 @@ from pickupApp.constants import sports_dict
 #import smtplib # For sending emails
 #import datetime
 from django.core.mail import send_mail
+from django.contrib import messages
+from django.contrib.messages import get_messages
 
 
 # Create your views here.
@@ -70,7 +72,8 @@ def home(request):
 
 	games_data = get_games()
 	#print games_data
-	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data)})
+	messages = get_messages(request)
+	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data), 'messages':messages})
 
 def register(request):
 	if request.method == 'POST':
@@ -232,9 +235,9 @@ def delete_game(request):
 			subj = "%s Game Cancellation" % (g.name)
 			send_an_email(receivers,subj,msg)
 
+		msg = g.name + ' (' + g.sport + ')' + ' was deleted.'
 		g.delete()
-
-
+		messages.success(request, msg)
 
 	return redirect('/home')
 
