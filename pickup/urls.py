@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^user/(\d+)$', 'pickupApp.views.user', name='user'), 
     url(r'^inbox/notifications/', include(notifications.urls)),
     url(r'^remove_notifications/', 'pickupApp.views.remove_notifications', name='remove_notifications'),
+    url(r'^searchgame/', 'pickupApp.views.search_game', name='search_game'),
 )
 
 # urlpatterns = urlpatterns + 

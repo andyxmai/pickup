@@ -290,3 +290,24 @@ def remove_notifications(request):
 	request.user.notifications.mark_all_as_read()
 	return HttpResponse('')
 
+def search_game(request):
+	if not 'id' in request.session:
+		return redirect('/')
+
+	if request.is_ajax():
+	    q = request.GET['query']
+	    results = []
+	    games = Game.objects.filter(name__icontains = q )[:6]
+	    for game in games:
+				game_json = {}
+				game_json['id'] = game.id
+				game_json['name'] = game.name
+				game_json['type'] = 'game'
+				results.append(game_json)
+	    data = json.dumps(results)
+	else:
+	    data = 'fail'
+	
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)
+

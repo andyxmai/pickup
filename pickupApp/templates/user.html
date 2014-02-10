@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}{{user.first_name}} {{user.last_name}}{%endblock%}
+
 {% block navlist %}
         <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
         <li class="active"><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>

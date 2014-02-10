@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-    
+{% if not request.user.is_authenticated %}
+  {% block navbar %}
+  {% endblock %}
+{% endif %}    
 {% block content %}      
     <!--Header Title-->
     <section id="header-title">
@@ -241,7 +244,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6">
-            <p class="copyright">Copyright @ Theme Armada. All rights reserved.</p>
+            <p class="copyright">Copyright @ ReqTime. All rights reserved.</p>
           </div>
         </div>
       </div>
