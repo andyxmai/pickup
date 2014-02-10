@@ -94,6 +94,15 @@
             </div>
     </div></td></tr>
 </table>
+
+
+      
+{% if user.id == loggedinUser.id %}    
+  <div>
+    <a href="/user/{{user.id}}" type="button" class="btn btn-primary" style="position: relative; z-index:2">
+      <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
+  </div> 
+{% endif %}
 </section>
 {%endblock%}
 {% block javascript %}
