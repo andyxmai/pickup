@@ -61,7 +61,7 @@ def get_games(request):
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
-		game_data['curr_num_players'] = game.users.count()+1
+		game_data['curr_num_players'] = game.users.count()
 		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
 
@@ -132,6 +132,7 @@ def create_game(request):
 			
 			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
+			newGame.users.add(request.user)
 	
 			newGame.save()
 			return redirect('/game/'+str(newGame.id))
@@ -158,18 +159,17 @@ def user_login(request):
 			if user is not None:
 				if user.is_active:
 					login(request, user)
-					notify.send(user,recipient=user, verb='Login motherfucker')
 					return redirect('/home')
 				else:
 					return render(request, 'in.html', {'loginForm':form})
 			else:
 				msg = 'Invalid username and password.'
-				messages.success(request, msg)
+				messages.error(request, msg)
 				return redirect('/')
 				#return render(request, 'login.html', {'loginForm':form, 'message':message})
 		else:
 			msg = 'Invalid username and password.'
-			messages.success(request, msg)
+			messages.error(request, msg)
 			return redirect('/')
 			#return render(request, 'login.html', {'loginForm':form, 'message':message})
 	else:
@@ -202,9 +202,13 @@ def join_quit_game(request):
 		if request.user in game.users.all():
 			game.users.remove(request.user)
 			response = 'left'
+			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
+			notify.send(request.user,recipient=game.creator, verb=verb)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
+			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
+			notify.send(request.user,recipient=game.creator, verb=verb)
 	
 	#return HttpResponse(response)
 	return redirect('/game/'+game_id)
@@ -238,6 +242,8 @@ def delete_game(request):
 			for user in g.users.all():
 				print user
 				receivers.append(user.username)
+				verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name
+				notify.send(request.user,recipient=user, verb=verb)
 
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
@@ -263,7 +269,7 @@ def services(request):
 def about(request):
 	return render(request, 'about.html')
 
-@login_required
+#@login_required
 def sport(request, sport):
 	sport = sport.lower()
 	if sport in sports_dict:
@@ -276,6 +282,11 @@ def sport(request, sport):
 def user(request, id):
 	user = User.objects.get(pk=id)
 	games_created = Game.objects.filter(creator=user)
-	games_played = user.game_set.all().order_by('-timeStart');
+	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
 	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games})
+
+def remove_notifications(request):
+	request.user.notifications.mark_all_as_read()
+	return HttpResponse('')
+

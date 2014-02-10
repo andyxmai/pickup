@@ -46,6 +46,8 @@
 </head>
 
 <body>
+  {% load notifications_tags %}
+  {% notifications_unread as unread_count %}
   <nav>
     <ul class="list-unstyled main-menu">
       
@@ -72,15 +74,32 @@
       <li><a href="contact.php">Contact <span class="icon"></span></a></li> -->
     </ul> 
   </nav>
+  
   <div class="navbar navbar-inverse navbar-fixed-top">      
-        <!--Include your brand here-->
-        <a class="navbar-brand" href="/"><img src="{% static 'img/logo-main.png' %}" class="img-responsive" alt="Logo"></a>
-        <div id="navbar-links" class="navbar-header pull-left">
-        <ul class="nav navbar-nav">
+    <!--Include your brand here-->
+    <a class="navbar-brand" href="/"><img src="{% static 'img/logo-main.png' %}" class="img-responsive" alt="Logo"></a>
+    {% block navbar %}
+    <div id="navbar-links" class="navbar-header pull-left">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+            <i class="fa fa-inbox fa-lg"></i>
+            {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
+          </a>
+          {% if unread_count %}
+          <ul class="dropdown-menu">
+            {% for note in user.notifications.unread %}
+            <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% block navlist %}
         <li class="active"><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
         <li><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
         <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
         <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Log Out</a></li>
+        {% endblock %}
         <li class="dropdown">
          <!--  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
           <ul class="dropdown-menu">
@@ -94,19 +113,17 @@
           </ul> -->
         </li>
       </ul>
-        </div>
-        <div id="nav-div">
-          <form class="navbar-form navbar-center" role="search">
-            <div id="nav-search" class="input-group input-group-sm col-xs-4">
-              <input type="text" class="form-control"></input>
-            </div>
-              <button id="search-button" type="submit" class="btn btn-default">SEARCH</button>
-          </form>
-      </div>
-
-
-
     </div>
+      <div id="nav-div">
+        <form class="navbar-form navbar-center" role="search">
+          <div id="nav-search" class="input-group input-group-sm col-xs-4">
+            <input type="text" class="form-control"></input>
+          </div>
+            <button id="search-button" type="submit" class="btn btn-default">SEARCH</button>
+        </form>
+    </div>
+    {% endblock %}
+  </div>
   
   {% block content %}
   {% endblock %}     
@@ -194,6 +211,18 @@
            // (default click behaviour)
            window.location.hash = hash;
         });
+    });
+    $('#notification').click(function(){
+      $.ajax({
+        type: "POST",
+        url: "/remove_notifications/",
+        data: { 
+          'csrfmiddlewaretoken':'{{csrf_token}}' 
+        },
+        success: function(data) {
+          $( "span.badge" ).remove();
+        },
+      });
     });
   });
   </script>

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% if not request.user.is_authenticated %}
+  {% block navbar %}
+  {% endblock %}
+{% endif %}
+
 {% block content %}
 <section class= "overlay" style="background-image: url(/static/images/{{sport}}.jpg)">
   <div class="container" >
