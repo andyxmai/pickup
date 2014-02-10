@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block navlist %}
+        <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
+        <li class="active"><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
+        <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
+        <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Log Out</a></li>
+{% endblock %}
+
 {% block content %}
 <section>
   <div class="container">
@@ -13,10 +20,8 @@
     <div class="games-feed col-md-8">
         
         <h3>Upcoming Games</h3>
-<<<<<<< HEAD
-        
         <table id="games">
-            {% for game in games_played %}
+            {% for game in upcoming_games %}
             <tr class="{% cycle 'odd' 'even' %}"><td>
         <div class="single-game">     
         <div class="accordion" id="accordion{{game.id}}">
@@ -25,6 +30,7 @@
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{game.id}}" href="#collapse{{game.id}}"> 
                     <h5 class="game-name">
                         <i class="fa fa-dribbble fa-lg"></i> &nbsp;{{game.name}} ({{game.timeStart.date}})
+                        <span class="arrow"><i class="fa fa-chevron-down fa-xs"></i></span>
                     </h5>
                 </a>
                 <div id="collapse{{game.id}}" class="accordion-body collapse">
@@ -37,6 +43,46 @@
                             <p><b>Location:</b> {{game.location}}</p>   
                             <p><b>Max Players:</b> {{game.cap}}</p>
                             <p><b>Creator:</b> {{game.creator}}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <a href="/game/{{game.id}}">See More</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                </div>
+            </div>
+    </div></td></tr>
+</table>
+
+
+<h3>Game History</h3>
+        <table id="games">
+            {% for game in games_played %}
+            <tr class="{% cycle 'odd' 'even' %}"><td>
+        <div class="single-game">     
+        <div class="accordion" id="accordion{{game.id}}">
+            <div class="accordion-group">
+             <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{game.id}}" href="#collapse{{game.id}}"> 
+                    <h5 class="game-name">
+                        <i class="fa fa-dribbble fa-lg"></i> &nbsp;{{game.name}} ({{game.timeStart.date}})
+                        <span class="arrow"><i class="fa fa-chevron-down fa-xs"></i></span>
+                    </h5>
+                </a>
+                <div id="collapse{{game.id}}" class="accordion-body collapse">
+                        <div class="details-left col-md-6">
+                            <p><b>Sport:</b> {{game.sport}}</p>
+                            <p><b>Description:</b> {{game.description}}</p>
+                            <p><b>Start Time:</b> {{game.timeStart.time}}</p>
+                        </div>
+                        <div class="details-right col-md-6">
+                            <p><b>Location:</b> {{game.location}}</p>   
+                            <p><b>Max Players:</b> {{game.cap}}</p>
+                            <p><b>Creator:</b> {{game.creator}}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <i class="fa fa-info fa-xs"></i><a href="/game/{{game.id}}">&nbsp;<b>{{game.name}} Page</b></a>
                         </div>
                     </div>
                 {% endfor %}

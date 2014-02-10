@@ -1003,7 +1003,7 @@ a:hover.clients {
    Sign Up styles
    ========================================================================== */
 .signup {
-  background: #1E2633;
+  background: lightgray;
   margin-top: 60px;
   padding: 30px;
 }

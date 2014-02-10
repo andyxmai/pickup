@@ -15,7 +15,7 @@
 }
 
 .details-left, .details-right {
-	padding: 10px;
+	padding: 30px;
 	text-align: left;
 	background-color: white;
 	font-color: black;
@@ -28,17 +28,15 @@ h5.game-name {
 	text-align: left;
 	width: 725px;
 	padding: 10px;
-	padding-top: 20px;
 }
 
 table#games td{
-	width: 725px;
+	width: 720px;
 	border-bottom: 1px solid white;
-
 }
 
 table#games .odd {
-	background-color: lightred;
+	background-color: lightgray;
 }
 table#games .even {
 	background-color: lightgray;
@@ -46,5 +44,14 @@ table#games .even {
 }
 
 table#games td {
-	/*border-radius: 10px 10px 0px 0px;*/
+
+}
+
+.visit-button {
+	text-align: center;
+}
+
+span.arrow {
+	float: right;
+	padding-right: 10px;
 }
