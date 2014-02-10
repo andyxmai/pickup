@@ -3,6 +3,7 @@
 {% block title %}{{user.first_name}} {{user.last_name}}{%endblock%}
 
 {% block navlist %}
+
         <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
         <li class="active"><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
         <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
@@ -10,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-<section>
+<section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
   <div class="container">
     <div class="prof-info col-md-3">
     <h2>{{user.first_name}} {{user.last_name}}</h2>
