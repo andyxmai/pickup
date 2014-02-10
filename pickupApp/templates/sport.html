@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% if not request.user.is_authenticated %}
+{% if not authenticated %}
   {% block navbar %}
   {% endblock %}
 {% endif %}

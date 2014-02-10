@@ -3,11 +3,14 @@
 {% block title %}{{user.first_name}} {{user.last_name}}{%endblock%}
 
 {% block navlist %}
-
         <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
-        <li class="active"><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
+        {% if loggedinUser == user %}
+            <li class="active"><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
+        {% else %}
+            <li class=""><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
+        {% endif %}
         <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
-        <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Log Out</a></li>
+        <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
 {% endblock %}
 
 {% block content %}

@@ -273,9 +273,10 @@ def about(request):
 def sport(request, sport):
 	sport = sport.lower()
 	if sport in sports_dict:
+		authenticated = request.user.is_authenticated()
 		games_with_sport = Game.objects.filter(sport=sport)
 		sport = sports_dict[sport]
-		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport})
+		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport, 'authenticated':authenticated})
 	else:
 		return redirect('/')
 
@@ -283,6 +284,9 @@ def sport(request, sport):
 def user(request, id):
 	loggedinUser = request.user
 	user = User.objects.get(pk=id)
+	if user == loggedinUser:
+		return redirect('/profile')
+
 	games_created = Game.objects.filter(creator=user)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
@@ -315,3 +319,11 @@ def search_game(request):
 	mimetype = 'application/json'
 	return HttpResponse(data, mimetype)
 
+def profile(request):
+	loggedinUser = request.user
+	user = request.user
+	games_created = Game.objects.filter(creator=user)
+	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
+	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
+	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
+		'loggedinUser':loggedinUser})
