@@ -44,6 +44,9 @@
                             <p><b>Max Players:</b> {{game.cap}}</p>
                             <p><b>Creator:</b> {{game.creator}}</p>
                         </div>
+                        <div class="col-md-12">
+                            <a href="/game/{{game.id}}">See More</a>
+                        </div>
                     </div>
                 {% endfor %}
                 </div>
@@ -77,6 +80,9 @@
                             <p><b>Location:</b> {{game.location}}</p>   
                             <p><b>Max Players:</b> {{game.cap}}</p>
                             <p><b>Creator:</b> {{game.creator}}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <i class="fa fa-info fa-xs"></i><a href="/game/{{game.id}}">&nbsp;<b>{{game.name}} Page</b></a>
                         </div>
                     </div>
                 {% endfor %}
