@@ -11,6 +11,7 @@ sports_dict = {
 	'soccer':'Soccer',
 	'tennis':'Tennis',
 	'volleyball':'Volleyball',
+	'golf':'Golf'
 }
 
 location_choices = (
