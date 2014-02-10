@@ -92,10 +92,12 @@
           </ul>
           {% endif %}
         </li>
+        {% block navlist %}
         <li class="active"><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
         <li><a href="/user/{{user.id}}"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
         <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
         <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Log Out</a></li>
+        {% endblock %}
         <li class="dropdown">
          <!--  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
           <ul class="dropdown-menu">

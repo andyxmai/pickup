@@ -16,7 +16,7 @@
 }
 
 .modal-title {
-	/*color:black;*/
+	color:black;
 }
 
 .modal-body label {
@@ -61,6 +61,14 @@
     top:0px;
     left:0px;
     z-index:1000;
+ }
+
+ div.register label {
+  color: black;
+ }
+
+ .nav>li>a {
+  padding: 15px 7px;
  }
 
 
