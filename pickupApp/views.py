@@ -61,7 +61,7 @@ def get_games(request):
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
-		game_data['curr_num_players'] = game.users.count()+1
+		game_data['curr_num_players'] = game.users.count()
 		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
 
@@ -132,6 +132,7 @@ def create_game(request):
 			
 			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
+			newGame.users.add(request.user)
 	
 			newGame.save()
 			return redirect('/game/'+str(newGame.id))
