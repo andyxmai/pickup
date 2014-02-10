@@ -35,7 +35,6 @@
     <p  class="players">Description: {{game.description}}</p>
     <p  class="players">Players
       <ol>
-        <li id="{{game.creator.id}}" class="players" ><a href="/user/{{game.creator.id}}">{{ game.creator.first_name }} {{ game.creator.last_name }}</a></li>
         {% for player in game.users.all %}
         <li id="{{player.id}}" class="players"><a href="/user/{{player.id}}">{{player.first_name}} {{player.last_name}}</a></li>
         {% endfor %}

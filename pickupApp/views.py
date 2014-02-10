@@ -61,7 +61,7 @@ def get_games(request):
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
 		game_data['sport'] = game.sport
-		game_data['curr_num_players'] = game.users.count()+1
+		game_data['curr_num_players'] = game.users.count()
 		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
 
@@ -132,6 +132,7 @@ def create_game(request):
 			
 			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
+			newGame.users.add(request.user)
 	
 			newGame.save()
 			return redirect('/game/'+str(newGame.id))
@@ -163,12 +164,12 @@ def user_login(request):
 					return render(request, 'in.html', {'loginForm':form})
 			else:
 				msg = 'Invalid username and password.'
-				messages.success(request, msg)
+				messages.error(request, msg)
 				return redirect('/')
 				#return render(request, 'login.html', {'loginForm':form, 'message':message})
 		else:
 			msg = 'Invalid username and password.'
-			messages.success(request, msg)
+			messages.error(request, msg)
 			return redirect('/')
 			#return render(request, 'login.html', {'loginForm':form, 'message':message})
 	else:
@@ -268,7 +269,7 @@ def services(request):
 def about(request):
 	return render(request, 'about.html')
 
-@login_required
+#@login_required
 def sport(request, sport):
 	sport = sport.lower()
 	if sport in sports_dict:
