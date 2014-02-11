@@ -303,7 +303,7 @@ def user(request, id):
 
 	games_created = Game.objects.filter(creator=player)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
-	upcoming_games = player.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
+	upcoming_games = player.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
 	return render(request, 'user.html', {'player':player, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
 		'loggedinUser':loggedinUser})
 	
@@ -359,7 +359,7 @@ def profile(request):
 	user = request.user
 	games_created = Game.objects.filter(creator=user)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
-	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
+	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
 	return render(request, 'user.html', {'player':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
 		'loggedinUser':loggedinUser})
 
