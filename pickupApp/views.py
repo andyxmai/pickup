@@ -183,7 +183,12 @@ def game(request,id):
 	game_exists = Game.objects.filter(id=id).count()
 	if game_exists:
 		game = Game.objects.get(id=id)
-	
+		
+		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
+			passed_game = True
+		else:
+			passed_game = False
+
 		is_creator = False
 		if request.user == game.creator:
 			is_creator = True
@@ -192,7 +197,7 @@ def game(request,id):
 		if request.user in game.users.all() or is_creator:
 			joined = True
 		return render(request, 'game.html', {'game':game, 'joined':joined, 
-			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists})
+			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 'passed_game':passed_game})
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
