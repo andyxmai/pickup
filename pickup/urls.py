@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^profile/', 'pickupApp.views.profile', name='profile'),
     url(r'^searchpeople/', 'pickupApp.views.search_people', name='search_user'),
     url(r'^sports/', 'pickupApp.views.sports', name='sports'),   
+    url(r'^search/', 'pickupApp.views.search', name='search'), 
 )
 
 # urlpatterns = urlpatterns + 

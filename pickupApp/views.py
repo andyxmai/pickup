@@ -16,6 +16,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from notifications import notify
+from django.db.models import Q
 
 
 # Create your views here.
@@ -359,4 +360,34 @@ def profile(request):
 
 def sports(request):
 	return render(request, 'sports.html', {'sports_dict':sports_dict})
+
+def search(request):
+	q = request.GET['term']
+	results = []
+	users = User.objects.filter(Q(first_name__icontains = q)|Q(last_name__icontains = q))[:6]
+	print users
+	if users:
+		print 'theres users for '+q
+		for user in users:
+			user_json = {}
+			user_json['id'] = user.id
+			user_json['value'] = user.first_name + ' ' + user.last_name
+			user_json['label'] = user.first_name + ' ' + user.last_name
+			user_json['category'] = 'People'
+			results.append(user_json)
+
+	games = Game.objects.filter(name__icontains = q )[:6]
+	if games:
+		for game in games:
+			game_json = {}
+			game_json['id'] = game.id
+			game_json['value'] = game.name
+			game_json['label'] = game.name
+			game_json['category'] = 'Games'
+			results.append(game_json)
+
+	mimetype = 'application/json'
+	return HttpResponse(json.dumps(results), mimetype)
+
+
 	
