@@ -4,6 +4,7 @@
 <!-- <section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg); overflow:scroll" >
  --><section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
   <div class="container" >
+    {% if game_exists %}
     <h2 style="">{{game.name}}
       {% if is_creator %}
       (creator)
@@ -45,8 +46,11 @@
         {% endfor %}
       </ol>
     </p>
-</div> 
-   <div id='map-canvas' style="width:45%; margin-left:2px"></div>
+  </div> 
+  <div id='map-canvas' style="width:45%; margin-left:2px"></div>
+  {% else %}
+  <h2>This game does not exists.</h2>
+  {% endif %}
  </div> 
 
  

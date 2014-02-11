@@ -135,5 +135,35 @@
 		"location":2,
 		"cap":10
 	}
+},
+{
+	"pk": 5, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "French House Pickup Soccer", 
+		"creator": 2, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-02-14T10:54:45.397Z", 
+		"users": [1, 2, 3, 4, 5], 
+		"sport": "soccer", 
+		"description": "Winning team gets free crepes",
+		"location":1,
+		"cap":10
+	}
+},
+{
+	"pk": 6, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "Weekly Pickup Football", 
+		"creator": 4, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-02-12T10:54:45.397Z", 
+		"users": [1, 2, 4, 5], 
+		"sport": "football", 
+		"description": "Keeping football going after the Super Bowl",
+		"location":1,
+		"cap":10
+	}
 }
 ]

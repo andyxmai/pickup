@@ -179,16 +179,22 @@ def user_login(request):
 
 @login_required
 def game(request,id):
-	game = Game.objects.get(id=id)
+	game_exists = Game.objects.filter(id=id).count()
+	if game_exists:
+		game = Game.objects.get(id=id)
+	
+		is_creator = False
+		if request.user == game.creator:
+			is_creator = True
 
-	is_creator = False
-	if request.user == game.creator:
-		is_creator = True
-
-	joined = False
-	if request.user in game.users.all() or is_creator:
-		joined = True
-	return render(request, 'game.html', {'game':game, 'joined':joined, 'is_creator':is_creator, 'user':request.user})
+		joined = False
+		if request.user in game.users.all() or is_creator:
+			joined = True
+		return render(request, 'game.html', {'game':game, 'joined':joined, 
+			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists})
+	else:
+		return render(request, 'game.html', {'game_exists':game_exists})
+	
 
 @login_required
 def join_quit_game(request):
@@ -272,8 +278,10 @@ def about(request):
 #@login_required
 def sport(request, sport):
 	sport = sport.lower()
+	authenticated = False
 	if sport in sports_dict:
-		authenticated = request.user.is_authenticated()
+		if request.user.is_authenticated():
+			authenticated = True
 		games_with_sport = Game.objects.filter(sport=sport)
 		sport = sports_dict[sport]
 		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport, 'authenticated':authenticated})
