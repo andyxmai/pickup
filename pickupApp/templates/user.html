@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}{{user.first_name}} {{user.last_name}}{%endblock%}
+{% block title %}{{player.first_name}} {{player.last_name}}{%endblock%}
 
 {% block navlist %}
         <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
-        {% if loggedinUser == user %}
+        {% if loggedinUser == player %}
             <li class="active"><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
         {% else %}
             <li class=""><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
@@ -17,10 +17,10 @@
 <section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
   <div class="container">
     <div class="prof-info col-md-3">
-    <h2>{{user.first_name}} {{user.last_name}}</h2>
+    <h2>{{player.first_name}} {{player.last_name}}</h2>
     <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
     <br></br>
-    <p><a href="mailto:{{user.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{user.username}}</a></p>
+    <p><a href="mailto:{{player.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{player.username}}</a></p>
     </div>
 
     <div class="games-feed col-md-8">
@@ -100,7 +100,7 @@
 
 
       
-{% if user.id == loggedinUser.id %}    
+{% if player.id == loggedinUser.id %}    
   <div>
     <a href="/user/{{user.id}}" type="button" class="btn btn-primary" style="position: relative; z-index:2">
       <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
