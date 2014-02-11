@@ -20,6 +20,13 @@
     <h2>{{player.first_name}} {{player.last_name}}</h2>
     <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
     <br></br>
+    {% if player.id == loggedinUser.id %}    
+    <div>
+        <a href="/user/{{user.id}}" type="button" class="btn btn-inverse" style="position: relative; z-index:2">
+            <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
+    </div> 
+    {% endif %}
+
     <p><a href="mailto:{{player.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{player.username}}</a></p>
     </div>
 
@@ -100,12 +107,7 @@
 
 
       
-{% if player.id == loggedinUser.id %}    
-  <div>
-    <a href="/user/{{user.id}}" type="button" class="btn btn-primary" style="position: relative; z-index:2">
-      <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
-  </div> 
-{% endif %}
+
 </section>
 {%endblock%}
 {% block javascript %}
