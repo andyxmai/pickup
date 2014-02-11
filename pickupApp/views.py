@@ -319,6 +319,27 @@ def search_game(request):
 	mimetype = 'application/json'
 	return HttpResponse(data, mimetype)
 
+def search_people(request):
+	if not 'id' in request.session:
+		return redirect('/')
+
+	if request.is_ajax():
+	    q = request.GET['query']
+	    results = []
+	    users = User.objects.filter(name__icontains = q )[:6]
+	    for user in users:
+				user_json = {}
+				user_json['id'] = user.id
+				user_json['name'] = user.first_name + ' ' + user.last_name
+ 				user_json['type'] = 'user'
+				results.append(user_json)
+	    data = json.dumps(results)
+	else:
+	    data = 'fail'
+	
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)
+
 def profile(request):
 	loggedinUser = request.user
 	user = request.user
@@ -327,3 +348,7 @@ def profile(request):
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('-timeStart');
 	return render(request, 'user.html', {'user':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
 		'loggedinUser':loggedinUser})
+
+def sports(request):
+	return render(request, 'sports.html', {'sports_dict':sports_dict})
+	

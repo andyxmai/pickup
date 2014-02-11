@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Sports{%endblock%}
+{% block content %}
+<section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
+  <div class="container" >
+    <h2>Sports ReqTimers are playing now!</h2>
+    {% for k, v in sports_dict.iteritems %}
+    <h3><a href="/sport/{{k}}">{{v}}</a></h3>
+    {% endfor %}
+ </div> 
+
+{%endblock%}
+
+
+
+{% block javascript %}
+{% endblock %}

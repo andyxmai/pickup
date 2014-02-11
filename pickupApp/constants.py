@@ -1,17 +1,17 @@
 sport_choices = (
-	('basketball', 'Basketball'),
-	('soccer','Soccer'),
-	('tennis','Tennis'),
+	('basketball', 	'Basketball'),
+	('soccer',		'Soccer'),
+	('tennis',		'Tennis'),
 )
 
 sports_dict = {
-	'basketball':'Basketball',
-	'football':'Football',
-	'frisbee':'Frisbee',
-	'soccer':'Soccer',
-	'tennis':'Tennis',
-	'volleyball':'Volleyball',
-	'golf':'Golf'
+	'basketball'	:'Basketball',
+	'football'		:'Football',
+	'frisbee'		:'Frisbee',
+	'soccer'		:'Soccer',
+	'tennis'		:'Tennis',
+	'volleyball'	:'Volleyball',
+	'golf'			:'Golf',
 }
 
 location_choices = (

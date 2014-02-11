@@ -29,7 +29,8 @@ urlpatterns = patterns('',
     url(r'^remove_notifications/', 'pickupApp.views.remove_notifications', name='remove_notifications'),
     url(r'^searchgame/', 'pickupApp.views.search_game', name='search_game'),
     url(r'^profile/', 'pickupApp.views.profile', name='profile'),
-
+    url(r'^searchpeople/', 'pickupApp.views.search_people', name='search_user'),
+    url(r'^sports/', 'pickupApp.views.sports', name='sports'),   
 )
 
 # urlpatterns = urlpatterns + 

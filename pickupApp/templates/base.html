@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="/static/css/custom-styles.css"> -->
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/user.css' %}">
-  <!-- <link rel="stylesheet" href="{% static 'css/typeahead.js-bootstrap.css' %}"> -->
+  <link rel="stylesheet" href="{% static 'css/typeahead.js-bootstrap.css' %}">
 
   <script src="{% static 'js/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
 
@@ -98,7 +98,7 @@
         {% block navlist %}
         <li class="active"><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
         <li><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
-        <li><a href="/get_games"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Games</a></li>
+        <li><a href="/sports"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Sports</a></li>
         <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
         {% endblock %}
         <li class="dropdown">
@@ -142,7 +142,7 @@
   <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-formhelpers-phone.js' %}"></script>
   <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
-  <!--<script src="{% static 'js/typeahead.min.js' %}"></script>-->
+  <script src="{% static 'js/typeahead.min.js' %}"></script>
 
   <script>
   {% load staticfiles %}
@@ -242,23 +242,13 @@
           url: '/searchgame?query=%QUERY',
         },
         header: '<h4 class="searchchoices">Games</h4>'
-      },
-      {
-        name: 'Sport',
-        valueKey: 'name',
-        remote: {
-          url: '/searchsport?query=%QUERY',
-        },
-        header: '<h4 class="searchchoices">Sports</h4>'
       }
     ]).on('typeahead:selected', function (obj, datum) {
         if (datum['type'] == 'user') {
           window.location.href = "/user/"+datum['id'];
-        } else if (datum['type'] == 'game') {
-          window.location.href = "/game/"+datum['id'];
         } else {
-          window.location.href = "/sport/"+datum['id'];
-        }
+          window.location.href = "/game/"+datum['id'];
+        } 
         //console.log(datum);
     });
   });
