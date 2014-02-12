@@ -39,9 +39,9 @@ def get_num_games():
 
 @login_required
 def get_games(request):
-	all_games = Game.objects.all()
+	upcoming_games = Game.objects.filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
 	games_data = {}
-	for game in all_games:
+	for game in upcoming_games:
 		location = game.location.name
 		
 		if not location in games_data:
@@ -184,20 +184,29 @@ def game(request,id):
 	if game_exists:
 		game = Game.objects.get(id=id)
 		
+		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
 			passed_game = True
 		else:
 			passed_game = False
 
+		# Check if the game player has maxed
+		maxed = False
+		if game.users.count() >= game.cap:
+			maxed = True	
+
+		# Check if user is the creator of the game
 		is_creator = False
 		if request.user == game.creator:
 			is_creator = True
 
+		# Check if user has joined the game
 		joined = False
 		if request.user in game.users.all() or is_creator:
 			joined = True
+
 		return render(request, 'game.html', {'game':game, 'joined':joined, 
-			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 'passed_game':passed_game})
+			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 'passed_game':passed_game, 'maxed':maxed})
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	

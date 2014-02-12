@@ -19,16 +19,20 @@
         <button type="button" class="btn btn-danger delete_button" id="delete">
           <i class="fa fa-trash-o fa-lg"></i> Delete Game
         </button> 
-      {% else %} 
-        <form role="form" action="/join_quit_game/" method="POST" id="join_form">{% csrf_token %}
-          <input type="hidden" name="game_id" value="{{game.id}}">
-        </form>
-        {% if not joined %}
-          <button type="button" class="btn btn-success join_button" id="join">
-            <i class="fa fa-plus fa-lg"></i> Join</button>    
+      {% else %}
+        {% if not maxed %} 
+          <form role="form" action="/join_quit_game/" method="POST" id="join_form">{% csrf_token %}
+            <input type="hidden" name="game_id" value="{{game.id}}">
+          </form>
+          {% if not joined %}
+            <button type="button" class="btn btn-success join_button" id="join">
+              <i class="fa fa-plus fa-lg"></i> Join</button>    
+          {% else %}
+            <button type="button" class="btn btn-default join_button" id="leave">
+              <i class="fa fa-minus fa-lg"></i> Leave</button> 
+          {% endif %}
         {% else %}
-          <button type="button" class="btn btn-default join_button" id="leave">
-            <i class="fa fa-minus fa-lg"></i> Leave</button> 
+          <p>Sorry! All game spots are filled.</p>
         {% endif %}
       {% endif %}
     {% endif %}
