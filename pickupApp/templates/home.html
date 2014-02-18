@@ -84,6 +84,7 @@ function initialize() {
 
   var markers= new Array ();
   var marker; 
+  var curr_sport;
 
   var infowindow = new google.maps.InfoWindow;
   
@@ -114,13 +115,29 @@ function initialize() {
 
   var content_1;
   var content_2; 
+  var myIcon;
 
   for (i = 0; i < locations.length; i++) { 
-       marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map,
-        icon: '/static/img/cup.png'
-      });
+      loc = locations[i][0]
+      for (j=0; j<games_by_loc[loc].length; j++){
+        loc_string=games_by_loc[loc][j][0]
+        sport= loc_string.split("<div>");
+        curr_sport=sport[1].split(":")[0];
+        var markerImage = new google.maps.MarkerImage(
+        '/static/images/'+curr_sport+'.png',
+         new google.maps.Size(50,50), //size
+         null, //origin
+         null, //anchor
+         new google.maps.Size(50,50) //scale
+         );
+         marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          map: map,
+          title: curr_sport,
+          icon: markerImage
+        });
+       
+      }
 
       markers.push(marker);
 
@@ -130,7 +147,6 @@ function initialize() {
           loc = locations[i][0]
           
           for (j=0; j<games_by_loc[loc].length; j++){
-              console.log(games_by_loc[loc][j]);
               content_1 += '<p>' + games_by_loc[loc][j] + '</p>';
           }
           infowindow.setContent(content_1);
