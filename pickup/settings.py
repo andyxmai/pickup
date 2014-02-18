@@ -21,6 +21,7 @@ SECRET_KEY = '@i^jn^q3%#uwngsj%42ns@42bw3mxpv4*xap1%j+7=4w!ik1dg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = not os.environ.get('REQTIME_PRODUCTION', False)
 
 TEMPLATE_DEBUG = True
 
@@ -64,15 +65,18 @@ ROOT_URLCONF = 'pickup.urls'
 WSGI_APPLICATION = 'pickup.wsgi.application'
 
 
+if DEBUG:
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -102,5 +106,16 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'debugsafedriven@gmail.com'
 EMAIL_HOST_PASSWORD = 'fratpad2014'
 
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+STATIC_ROOT = 'staticfiles'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
