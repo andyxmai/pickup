@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pickupApp',
     'notifications',
-    'social_auth'
+    #'social_auth'
 )
 
 MIDDLEWARE_CLASSES = (
