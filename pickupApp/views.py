@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from pickupApp.forms import RegisterForm, LoginForm, GameForm
-from pickupApp.models import Game, Location
+from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
+from pickupApp.models import Game, Location, Comment
 import datetime
 import json
 from django.http import HttpResponse
@@ -183,7 +183,7 @@ def game(request,id):
 	game_exists = Game.objects.filter(id=id).count()
 	if game_exists:
 		game = Game.objects.get(id=id)
-		
+		comment_form = CommentForm(initial={'user_id': request.user.id, 'game_id':game.id})
 		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
 			passed_game = True
@@ -206,7 +206,8 @@ def game(request,id):
 			joined = True
 
 		return render(request, 'game.html', {'game':game, 'joined':joined, 
-			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 'passed_game':passed_game, 'maxed':maxed})
+			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 
+			'passed_game':passed_game, 'maxed':maxed, 'comment_form':comment_form})
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
@@ -403,5 +404,28 @@ def search(request):
 	mimetype = 'application/json'
 	return HttpResponse(json.dumps(results), mimetype)
 
+@login_required
+def comment(request):
+	if request.method == 'POST':
+		#store comment
+		comment_form = CommentForm(request.POST)
+		if comment_form.is_valid():
+			text = comment_form.cleaned_data['text']
+			user_id = comment_form.cleaned_data['user_id']
+			game_id = comment_form.cleaned_data['game_id']
 
+			commenter = User.objects.get(id=user_id)
+			game = Game.objects.get(id=game_id)
+			comment = Comment.objects.create(text=text, commenter=commenter, game=game, timeStamp=datetime.datetime.now())
+
+			for player in game.users.all():
+				if commenter != player:
+					verb = commenter.first_name+' '+commenter.last_name+' left a comment for '+game.name
+					notify.send(commenter,recipient=player, verb=verb)
+
+			return redirect('/game/'+str(game.id))
+		else:
+			return redirect('/')
+	else:
+		return redirect('/')
 	

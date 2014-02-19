@@ -25,4 +25,13 @@ class game_location(models.Model):
 	latitude = models.FloatField(null=True)
 	longitude = models.FloatField(null=True)
 
+class Comment(models.Model):
+	text = models.TextField()
+	timeStamp = models.DateTimeField(null=True)
+	game = models.ForeignKey(Game)
+	commenter = models.ForeignKey(User)
+
+
+
+
 	
