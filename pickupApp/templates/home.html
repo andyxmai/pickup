@@ -8,11 +8,13 @@
     margin: 0 auto;
   }
 </style>
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
 <script>
 
-
 var infowindow=null;
+var markers= new Array ();
 
 function initialize() {
 
@@ -79,10 +81,11 @@ function initialize() {
       locations[i].push(longi);
       i+=1;
     }
+
   }
 
 
-  var markers= new Array ();
+  
   var marker; 
   var curr_sport;
 
@@ -159,6 +162,36 @@ function initialize() {
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
+ function boxclick(box,category,type) {
+        if (box.checked) {
+          show(category, type);
+        } else {
+          hide(category, type);
+        }
+  }
+ function show(category, type) {
+       for (var i=0; i<markers.length; i++) {
+         if (markers[i].getTitle() == type){
+            markers[i].setVisible(true);
+         }
+       }
+       // == check the checkbox ==
+        console.log(type);
+       console.log(category);
+       document.getElementById(type).checked = true;
+     }
+
+function hide(category,type){
+  for (var i=0; i<markers.length; i++) {
+         if (markers[i].getTitle() == type){
+          markers[i].setVisible(false);
+         }
+       }
+       // == check the checkbox ==
+       console.log(type);
+       console.log(category);
+       document.getElementById(type).checked = false;
+     }
 
 </script>
   {% if messages %}
@@ -177,4 +210,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
   </div> 
   <div id="map-canvas" style= "position:relative; z-index:1"></div>
     <!-- <a href="/logout" type="button" class="btn btn-primary">Logout</a>  -->
+
+<label><input type="checkbox" id="basketball" onclick="boxclick(this,'sport','basketball')" /> Basketball </label>
+<label><input type="checkbox" id="football" onclick="boxclick(this,'sport','football')" /> Football </label> 
+<label><input type="checkbox" id="soccer" onclick="boxclick(this,'sport','soccer')" /> Soccer</label>
+<label><input type="checkbox" id="frisbee" onclick="boxclick(this,'sport','frisbee)" /> Frisbee</label>
+<label><input type="checkbox" id="tennis" onclick="boxclick(this,'sport','tennis')" />Tennis</label>
+<label><input type="checkbox" id="golf" onclick="boxclick(this,'sport','golf')" />Golf</label>
+<label><input type="checkbox" id="volleyball" onclick="boxclick(this,'sport','volleyball')" />Volleyball</label>
+
 {%endblock%}
