@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% block title %}{{game.name}}{%endblock%}
 {% block content %}
+ <!-- SignUp Modal -->
+    <div class="modal fade" id="photosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <!-- <div class="modal-dialog register">
+        <div class="modal-content signup">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Select Photos</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div style="text-align: center;"><button type="button" class="btn btn-primary" id="signup_submit" data-loading-text="Creating Account...">Post!</button>
+          </div>
+        </div>
+      </div> -->
+    </div>
 <!-- <section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg); overflow:scroll" >
  --><section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
   <div class="container" >
@@ -20,7 +35,7 @@
           <i class="fa fa-trash-o fa-lg"></i> Delete Game
         </button> 
         {% if connected_to_instagram %}
-        <a type="button" class="btn btn-instagram instagram" href='#'>
+        <a type="button" class="btn btn-instagram instagram" href='#' id="post_photos">
             <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
         </a>
         {% endif %}
@@ -36,7 +51,7 @@
             <button type="button" class="btn btn-default join_button" id="leave">
               <i class="fa fa-minus fa-lg"></i> Leave</button> 
             {% if connected_to_instagram %}
-            <a type="button" class="btn btn-instagram instagram" href='#'>
+            <a type="button" class="btn btn-instagram instagram" id="post_photos" href='#'>
               <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
             </a>
             {% endif %}
@@ -47,14 +62,14 @@
       {% endif %}
     {% else %}
       {% if connected_to_instagram %}
-        <a type="button" class="btn btn-instagram instagram" href='#'>
+        <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
           <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
         </a>
       {% endif %}
     {% endif %}
   </div> 
  
-  <div>
+  <div style="display:block">
     <div class="transbox left" >
       <p  class="players">Creator: <a href="/user/{{game.creator.id}}">{{game.creator.first_name}} {{game.creator.last_name}}</a></p>
       <p  class="players">Sport: <a href="/sport/{{game.sport}}">{{game.sport}}</a></p>
@@ -70,7 +85,20 @@
       </p>
     </div> 
     <div id='map-canvas' style="width:45%; margin-left:2px"></div>
-    <div style="display:block;float:left">
+    {% else %}
+    <h2>This game does not exists.</h2>
+    {% endif %}
+  </div>
+  <div style="display:block; margin-top:500px">
+    {% if game.gamephoto_set.all.count %}
+    <div class="game_photos" style="width:100%">
+      <h3>Game Photos</h3>
+      {% for game_photo in game.gamephoto_set.all %}
+      <img src="{{game_photo.url}}" />
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="comment_box" style="margin-top:20px">
       <form class="form-horizontal" role="form" action="/comment/" method="POST">{% csrf_token %}
         {{comment_form.text}}
         {{comment_form.user_id}}
@@ -79,7 +107,7 @@
       </form>
       {% if game.comment_set.all.count %}
       <ul class="media-list">
-        {% for comment in game.comment_set.all %}
+        {% for comment in game.sorted_comment_set %}
         <li class="media">
           <a class="pull-left" href="#">
             <img class="media-object" data-src="">
@@ -94,9 +122,6 @@
       </ul>
       {% endif %}
     </div>
-    {% else %}
-    <h2>This game does not exists.</h2>
-    {% endif %}
   </div>
  
 
@@ -145,7 +170,11 @@ $(document).ready(function() {
   $(".join_button").click(function(e){
     $( "#join_form" ).submit();
   });
-  
+
+  $('#post_photos').click(function(){
+      $('#photosModal').modal('show');
+    });
+  $("select").imagepicker();
 });
 
 $(document).ready(function(){

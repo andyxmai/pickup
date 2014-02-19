@@ -35,7 +35,8 @@ urlpatterns = patterns('',
     url(r'', include('social_auth.urls')),
     url(r'^comment/', 'pickupApp.views.comment', name='comment'), 
     url(r'^instagram_login/', 'pickupApp.views.instagram_login', name='instagram_login'),
-    url(r'^get_instagram_photos/', 'pickupApp.views.get_instagram_photos', name='get_instagram_photos')
+    url(r'^get_instagram_photos/(\d+)$', 'pickupApp.views.get_instagram_photos', name='get_instagram_photos'),
+    url(r'^post_photos/', 'pickupApp.views.post_photos', name='post_photos'),
 )
 
 # urlpatterns = urlpatterns + 

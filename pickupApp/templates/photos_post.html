@@ -1,0 +1,22 @@
+<div class="modal fade" id="photosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog register">
+        <div class="modal-content signup">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Select Photos</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" role="form" id="" action="/post_photos/" method="POST">{% csrf_token %}
+              <select multiple="multiple" class="image-picker show-html">
+                <option data-img-src="http://placekitten.com/220/200" value="1">Cute Kitten 1</option>
+                <option data-img-src="http://placekitten.com/180/200" value="2">Cute Kitten 2</option>
+                <option data-img-src="http://placekitten.com/130/200" value="3">Cute Kitten 3</option>
+                <option data-img-src="http://placekitten.com/270/200" value="4">Cute Kitten 4</option>
+              </select>
+            </form>
+          </div>
+            <div style="text-align: center;"><button type="button" class="btn btn-primary" id="signup_submit" data-loading-text="Creating Account...">Post!</button>
+            </div>
+        </div>
+      </div>
+    </div>
