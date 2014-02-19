@@ -428,4 +428,5 @@ def comment(request):
 			return redirect('/')
 	else:
 		return redirect('/')
+
 	
