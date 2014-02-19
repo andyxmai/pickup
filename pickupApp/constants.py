@@ -1,7 +1,11 @@
 sport_choices = (
 	('basketball', 	'Basketball'),
+	('football',	'Football'),
+	('frisbee',		'Frisbee'),
+	('golf',		'Golf'),
 	('soccer',		'Soccer'),
 	('tennis',		'Tennis'),
+	('volleyball',	'Volleyball'),
 )
 
 sports_dict = {

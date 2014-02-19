@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from pickupApp.forms import RegisterForm, LoginForm, GameForm
-from pickupApp.models import Game, Location
+from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
+from pickupApp.models import Game, Location, Comment, InstagramInfo
 import datetime
 import json
 from django.http import HttpResponse
@@ -17,6 +17,9 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from notifications import notify
 from django.db.models import Q
+from pickup.settings import INSTAGRAM_ID, INSTAGRAM_SECRET, REDIRECT_URL
+import urllib2, urllib
+from instagram.client import InstagramAPI
 
 
 # Create your views here.
@@ -79,7 +82,11 @@ def home(request):
 	unread = request.user.notifications.unread()
 	for note in unread:
 		print note.verb
-	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data), 'messages':messages})
+	return render(request, 'home.html', {
+		'user':request.user, 
+		'games_json':json.dumps(games_data), 
+		'messages':messages,
+		})
 
 def register(request):
 	if request.method == 'POST':
@@ -183,7 +190,7 @@ def game(request,id):
 	game_exists = Game.objects.filter(id=id).count()
 	if game_exists:
 		game = Game.objects.get(id=id)
-		
+		comment_form = CommentForm(initial={'user_id': request.user.id, 'game_id':game.id})
 		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
 			passed_game = True
@@ -205,8 +212,21 @@ def game(request,id):
 		if request.user in game.users.all() or is_creator:
 			joined = True
 
-		return render(request, 'game.html', {'game':game, 'joined':joined, 
-			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 'passed_game':passed_game, 'maxed':maxed})
+		connected_to_instagram = False
+		if InstagramInfo.objects.filter(user=request.user).count():
+			connected_to_instagram = True
+
+		return render(request, 'game.html', {
+			'game':game, 
+			'joined':joined, 
+			'is_creator':is_creator, 
+			'user':request.user, 
+			'game_exists':game_exists, 
+			'passed_game':passed_game, 
+			'maxed':maxed, 
+			'comment_form':comment_form, 
+			'connected_to_instagram':connected_to_instagram
+		})
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
@@ -313,8 +333,19 @@ def user(request, id):
 	games_created = Game.objects.filter(creator=player)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = player.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
-	return render(request, 'user.html', {'player':player, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
-		'loggedinUser':loggedinUser})
+
+	player_connected_to_instagram = False
+	if InstagramInfo.objects.filter(user=player).count():
+		player_connected_to_instagram = True
+
+	return render(request, 'user.html', {
+		'player':player, 
+		'games_played':games_played, 
+		'games_created':games_created, 
+		'upcoming_games': upcoming_games, 
+		'loggedinUser':loggedinUser,
+		'player_connected_to_instagram': player_connected_to_instagram
+		})
 	
 
 def remove_notifications(request):
@@ -363,14 +394,29 @@ def search_people(request):
 	mimetype = 'application/json'
 	return HttpResponse(data, mimetype)
 
+@login_required
 def profile(request):
 	loggedinUser = request.user
 	user = request.user
 	games_created = Game.objects.filter(creator=user)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
-	return render(request, 'user.html', {'player':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
-		'loggedinUser':loggedinUser})
+	
+	connected_to_instagram = False
+	if InstagramInfo.objects.filter(user=user).count():
+		connected_to_instagram = True
+
+	return render(request, 'user.html', 
+		{'player':user, 
+		'games_played':games_played, 
+		'games_created':games_created, 
+		'upcoming_games': upcoming_games, 
+		'loggedinUser':loggedinUser,
+		'instagramID' : INSTAGRAM_ID,
+		'instagramSecret' : INSTAGRAM_SECRET,
+		'redirectURL' : REDIRECT_URL,
+		'connected_to_instagram': connected_to_instagram
+		})
 
 def sports(request):
 	return render(request, 'sports.html', {'sports_dict':sports_dict})
@@ -403,5 +449,78 @@ def search(request):
 	mimetype = 'application/json'
 	return HttpResponse(json.dumps(results), mimetype)
 
+@login_required
+def comment(request):
+	if request.method == 'POST':
+		#store comment
+		comment_form = CommentForm(request.POST)
+		if comment_form.is_valid():
+			text = comment_form.cleaned_data['text']
+			user_id = comment_form.cleaned_data['user_id']
+			game_id = comment_form.cleaned_data['game_id']
 
-	
+			commenter = User.objects.get(id=user_id)
+			game = Game.objects.get(id=game_id)
+			comment = Comment.objects.create(text=text, commenter=commenter, game=game, timeStamp=datetime.datetime.now())
+
+			for player in game.users.all():
+				if commenter != player:
+					verb = commenter.first_name+' '+commenter.last_name+' left a comment for '+game.name
+					notify.send(commenter,recipient=player, verb=verb)
+
+			return redirect('/game/'+str(game.id))
+		else:
+			return redirect('/')
+	else:
+		return redirect('/')
+
+@login_required
+def instagram_login(request):
+	code = request.GET['code']
+	print "Code = "
+	print code
+	paramsDict = {
+		'client_id' : INSTAGRAM_ID,
+		'client_secret' : INSTAGRAM_SECRET,
+		'grant_type' : 'authorization_code',
+		'redirect_uri' : REDIRECT_URL,
+		'code' : code
+	}
+	print "Params = "
+	params = urllib.urlencode(paramsDict);
+	print params
+	url = 'https://api.instagram.com/oauth/access_token'
+	req = urllib2.Request(url,params)
+	#f = urllib2.urlopen(req)
+	opener = urllib2.build_opener()
+	f = opener.open(req)
+	instagram_data = json.load(f)
+
+	newInstagram = InstagramInfo()
+	newInstagram.access_token = instagram_data['access_token']
+	newInstagram.username = instagram_data['user']['username']
+	newInstagram.profile_picture = instagram_data['user']['profile_picture']
+	newInstagram.full_name = instagram_data['user']['full_name']
+	newInstagram.instagramID = instagram_data['user']['id']
+
+	print newInstagram.full_name
+	newInstagram.user = request.user
+	newInstagram.save()
+
+	return redirect('/profile')
+
+@login_required
+def get_instagram_photos(request):
+	instagramUser = InstagramInfo.objects.get(user=request.user)
+	access_token = instagramUser.access_token
+	api = InstagramAPI(access_token=access_token)
+	recent_media, next = api.user_recent_media()
+	photos = []
+	for media in recent_media:
+		photos.append(media.images['standard_resolution'].url)
+	data = json.dumps(photos)
+
+	print data
+
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)

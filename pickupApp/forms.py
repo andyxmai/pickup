@@ -30,6 +30,11 @@ class GameForm(forms.Form):
 	#description = forms.CharField(max_length=400, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Description'}))
 	#timeStart = forms.DateTimeField(widget=forms.DateTimeInput(attrs={'class':'form-control', 'placeholder':'Game Time'}),initial=datetime.datetime.now())
 
+class CommentForm(forms.Form):
+	text = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':'Enter Comment'}))
+	user_id = forms.CharField(widget=forms.HiddenInput())
+	game_id = forms.CharField(widget=forms.HiddenInput())
+
 
 # Need form to search and filter, then automatically populate lat/lon
 # Additionally Need user to be able to add a new location name

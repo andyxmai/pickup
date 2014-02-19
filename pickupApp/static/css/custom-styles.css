@@ -71,4 +71,15 @@
   padding: 15px 7px;
  }
 
+ .btn-instagram {
+  background-color: #5c88ab;
+  border-color:#5c88ab;
+  color:white;
+ }
+
+.btn-instagram:hover {
+  background-color: #3f729b;
+  border-color:#3f729b;
+  color:white;
+}
 

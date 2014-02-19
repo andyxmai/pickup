@@ -20,9 +20,26 @@ class Game(models.Model):
 	location = models.ForeignKey(Location)
 	users = models.ManyToManyField(User) # Game will have users that have signed up for the game
 
-class game_location(models.Model):
-	locaiton_name = models.CharField(max_length=50)
-	latitude = models.FloatField(null=True)
-	longitude = models.FloatField(null=True)
+class Comment(models.Model):
+	text = models.TextField()
+	timeStamp = models.DateTimeField(null=True)
+	game = models.ForeignKey(Game)
+	commenter = models.ForeignKey(User)
+
+
+class InstagramInfo(models.Model):
+	# {u'access_token': u'1105726448.9135221.702125d2abb24aa49e410d1ac9c6fabc', 
+	# u'user': 
+	# {u'username': u'eymyers', u'bio': u'', u'website': u'', u'profile_picture': u'http://images.ak.instagram.com/profiles/anonymousUser.jpg', u'full_name': u'Ethan Myers', u'id': u'1105726448'}}
+
+	access_token = models.CharField(max_length=200)
+	username = models.CharField(max_length=200)
+	profile_picture = models.CharField(max_length=200)
+	full_name = models.CharField(max_length=200)
+	instagramID = models.IntegerField()
+	user = models.OneToOneField(User,null=False)
+
+
+
 
 	
