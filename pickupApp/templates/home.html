@@ -119,6 +119,7 @@ function initialize() {
   var content_1;
   var content_2; 
   var myIcon;
+  var offset=-0.002;
 
   for (i = 0; i < locations.length; i++) { 
       loc = locations[i][0]
@@ -134,15 +135,14 @@ function initialize() {
          new google.maps.Size(50,50) //scale
          );
          marker = new google.maps.Marker({
-          position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+          position: new google.maps.LatLng(locations[i][1] , locations[i][2]+j*offset),
           map: map,
           title: curr_sport,
           icon: markerImage
         });
-       
-      }
+        markers.push(marker);
 
-      markers.push(marker);
+     
 
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
@@ -156,13 +156,16 @@ function initialize() {
           infowindow.open(map, marker);
         }
       })(marker, i));
+    }
   }
 }
 
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
+
  function boxclick(box,category,type) {
+
         if (box.checked) {
           show(category, type);
         } else {
@@ -175,21 +178,17 @@ google.maps.event.addDomListener(window, 'load', initialize);
             markers[i].setVisible(true);
          }
        }
-       // == check the checkbox ==
-        console.log(type);
-       console.log(category);
+     
        document.getElementById(type).checked = true;
      }
 
 function hide(category,type){
   for (var i=0; i<markers.length; i++) {
+    var title = markers[i].getTitle();
          if (markers[i].getTitle() == type){
           markers[i].setVisible(false);
          }
        }
-       // == check the checkbox ==
-       console.log(type);
-       console.log(category);
        document.getElementById(type).checked = false;
      }
 
@@ -210,6 +209,7 @@ function hide(category,type){
   </div> 
   <div id="map-canvas" style= "position:relative; z-index:1"></div>
     <!-- <a href="/logout" type="button" class="btn btn-primary">Logout</a>  -->
+
 
 <label><input type="checkbox" id="basketball" onclick="boxclick(this,'sport','basketball')" checked /> Basketball </label>
 <label><input type="checkbox" id="football" onclick="boxclick(this,'sport','football')" checked /> Football </label> 
