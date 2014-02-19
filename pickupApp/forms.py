@@ -8,6 +8,15 @@ class RegisterForm(forms.Form):
 	last_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
 	email = forms.EmailField(max_length=100, widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Email'}))
 	password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Password'}))
+	password2 = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Password'}))
+
+	def clean_password2(self):
+		# Check that the two password entries match
+		password = self.cleaned_data.get("password")
+		password2 = self.cleaned_data.get("password2")
+		if password and password2 and password != password2:
+			raise forms.ValidationError("Passwords don't match")
+		return password2
 
 class LoginForm(forms.Form):
 	email = forms.EmailField(max_length=100, widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Email'}))

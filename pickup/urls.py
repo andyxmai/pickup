@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^searchpeople/', 'pickupApp.views.search_people', name='search_user'),
     url(r'^sports/', 'pickupApp.views.sports', name='sports'),   
     url(r'^search/', 'pickupApp.views.search', name='search'), 
+    url(r'', include('social_auth.urls')),
 )
 
 # urlpatterns = urlpatterns + 
