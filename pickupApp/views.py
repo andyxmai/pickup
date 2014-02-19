@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
-from pickupApp.models import Game, Location, Comment
+from pickupApp.models import Game, Location, Comment, InstagramInfo
 import datetime
 import json
 from django.http import HttpResponse
@@ -17,6 +17,9 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from notifications import notify
 from django.db.models import Q
+from pickup.settings import INSTAGRAM_ID, INSTAGRAM_SECRET, REDIRECT_URL
+import urllib2, urllib
+from instagram.client import InstagramAPI
 
 
 # Create your views here.
@@ -79,7 +82,14 @@ def home(request):
 	unread = request.user.notifications.unread()
 	for note in unread:
 		print note.verb
-	return render(request, 'home.html', {'user':request.user, 'games_json':json.dumps(games_data), 'messages':messages})
+	return render(request, 'home.html', {
+		'user':request.user, 
+		'games_json':json.dumps(games_data), 
+		'messages':messages,
+		'instagramID' : INSTAGRAM_ID,
+		'instagramSecret' : INSTAGRAM_SECRET,
+		'redirectURL' : REDIRECT_URL
+		})
 
 def register(request):
 	if request.method == 'POST':
@@ -429,4 +439,53 @@ def comment(request):
 	else:
 		return redirect('/')
 
-	
+@login_required
+def instagram_login(request):
+	code = request.GET['code']
+	print "Code = "
+	print code
+	paramsDict = {
+		'client_id' : INSTAGRAM_ID,
+		'client_secret' : INSTAGRAM_SECRET,
+		'grant_type' : 'authorization_code',
+		'redirect_uri' : REDIRECT_URL,
+		'code' : code
+	}
+	print "Params = "
+	params = urllib.urlencode(paramsDict);
+	print params
+	url = 'https://api.instagram.com/oauth/access_token'
+	req = urllib2.Request(url,params)
+	#f = urllib2.urlopen(req)
+	opener = urllib2.build_opener()
+	f = opener.open(req)
+	instagram_data = json.load(f)
+
+	newInstagram = InstagramInfo()
+	newInstagram.access_token = instagram_data['access_token']
+	newInstagram.username = instagram_data['user']['username']
+	newInstagram.profile_picture = instagram_data['user']['profile_picture']
+	newInstagram.full_name = instagram_data['user']['full_name']
+	newInstagram.instagramID = instagram_data['user']['id']
+
+	print newInstagram.full_name
+	newInstagram.user = request.user
+	newInstagram.save()
+
+	return redirect('/')
+
+@login_required
+def get_instagram_photos(request):
+	instagramUser = InstagramInfo.objects.get(user=request.user)
+	access_token = instagramUser.access_token
+	api = InstagramAPI(access_token=access_token)
+	recent_media, next = api.user_recent_media()
+	photos = []
+	for media in recent_media:
+		photos.append(media.images['standard_resolution'].url)
+	data = json.dumps(photos)
+
+	print data
+
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)

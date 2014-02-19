@@ -34,6 +34,8 @@ urlpatterns = patterns('',
     url(r'^search/', 'pickupApp.views.search', name='search'), 
     url(r'', include('social_auth.urls')),
     url(r'^comment/', 'pickupApp.views.comment', name='comment'), 
+    url(r'^instagram_login/', 'pickupApp.views.instagram_login', name='instagram_login'),
+    url(r'^get_instagram_photos/', 'pickupApp.views.get_instagram_photos', name='get_instagram_photos')
 )
 
 # urlpatterns = urlpatterns + 
