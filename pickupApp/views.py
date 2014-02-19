@@ -86,9 +86,6 @@ def home(request):
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 
 		'messages':messages,
-		'instagramID' : INSTAGRAM_ID,
-		'instagramSecret' : INSTAGRAM_SECRET,
-		'redirectURL' : REDIRECT_URL
 		})
 
 def register(request):
@@ -215,9 +212,21 @@ def game(request,id):
 		if request.user in game.users.all() or is_creator:
 			joined = True
 
-		return render(request, 'game.html', {'game':game, 'joined':joined, 
-			'is_creator':is_creator, 'user':request.user, 'game_exists':game_exists, 
-			'passed_game':passed_game, 'maxed':maxed, 'comment_form':comment_form})
+		connected_to_instagram = False
+		if InstagramInfo.objects.filter(user=request.user).count():
+			connected_to_instagram = True
+
+		return render(request, 'game.html', {
+			'game':game, 
+			'joined':joined, 
+			'is_creator':is_creator, 
+			'user':request.user, 
+			'game_exists':game_exists, 
+			'passed_game':passed_game, 
+			'maxed':maxed, 
+			'comment_form':comment_form, 
+			'connected_to_instagram':connected_to_instagram
+		})
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
@@ -324,8 +333,19 @@ def user(request, id):
 	games_created = Game.objects.filter(creator=player)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = player.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
-	return render(request, 'user.html', {'player':player, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
-		'loggedinUser':loggedinUser})
+
+	player_connected_to_instagram = False
+	if InstagramInfo.objects.filter(user=player).count():
+		player_connected_to_instagram = True
+
+	return render(request, 'user.html', {
+		'player':player, 
+		'games_played':games_played, 
+		'games_created':games_created, 
+		'upcoming_games': upcoming_games, 
+		'loggedinUser':loggedinUser,
+		'player_connected_to_instagram': player_connected_to_instagram
+		})
 	
 
 def remove_notifications(request):
@@ -374,14 +394,29 @@ def search_people(request):
 	mimetype = 'application/json'
 	return HttpResponse(data, mimetype)
 
+@login_required
 def profile(request):
 	loggedinUser = request.user
 	user = request.user
 	games_created = Game.objects.filter(creator=user)
 	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
-	return render(request, 'user.html', {'player':user, 'games_played':games_played, 'games_created':games_created, 'upcoming_games': upcoming_games, 
-		'loggedinUser':loggedinUser})
+	
+	connected_to_instagram = False
+	if InstagramInfo.objects.filter(user=user).count():
+		connected_to_instagram = True
+
+	return render(request, 'user.html', 
+		{'player':user, 
+		'games_played':games_played, 
+		'games_created':games_created, 
+		'upcoming_games': upcoming_games, 
+		'loggedinUser':loggedinUser,
+		'instagramID' : INSTAGRAM_ID,
+		'instagramSecret' : INSTAGRAM_SECRET,
+		'redirectURL' : REDIRECT_URL,
+		'connected_to_instagram': connected_to_instagram
+		})
 
 def sports(request):
 	return render(request, 'sports.html', {'sports_dict':sports_dict})
@@ -472,7 +507,7 @@ def instagram_login(request):
 	newInstagram.user = request.user
 	newInstagram.save()
 
-	return redirect('/')
+	return redirect('/profile')
 
 @login_required
 def get_instagram_photos(request):

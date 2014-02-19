@@ -19,6 +19,11 @@
         <button type="button" class="btn btn-danger delete_button" id="delete">
           <i class="fa fa-trash-o fa-lg"></i> Delete Game
         </button> 
+        {% if connected_to_instagram %}
+        <a type="button" class="btn btn-instagram instagram" href='#'>
+            <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
+        </a>
+        {% endif %}
       {% else %}
         {% if not maxed %} 
           <form role="form" action="/join_quit_game/" method="POST" id="join_form">{% csrf_token %}
@@ -30,15 +35,26 @@
           {% else %}
             <button type="button" class="btn btn-default join_button" id="leave">
               <i class="fa fa-minus fa-lg"></i> Leave</button> 
+            {% if connected_to_instagram %}
+            <a type="button" class="btn btn-instagram instagram" href='#'>
+              <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
+            </a>
+            {% endif %}
           {% endif %}
         {% else %}
           <p>Sorry! All game spots are filled.</p>
         {% endif %}
       {% endif %}
+    {% else %}
+      {% if connected_to_instagram %}
+        <a type="button" class="btn btn-instagram instagram" href='#'>
+          <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
+        </a>
+      {% endif %}
     {% endif %}
- <!--  </div> 
+  </div> 
  
-  <div> -->
+  <div>
     <div class="transbox left" >
       <p  class="players">Creator: <a href="/user/{{game.creator.id}}">{{game.creator.first_name}} {{game.creator.last_name}}</a></p>
       <p  class="players">Sport: <a href="/sport/{{game.sport}}">{{game.sport}}</a></p>
