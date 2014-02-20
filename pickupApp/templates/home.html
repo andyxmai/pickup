@@ -183,14 +183,21 @@ google.maps.event.addDomListener(window, 'load', initialize);
   }
 
  function show(category, type) {
-       for (var i=0; i<markers.length; i++) {
+    if (type=='all'){
+      for (var i=0; i<markers.length; i++) {
+            markers[i].setVisible(true);
+      }
+    } else{
+      for (var i=0; i<markers.length; i++) {
          if (markers[i].getTitle() == type){
             markers[i].setVisible(true);
          }
        }
      
        document.getElementById(type).checked = true;
-     }
+    }
+       
+  }
 
 
 </script>
@@ -214,7 +221,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 <label><input type="radio" id="basketball" name='sport'onclick="boxclick(this,'sport','basketball')" checked /> Basketball </label>
-<label><input type="radio" id="football" name='sport' onclick="boxclick(this,'sport','football')"  /> Football </label> 
+<label><input type="radio" id="football" name='sport' onclick="boxclick(this,'sport','football')"  /> Football </label>
 <label><input type="radio" id="soccer" name='sport' onclick="boxclick(this,'sport','soccer')"  /> Soccer</label>
 <label><input type="radio" id="frisbee" name='sport' onclick="boxclick(this,'sport','frisbee)"  /> Frisbee</label>
 <label><input type="radio" id="tennis" name='sport' onclick="boxclick(this,'sport','tennis')"  />Tennis</label>
