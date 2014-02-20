@@ -27,7 +27,7 @@ location_to_coordinates = {
 }
 
 num_choices = (
-	(0, 'No limit on number of players'),
+	(0, 'No limit'),
 	(2, '2 players'),
 	(3, '3 players'),
 	(4, '4 players'),

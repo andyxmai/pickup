@@ -71,4 +71,12 @@
   padding: 15px 7px;
  }
 
+#create-game-container {
+  width: 1000px;
+  background-color: gray;
+}
+
+#create-game-section {
+  background-color: black;
+}
 

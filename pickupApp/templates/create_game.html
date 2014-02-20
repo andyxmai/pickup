@@ -3,33 +3,48 @@
 {% block content %}   
 <body>
     <!--Main-->
-    <section id="" class="">
-      <div class="container">
+    <section id="create-game-section" class="">
+      <div id="create-game-container" class="container">
         <div class="row margin-50">
-          <div class="col-sm-6 col-sm-offset-3 text-center signup">
+          <div class="col-sm-8 col-sm-offset-2 text-center signup">
             {% if error_msg %}
             <div class="alert alert-danger alert-dismissable">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <strong>Oh no!</strong> {{error_msg}}
             </div>
             {% endif %}
-            <h3>Create Game</h3><br />
+            <h3 class="modal-title" id="myModalLabel">Create Game</h3><br />
   					<form role="form" id="signup" class="form-horizontal" action="/create_game/" method="post">{% csrf_token %}
               <div class="form-group">
+                <label for="sport" class="col-sm-4 control-label">Select Sport</label>
+                <div class="col-sm-8">
                 {{gameForm.sport}}
                </div>
+             </div>
               <div class="form-group">
+                <label for="name" class="col-sm-4 control-label">Game Name</label>
+                <div class="col-sm-8">
                 {{gameForm.name}}
               </div>
+            </div>
               <div class="form-group">
+                <label for="cap" class="col-sm-4 control-label">Number of Players</label>
+                <div class="col-sm-8">
                 {{gameForm.cap}}
               </div>
+            </div>
               <div class="form-group">
+                <label for="location" class="col-sm-4 control-label">Select Location</label>
+                <div class="col-sm-8">
                 {{gameForm.location}}
               </div>
-              <!-- <div class="form-group">
+            </div>
+              <div class="form-group">
+                <label for="description" class="col-sm-4 control-label">Description</label>
+                <div class="col-sm-8">
                 {{gameForm.description}}
-              </div> -->
+              </div>
+              </div>
             
              <!-- <div class="form-group">
                 {{gameForm.timeStart}}
@@ -38,7 +53,8 @@
  </div>
               </div> -->
               <div class="control-group">
-                <div class=" input-append date form_datetime" data-date="{{datetime.datetime.now}}" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                <label for="date-time" class="col-sm-4 control-label">Pick Start Time</label>
+                <div class=" input-append date form_datetime col-sm-8" data-date="{{datetime.datetime.now}}" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
                     <input size="50" type="text" name="datetime" value="" readonly placeholder="Date and Time">
                     <span class="add-on"><i class="icon-remove"></i></span>
                     <span class="add-on"><i class="icon-th"></i></span>
@@ -47,13 +63,11 @@
               </div>
 
               <br />
-              <div>
+              <div style="text-align:center;">
                 <button type="submit" class="btn btn-primary btn-lg">Game Time!</button>
               </div>
              </form>
-      	  
-          </div><!--End Span6-->
-          
+          </div>
         </div>
       </div>
     </section>
