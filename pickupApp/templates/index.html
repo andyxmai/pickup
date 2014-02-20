@@ -11,6 +11,13 @@
             <h4 class="modal-title" id="myModalLabel">Registration</h4>
           </div>
           <div class="modal-body">
+            <!-- <ul class="list-inline social-icons-signup">
+              <li><a class="twitter" href="#" target="_blank"><i class="fa fa-twitter fa-lg"></i></a></li>
+              <li><a class="facebook" href="#" target="_blank"><i class="fa fa-facebook fa-lg"></i></a></li>
+              <li><a class="google" href="#" target="_blank"><i class="fa fa-google-plus fa-lg"></i></a></li>
+            </ul>
+             
+            <hr /> -->
             <form class="form-horizontal" role="form" id="signup_form" action="/register/" method="POST">{% csrf_token %}
               <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">
@@ -71,6 +78,9 @@
             <hr>
             <h3 class="white">Your hub for pick-up sports.</h3>
             <div class="modal-body">
+              <!-- <ul class="list-inline social-icons-signup">
+                <li><a class="facebook" href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-facebook fa-lg"></i></a></li>
+              </ul> -->
             <form class="form-horizontal" role="form" 
             id="signin_form" action="/user_login/" method="POST">{% csrf_token %}
               <div class="form-group">

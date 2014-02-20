@@ -18,13 +18,34 @@
   <div class="container">
     <div class="prof-info col-md-3">
     <h2>{{player.first_name}} {{player.last_name}}</h2>
-    <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
+    {% if player.id == loggedinUser.id %} 
+        {% if connected_to_instagram %}
+        <img id="prof-pic" src="{{loggedinUser.instagraminfo.profile_picture}}">
+        {% else %}
+        <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
+        {% endif %}
+    {% else %}
+        {% if player_connected_to_instagram %}
+        <img id="prof-pic" src="{{player.instagraminfo.profile_picture}}">
+        {% else %}
+        <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
+        {% endif %}
+    {% endif %}
     <br></br>
     {% if player.id == loggedinUser.id %}    
-    <div>
-        <a href="/user/{{user.id}}" type="button" class="btn btn-inverse" style="position: relative; z-index:2">
-            <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
-    </div> 
+        <div>
+            <a href="/user/{{user.id}}" type="button" class="btn btn-inverse" style="position: relative; z-index:2">
+                <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
+        </div> 
+        {% if not connected_to_instagram %}
+        <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code'>
+            <i class="fa fa-camera-retro"></i> | Connect with Instagram
+        </a>
+        {% else %}
+        <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code' disabled="disabled">
+        <i class="fa fa-camera-retro"></i> | Connected with Instagram
+        </a>
+        {% endif %}
     {% endif %}
 
     <p><a href="mailto:{{player.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{player.username}}</a></p>

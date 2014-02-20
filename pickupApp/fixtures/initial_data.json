@@ -165,5 +165,80 @@
 		"location":1,
 		"cap":10
 	}
+},
+{
+	"pk": 7, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "Weekly Pickup Football", 
+		"creator": 4, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-03-12T10:54:45.397Z", 
+		"users": [1, 2, 4, 5], 
+		"sport": "football", 
+		"description": "Keeping football going after the Super Bowl",
+		"location":1,
+		"cap":10
+	}
+},
+{
+	"pk": 8, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "Weekly Pickup Soccer", 
+		"creator": 1, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-03-14T10:54:45.397Z", 
+		"users": [1, 2, 3, 4, 5], 
+		"sport": "soccer", 
+		"description": "Champions League",
+		"location":1,
+		"cap":10
+	}
+},
+{
+	"pk": 9, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "Super Bowl Football", 
+		"creator": 2, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-04-12T10:54:45.397Z", 
+		"users": [1, 2, 4, 5], 
+		"sport": "football", 
+		"description": "Competitive. Good players only",
+		"location":1,
+		"cap":10
+	}
+},
+{
+	"pk": 10, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "End of Quarter Pickup Football", 
+		"creator": 3, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-03-27T10:54:45.397Z", 
+		"users": [1, 2, 4, 5], 
+		"sport": "football", 
+		"description": "Keeping football going after the Super Bowl",
+		"location":1,
+		"cap":10
+	}
+},
+{
+	"pk": 11, 
+	"model": "pickupApp.game", 
+	"fields": {
+		"name": "Football with Freshmen", 
+		"creator": 4, 
+		"dateCreated": "2014-01-30T08:54:45.397Z", 
+		"timeStart": "2014-03-28T10:54:45.397Z", 
+		"users": [1, 2, 3, 4, 5], 
+		"sport": "football", 
+		"description": "Recreational",
+		"location":1,
+		"cap":10
+	}
 }
 ]
