@@ -75,7 +75,6 @@ def get_games(request):
 
 @login_required
 def home(request):
-
 	games_data = get_games(request)
 	#print games_data
 	messages = get_messages(request)
@@ -347,7 +346,7 @@ def user(request, id):
 		'player_connected_to_instagram': player_connected_to_instagram
 		})
 	
-
+@login_required
 def remove_notifications(request):
 	request.user.notifications.mark_all_as_read()
 	return HttpResponse('')
