@@ -20,6 +20,10 @@ class Game(models.Model):
 	location = models.ForeignKey(Location)
 	users = models.ManyToManyField(User) # Game will have users that have signed up for the game
 
+	@property
+	def sorted_comment_set(self):
+	    return self.comment_set.order_by('-timeStamp')
+
 class Comment(models.Model):
 	text = models.TextField()
 	timeStamp = models.DateTimeField(null=True)
@@ -38,6 +42,10 @@ class InstagramInfo(models.Model):
 	full_name = models.CharField(max_length=200)
 	instagramID = models.IntegerField()
 	user = models.OneToOneField(User,null=False)
+
+class GamePhoto(models.Model):
+	url = models.URLField()
+	game = models.ForeignKey(Game)
 
 
 

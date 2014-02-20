@@ -1,0 +1,29 @@
+<div class="modal-dialog register">
+  <div class="modal-content signup" style="width:630px;">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title" id="myModalLabel">Select Photos</h4>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal" role="form" id="post_photos_form" action="/post_photos/" method="POST">{% csrf_token %}
+        <select multiple name="photos" class="image-picker show-html">
+          {% for photo in instagram_photos %}
+          <option data-img-src="{{photo}}" value="{{photo}}">{{photo}}</option>
+          {% endfor %}
+        </select>
+        <input type="hidden" name="game_id" value="{{game_id}}">
+      </form>
+    </div>
+    <div style="text-align: center;"><button type="button" class="btn btn-primary" id="photos_submit" data-loading-text="Creating Account...">Post!</button>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() { 
+  $("select").imagepicker();
+  $( "#photos_submit" ).click(function() {
+    $( "#post_photos_form" ).submit();
+  });
+});
+</script>

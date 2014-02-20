@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
-from pickupApp.models import Game, Location, Comment, InstagramInfo
+from pickupApp.models import Game, Location, Comment, InstagramInfo, GamePhoto
 import datetime
 import json
 from django.http import HttpResponse
@@ -510,17 +510,28 @@ def instagram_login(request):
 	return redirect('/profile')
 
 @login_required
-def get_instagram_photos(request):
+def get_instagram_photos(request, game_id):
 	instagramUser = InstagramInfo.objects.get(user=request.user)
 	access_token = instagramUser.access_token
 	api = InstagramAPI(access_token=access_token)
-	recent_media, next = api.user_recent_media()
-	photos = []
+	recent_media, next = api.user_recent_media(count=5)
+	instagram_photos = []
 	for media in recent_media:
-		photos.append(media.images['standard_resolution'].url)
-	data = json.dumps(photos)
+		instagram_photos.append(media.images['thumbnail'].url)
+	
+	return render(request, 'get_instagram_photos.html', {'instagram_photos':instagram_photos, 'game_id':game_id})
+	
+@login_required
+def post_photos(request):
+	if request.method == 'POST':
+		game_photos = None
+		game = Game.objects.get(id=request.POST['game_id'])
+		if 'photos' in request.POST:
+			game_photos = request.POST.getlist('photos')
 
-	print data
+		if game_photos:
+			for photo in game_photos:
+				if not GamePhoto.objects.filter(url=photo).exists():
+					game_photo = GamePhoto.objects.create(url=photo, game=game)
 
-	mimetype = 'application/json'
-	return HttpResponse(data, mimetype)
+	return redirect('/game/'+str(game.id)) 
