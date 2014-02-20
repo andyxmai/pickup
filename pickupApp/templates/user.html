@@ -41,6 +41,10 @@
         <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code'>
             <i class="fa fa-camera-retro"></i> | Connect with Instagram
         </a>
+        {% else %}
+        <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code' disabled="disabled">
+        <i class="fa fa-camera-retro"></i> | Connected with Instagram
+        </a>
         {% endif %}
     {% endif %}
 
