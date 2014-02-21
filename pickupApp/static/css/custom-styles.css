@@ -88,7 +88,18 @@
 
 .btn-instagram:hover {
   background-color: #3f729b;
-  border-color:#3f729b;
+  border-color: #3f729b;;
   color:white;
 }
 
+.btn-facebook {
+  background-color: #2b4b90;
+  border-color: #2b4b90;
+  color:white;
+}
+
+.btn-facebook:hover {
+  background-color: #133783;
+  border-color: #133783;
+  color:white;
+}
