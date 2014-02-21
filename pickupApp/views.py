@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
-from pickupApp.models import Game, Location, Comment, InstagramInfo, GamePhoto
+from pickupApp.models import Game, Location, Comment, InstagramInfo, GamePhoto, UserInfo
 import datetime
 import json
 from django.http import HttpResponse
@@ -538,3 +538,13 @@ def post_photos(request):
 					game_photo = GamePhoto.objects.create(url=photo, game=game)
 
 	return redirect('/game/'+str(game.id)) 
+
+@login_required
+def upload_profile_photo(request):
+	if request.method == 'POST':
+		photo_url = request.POST['photo_url']
+		user_info = UserInfo.objects.get(user=request.user)
+		user_info.profile_picture = photo_url
+		user_info.save()
+
+	return redirect('/profile')

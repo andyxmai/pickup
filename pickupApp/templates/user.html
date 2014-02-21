@@ -17,7 +17,7 @@
 <!-- Facebook SDK -->
 <div id="fb-root"></div>
 <!-- Facebook photo selector modal -->
-<div id="facebook_photo_selector" class="modal fade">
+<div id="facebook_photo_selector" class="modal fade fb-photo">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -25,15 +25,17 @@
                 <h4 class="modal-title">Choose a photo</h4>
             </div>
             <div class="modal-body">
+                <form>
                 <div class="form">
                     <label>Select Facebook Album:</label>
                     <select class="fbps-albums" name="facebook_photo_album"></select>
                 </div>
-                <div class="fbps-photos clearfix"></div>
+                    <div class="fbps-photos clearfix"></div>
+                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default fbps-cancel" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary fbps-select" data-dismiss="modal">Select Photo</button>
+                <button type="button" class="btn btn-primary fbps-select" data-dismiss="modal" id="fb_photo_select">Select Photo</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -52,11 +54,11 @@
         </div> 
         {% if not connected_to_instagram %}
         <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code'>
-            <i class="fa fa-camera-retro"></i> | Connect with Instagram
+            <i class="fa fa-camera-retro"></i> | Connect to Instagram
         </a>
         {% else %}
         <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code' disabled="disabled">
-        <i class="fa fa-camera-retro"></i> | Connected with Instagram
+        <i class="fa fa-camera-retro"></i> | Connected to Instagram
         </a>
         {% endif %}
     {% endif %}
@@ -153,10 +155,6 @@
                 channelUrl : '{{websiteURL}}',
                 status     : true,
                 xfbml      : false
-                // appId      : '{{facebookID}}',
-                // status     : true, // check login status
-                // cookie     : true, // enable cookies to allow the server to access the session
-                // xfbml      : true
             });
 
             FacebookPhotoSelector.setFacebookSDK(FB);
@@ -165,7 +163,21 @@
         $('#facebook_photo_selector').facebookPhotoSelector({
             onFinalSelect : function(photos)
             {
-                console.log(photos);
+                //console.log(photos);
+                if (photos.length) {
+                    var photo_url = photos[0];
+                    $.ajax({
+                    type: "POST",
+                    url: "/upload_profile_photo/",
+                    data: { 
+                        'photo_url': photo_url,
+                        'csrfmiddlewaretoken':'{{csrf_token}}' 
+                    },
+                    success: function(data) {
+                        window.location.href = "/profile"
+                    },
+                  });
+                }
             }
         });
     });

@@ -81,7 +81,7 @@ var FacebookPhotoSelector =
 	// Render a Facebook photo as HTML
 	renderPhoto : function(photo)
 	{
-		return '<div class="col-md-3"><a href="#" class="thumbnail" data-facebook-id="' + photo.id + '"><img src="' + photo.picture + '" alt="' + photo.name + '""></a></div>';
+		return '<div class="col-md-3"><a href="#" class="thumbnail" data-facebook-id="' + photo.picture + '"><img src="' + photo.picture + '" alt="' + photo.name + '""></a></div>';
 	},
 
 	// Render an array of Facebook photos as HTML

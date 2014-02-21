@@ -103,3 +103,14 @@
   border-color: #133783;
   color:white;
 }
+
+div.fb-photo .thumbnail.selected {
+  background-color: #428bca;
+}
+div.fb-photo .loading {
+  text-align: center;
+}
+div.fb-photo .modal-body {
+  max-height: 600px;
+  overflow-y: auto;
+}
