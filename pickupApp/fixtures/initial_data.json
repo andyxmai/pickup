@@ -10,6 +10,14 @@
 	}
 },
 {
+	"model" : "pickupApp.userinfo",
+	"pk" : 1,
+	"fields": {
+		"profile_picture": "http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg",
+		"user" : 1
+	}
+},
+{
 	"model" : "auth.user",
 	"pk" : 2,
 	"fields": {
@@ -17,6 +25,14 @@
 		"last_name"	: "Mai",
 		"username" : "andymai@stanford.edu",
 		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+},
+{
+	"model" : "pickupApp.userinfo",
+	"pk" : 2,
+	"fields": {
+		"profile_picture":"http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg",
+		"user" : 2
 	}
 },
 {
@@ -30,6 +46,14 @@
 	}
 },
 {
+	"model" : "pickupApp.userinfo",
+	"pk" : 3,
+	"fields": {
+		"profile_picture":"http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg",
+		"user" : 3
+	}
+},
+{
 	"model" : "auth.user",
 	"pk" : 4,
 	"fields": {
@@ -40,6 +64,14 @@
 	}
 },
 {
+	"model" : "pickupApp.userinfo",
+	"pk" : 4,
+	"fields": {
+		"profile_picture":"http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg",
+		"user" : 4
+	}
+},
+{
 	"model" : "auth.user",
 	"pk" : 5,
 	"fields": {
@@ -47,6 +79,14 @@
 		"last_name"	: "Murphy-Sierra",
 		"username" : "kennan@stanford.edu",
 		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+	}
+},
+{
+	"model" : "pickupApp.userinfo",
+	"pk" : 5,
+	"fields": {
+		"profile_picture":"http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg", 
+		"user" : 5
 	}
 },
 {

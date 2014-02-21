@@ -44,19 +44,7 @@
   <div class="container">
     <div class="prof-info col-md-3">
     <h2>{{player.first_name}} {{player.last_name}}</h2>
-    {% if player.id == loggedinUser.id %} 
-        {% if connected_to_instagram %}
-        <img id="prof-pic" src="{{loggedinUser.instagraminfo.profile_picture}}">
-        {% else %}
-        <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
-        {% endif %}
-    {% else %}
-        {% if player_connected_to_instagram %}
-        <img id="prof-pic" src="{{player.instagraminfo.profile_picture}}">
-        {% else %}
-        <img id="prof-pic" src="http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg">
-        {% endif %}
-    {% endif %}
+    <img id="prof-pic" src="{{player.userinfo.profile_picture}}">
     <br></br>
     {% if player.id == loggedinUser.id %}    
         <div>

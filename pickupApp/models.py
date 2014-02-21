@@ -47,6 +47,10 @@ class GamePhoto(models.Model):
 	url = models.URLField()
 	game = models.ForeignKey(Game)
 
+class UserInfo(models.Model):
+	profile_picture = models.URLField(default='http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg')
+	user = models.OneToOneField(User)
+
 
 
 
