@@ -14,6 +14,29 @@
 {% endblock %}
 
 {% block content %}
+<!-- Facebook photo selector modal -->
+<div id="facebook_photo_selector" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Choose a photo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <label>Select Facebook Album:</label>
+                    <select class="fbps-albums" name="facebook_photo_album"></select>
+                </div>
+                <hr>
+                <div class="fbps-photos clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default fbps-cancel" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary fbps-select" data-dismiss="modal">Select Photo</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
   <div class="container">
     <div class="prof-info col-md-3">
@@ -34,7 +57,7 @@
     <br></br>
     {% if player.id == loggedinUser.id %}    
         <div>
-            <a href="/user/{{user.id}}" type="button" class="btn btn-inverse" style="position: relative; z-index:2">
+            <a data-toggle="modal" href="#facebook_photo_selector" type="button" class="btn btn-inverse" style="position: relative; z-index:2">
                 <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
         </div> 
         {% if not connected_to_instagram %}
@@ -126,12 +149,32 @@
     </div></td></tr>
 </table>
 
-
-      
-
 </section>
+<!-- Facebook SDK -->
+<div id="fb-root"></div>
 {%endblock%}
 {% block javascript %}
-<script type="text/javascript">
+<script>
+    $(function()
+    {
+        $.getScript('//connect.facebook.net/en_US/all.js', function()
+        {
+            FB.init({
+                appId      : '{{facebookID}}',
+                channelUrl : '{{websiteURL}}',
+                status     : true,
+                xfbml      : false
+            });
+
+            FacebookPhotoSelector.setFacebookSDK(FB);
+        });
+
+        $('#facebook_photo_selector').facebookPhotoSelector({
+            onFinalSelect : function(photos)
+            {
+                console.log(photos);
+            }
+        });
+    });
 </script>
 {% endblock %}

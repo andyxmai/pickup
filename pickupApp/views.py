@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from notifications import notify
 from django.db.models import Q
-from pickup.settings import INSTAGRAM_ID, INSTAGRAM_SECRET, REDIRECT_URL
+from pickup.settings import INSTAGRAM_ID, INSTAGRAM_SECRET, REDIRECT_URL, FACEBOOK_APP_ID, FACEBOOK_URL
 import urllib2, urllib
 from instagram.client import InstagramAPI
 
@@ -405,6 +405,8 @@ def profile(request):
 	if InstagramInfo.objects.filter(user=user).count():
 		connected_to_instagram = True
 
+	print FACEBOOK_URL
+
 	return render(request, 'user.html', 
 		{'player':user, 
 		'games_played':games_played, 
@@ -414,7 +416,9 @@ def profile(request):
 		'instagramID' : INSTAGRAM_ID,
 		'instagramSecret' : INSTAGRAM_SECRET,
 		'redirectURL' : REDIRECT_URL,
-		'connected_to_instagram': connected_to_instagram
+		'connected_to_instagram': connected_to_instagram,
+		'facebookID' : FACEBOOK_APP_ID,
+		'websiteURL' : FACEBOOK_URL,
 		})
 
 def sports(request):
