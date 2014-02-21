@@ -29,7 +29,6 @@
                     <label>Select Facebook Album:</label>
                     <select class="fbps-albums" name="facebook_photo_album"></select>
                 </div>
-                <hr>
                 <div class="fbps-photos clearfix"></div>
             </div>
             <div class="modal-footer">
@@ -48,8 +47,8 @@
     <br></br>
     {% if player.id == loggedinUser.id %}    
         <div>
-            <a data-toggle="modal" href="#facebook_photo_selector" type="button" class="btn btn-inverse" style="position: relative; z-index:2">
-                <i class="fa fa-camera fa-lg"></i> Upload Photo</a>
+            <a data-toggle="modal" href="#facebook_photo_selector" type="button" class="btn btn-facebook" style="position: relative; z-index:2">
+                <i class="fa fa-facebook"></i> | Upload Photo</a>
         </div> 
         {% if not connected_to_instagram %}
         <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code'>
