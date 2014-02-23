@@ -98,12 +98,13 @@
       {% endfor %}
     </div>
     {% endif %}
+   <h3> Discussion thread </h3> 
     <div class="comment_box" style="margin-top:20px">
       <form class="form-horizontal" role="form" action="/comment/" method="POST">{% csrf_token %}
         {{comment_form.text}}
         {{comment_form.user_id}}
         {{comment_form.game_id}}
-        <button type="submit" class="btn btn-primary">Post</button>
+        <button type="submit" class="btn btn-primary" style ="margin-top:15px">Post</button>
       </form>
       {% if game.comment_set.all.count %}
       <ul class="media-list">
