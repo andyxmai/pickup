@@ -208,14 +208,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
     {% endfor %}
   </section>
   {% endif %}
-  <div style="float:right">
-    <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">
-      <i class="fa fa-pencil fa-lg"></i> Create Game</a>
-  </div> 
-  <div id="map-canvas" style= "position:relative; z-index:1"></div>
-    <!-- <a href="/logout" type="button" class="btn btn-primary">Logout</a>  -->
-
-<label><input type="radio" id="all" name='sport'onclick="boxclick(this,'sport','all')" checked /> All </label>
+  <p><b> Filter games by sport </b></p>
+  <label><input type="radio" id="all" name='sport'onclick="boxclick(this,'sport','all')" checked /> All </label>
 <label><input type="radio" id="basketball" name='sport'onclick="boxclick(this,'sport','basketball')" /> Basketball </label>
 <label><input type="radio" id="football" name='sport' onclick="boxclick(this,'sport','football')"  /> Football </label>
 <label><input type="radio" id="soccer" name='sport' onclick="boxclick(this,'sport','soccer')"  /> Soccer</label>
@@ -223,5 +217,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <label><input type="radio" id="tennis" name='sport' onclick="boxclick(this,'sport','tennis')"  /> Tennis</label>
 <label><input type="radio" id="golf" name='sport' onclick="boxclick(this,'sport','golf')" /> Golf</label>
 <label><input type="radio" id="volleyball"  name='sport' onclick="boxclick(this,'sport','volleyball')" /> Volleyball</label>
+  <div style="float:right">
+    <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">
+      <i class="fa fa-pencil fa-lg"></i> Create Game</a>
+  </div> 
+  <div id="map-canvas" style= "position:relative; z-index:1"></div>
+    <!-- <a href="/logout" type="button" class="btn btn-primary">Logout</a>  -->
+
+
 
 {%endblock%}
