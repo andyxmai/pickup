@@ -90,14 +90,16 @@
     {% endif %}
   </div>
   <div style="display:block; margin-top:500px">
+
     {% if game.gamephoto_set.all.count %}
     <div class="game_photos" style="width:100%">
       <h3>Game Photos</h3>
       {% for game_photo in game.gamephoto_set.all %}
-      <img src="{{game_photo.url}}" />
+      <a href="javascript:newWin("{{game_photo.url}}", 'Bigger Image', '300', '300')"><img src="{{game_photo.url}}" width="100" height="100" /></a>
       {% endfor %}
     </div>
     {% endif %}
+
    <h3> Discussion thread </h3> 
     <div class="comment_box" style="margin-top:20px; margin-right:10px; width:45%; float:left">
       <form class="form-horizontal" role="form" action="/comment/" method="POST">{% csrf_token %}
@@ -169,6 +171,12 @@
 
 
 {% block javascript %}
+
+<script type="text/javascript">
+function newWin(url,name, width, height) { 
+window.open(url,name,'scrollbars=yes,resizable=yes, width=' + width + ',height='+height);
+}</script>
+
 <script type="text/javascript">
 $(document).ready(function() { 
   $(".join_button").click(function(e){
