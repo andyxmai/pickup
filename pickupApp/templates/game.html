@@ -99,29 +99,32 @@
     </div>
     {% endif %}
    <h3> Discussion thread </h3> 
-    <div class="comment_box" style="margin-top:20px">
+    <div class="comment_box" style="margin-top:20px; margin-right:10px; width:45%; float:left">
       <form class="form-horizontal" role="form" action="/comment/" method="POST">{% csrf_token %}
         {{comment_form.text}}
         {{comment_form.user_id}}
         {{comment_form.game_id}}
         <button type="submit" class="btn btn-primary" style ="margin-top:15px">Post</button>
       </form>
-      {% if game.comment_set.all.count %}
+    </div> 
+  </div>
+       {% if game.comment_set.all.count %}
       <ul class="media-list">
         {% for comment in game.sorted_comment_set %}
         <li class="media">
           <a class="pull-left" href="#">
             <img class="media-object" data-src="">
           </a>
-          <div class="media-body">
-            <h4 class="media-heading">{{comment.commenter.first_name}} {{comment.commenter.last_name}}</h4>
+        </li>
+        <div class="media-body" style="float:right; width:50%">
+              <h4 class="media-heading">{{comment.commenter.first_name}} {{comment.commenter.last_name}}</h4>
             {{comment.text}}
             {{comment.timeStamp}}
-          </div>
-        </li>
+        </div>
         {% endfor %}
       </ul>
       {% endif %}
+    </div> 
     </div>
   </div>
  
