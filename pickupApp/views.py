@@ -548,3 +548,6 @@ def upload_profile_photo(request):
 		user_info.save()
 
 	return redirect('/profile')
+
+def analytics(request):
+	return render(request, 'analytics.html')
