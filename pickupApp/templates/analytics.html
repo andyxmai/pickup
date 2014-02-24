@@ -18,32 +18,32 @@
 			 <div style="margin-left:25px">* {{sport.0}}: {{sport.1}} games played </div>
 			{% endfor %}
 		</div>
-		  <div id="piechart_3d" style="width: 800px; height: 500px;"></div>
-		
-	  	 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-         <script type="text/javascript">
-     	 google.load("visualization", "1", {packages:["corechart"]});
-     	 google.setOnLoadCallback(drawChart);
-     	 var mySportsArr=new Array();
-     	 mySportsArr.push(['Sport', 'Games Played'])
-     	 {% for sport in fav_sports %}
-			   mySportsArr.push(["{{sport.0}}", {{sport.1}}])
-		{% endfor %}
+	    <div id="piechart_3d" style="width: 800px; height: 500px;"></div>
+			
+		 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	     <script type="text/javascript">
+	     	 google.load("visualization", "1", {packages:["corechart"]});
+	     	 google.setOnLoadCallback(drawChart);
+	     	 var mySportsArr=new Array();
+	     	 mySportsArr.push(['Sport', 'Games Played'])
+	     	 {% for sport in fav_sports %}
+				   mySportsArr.push(["{{sport.0}}", {{sport.1}}])
+			{% endfor %}
 
-      	function drawChart() {
-        var data = google.visualization.arrayToDataTable(mySportsArr);
+	      	function drawChart() {
+	        var data = google.visualization.arrayToDataTable(mySportsArr);
 
-        var options = {
-          title: 'My Sports Breakdown',
-          is3D: true,
-        };
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-        var options = {
-  		colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
-		};
-        chart.draw(data, options);
-      }
-    </script>
+	        var options = {
+	          title: 'My Sports Breakdown',
+	          is3D: true,
+	        };
+	        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+	        var options = {
+	  		colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
+			};
+	        chart.draw(data, options);
+	      }
+	     </script>
 
 
 		<div id="sport">
