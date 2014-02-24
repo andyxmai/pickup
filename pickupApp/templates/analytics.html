@@ -48,11 +48,19 @@
 
 		<div id="sport">
 			<h5>Sport Analytics</h5>
+			Popular locations:
+			{% for k,v in sorted_freq_places.iteritems %}
+			<div>{{k}}: {{v.0.1}} games in {{v.0.0}}</div>
+			{% endfor %}
 		</div>
-
 
 		<div id="game">
 			<h5>Game Analytics</h5>
+			<div>{{all_games_played.count}} games played</div>
+
+			{% for sport,num in games_played_breakdown.iteritems %}
+			<div>{{sport}}: {{num}}</div>
+			{% endfor %}
 		</div>
 	</section>
 </div>

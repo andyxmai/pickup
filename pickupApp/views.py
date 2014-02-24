@@ -558,15 +558,43 @@ def upload_profile_photo(request):
 
 @login_required
 def analytics(request):
+	# Player Analytics
 	games_played = request.user.game_set.all()
 	fav_sports = defaultdict(lambda:0)
 	for game_played in games_played:
 		fav_sports[game_played.sport] += 1
 	fav_sports = sorted(fav_sports.iteritems(),key=lambda (k,v): v,reverse=True)
 
-	print fav_sports
+	# Sport Analytics
+	freq_places = {}
+	all_games = Game.objects.all()
+	for game in all_games:
+		if game.sport in freq_places:
+			freq_places[game.sport][game.location.name] += 1
+		else:
+			sport_loc = defaultdict(lambda:0)
+			sport_loc[game.location.name] += 1
+			freq_places[game.sport] = sport_loc
+
+	sorted_freq_places = {}
+	for k,places in freq_places.iteritems():
+		sorted_places = sorted(places.iteritems(),key=lambda (k,v): v,reverse=True)
+		sorted_freq_places[k] = sorted_places
+
+	# Game Analytics
+	all_games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
+	games_played_breakdown = {}
+	for game in all_games_played:
+		if game.sport in games_played_breakdown:
+			games_played_breakdown[game.sport] += 1
+		else:
+			games_played_breakdown[game.sport] = 1
+	print games_played_breakdown
 
 	return render(request, 'analytics.html', {
-		'games_played': games_played,
-		'fav_sports': fav_sports,
+		'games_played'				: games_played,
+		'fav_sports'				: fav_sports,
+		'sorted_freq_places'		: sorted_freq_places,
+		'all_games_played'			: all_games_played,
+		'games_played_breakdown'	: games_played_breakdown
 	})
