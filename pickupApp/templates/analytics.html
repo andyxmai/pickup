@@ -53,15 +53,44 @@
 			<div>{{k}}: {{v.0.1}} games in {{v.0.0}}</div>
 			{% endfor %}
 		</div>
-
+   
+     
 		<div id="game">
 			<h5>Game Analytics</h5>
-			<div>{{all_games_played.count}} games played</div>
+			<div>{{all_games_played.count}} games played overall</div>
 
 			{% for sport,num in games_played_breakdown.iteritems %}
 			<div>{{sport}}: {{num}}</div>
 			{% endfor %}
-		</div>
+	 </div>
+			<div id="piechart_3d_2" style="width: 800px; height: 500px;"></div>
+			
+			 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	     	<script type="text/javascript">
+	     	 google.load("visualization", "1", {packages:["corechart"]});
+	     	 google.setOnLoadCallback(drawChart_2);
+	     	 var mySportsArr=new Array();
+	     	 mySportsArr.push(['Sport', 'Games Played'])
+	     	 {% for sport,num in games_played_breakdown.iteritems %}
+				   mySportsArr.push(["{{sport}}", {{num}}])
+			{% endfor %}
+
+	      	function drawChart_2() {
+	        var data = google.visualization.arrayToDataTable(mySportsArr);
+
+	        var options = {
+	          title: 'Sports Breakdown',
+	          is3D: true,
+	        };
+	        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d_2'));
+	        var options = {
+	  		colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
+			};
+	        chart.draw(data, options);
+	      }
+	     </script>
+	
+
 	</section>
 </div>
 {% endblock %}
