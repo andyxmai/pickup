@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
 from pickupApp.models import Game, Location, Comment, InstagramInfo, GamePhoto, UserInfo
 import datetime
-import json
+import json, ast
 from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
@@ -520,9 +520,15 @@ def get_instagram_photos(request, game_id):
 	recent_media, next = api.user_recent_media(count=5)
 	instagram_photos = []
 	for media in recent_media:
-		instagram_photos.append(media.images['thumbnail'].url)
+		photo = {}
+		photo['thumbnail'] = media.images['thumbnail'].url
+		photo['standard'] = media.images['standard_resolution'].url
+		instagram_photos.append(photo)
 	
-	return render(request, 'get_instagram_photos.html', {'instagram_photos':instagram_photos, 'game_id':game_id})
+	return render(request, 'get_instagram_photos.html', {
+		'instagram_photos':instagram_photos, 
+		'game_id':game_id
+	})
 	
 @login_required
 def post_photos(request):
@@ -534,8 +540,9 @@ def post_photos(request):
 
 		if game_photos:
 			for photo in game_photos:
-				if not GamePhoto.objects.filter(url=photo).exists():
-					game_photo = GamePhoto.objects.create(url=photo, game=game)
+				photo_dict = ast.literal_eval(photo)
+				if not GamePhoto.objects.filter(thumbnail=photo_dict['thumbnail']).exists():
+					game_photo = GamePhoto.objects.create(thumbnail=photo_dict['thumbnail'], standard=photo_dict['standard'], game=game)
 
 	return redirect('/game/'+str(game.id)) 
 

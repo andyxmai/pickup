@@ -44,7 +44,8 @@ class InstagramInfo(models.Model):
 	user = models.OneToOneField(User,null=False)
 
 class GamePhoto(models.Model):
-	url = models.URLField()
+	thumbnail = models.URLField()
+	standard = models.URLField()
 	game = models.ForeignKey(Game)
 
 class UserInfo(models.Model):

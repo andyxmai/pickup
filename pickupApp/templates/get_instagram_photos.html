@@ -8,7 +8,7 @@
       <form class="form-horizontal" role="form" id="post_photos_form" action="/post_photos/" method="POST">{% csrf_token %}
         <select multiple name="photos" class="image-picker show-html">
           {% for photo in instagram_photos %}
-          <option data-img-src="{{photo}}" value="{{photo}}">{{photo}}</option>
+          <option data-img-src="{{photo.thumbnail}}" value="{{photo}}">{{photo.thumbnail}}</option>
           {% endfor %}
         </select>
         <input type="hidden" name="game_id" value="{{game_id}}">

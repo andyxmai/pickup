@@ -131,8 +131,8 @@
       <h3>Game Photos</h3>
        <div id="links">
       {% for game_photo in game.gamephoto_set.all %}
-       <a href="{{game_photo.url}}"  data-gallery>
-        <img src="{{game_photo.url}}" style="width:200px; height:200px">
+       <a href="{{game_photo.standard}}"  data-gallery>
+        <img src="{{game_photo.thumbnail}}" style="width:200px; height:200px">
     </a>
       {% endfor %}
       </div>
