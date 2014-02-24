@@ -15,57 +15,32 @@
 			<p style="margin-left:15px">You have played {{games_played.count}} games</p>
 			<p style="margin-left:15px">Your favorite sports are:</p>
 			{% for sport in fav_sports %}
-			<div style="margin-left:25px">* {{sport.0}}: {{sport.1}} games played </div>
+			 <div style="margin-left:25px">* {{sport.0}}: {{sport.1}} games played </div>
 			{% endfor %}
 		</div>
-		<div>
-		<canvas id="canvas" width="400" height="300" style="margin-top:50px;margin-bottom:50px">
-		This text is displayed if your browser does not support HTML5 Canvas.
-		</canvas>
-		</div>
+		  <div id="piechart_3d" style="width: 800px; height: 500px;"></div>
+		
+	  	 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+         <script type="text/javascript">
+     	 google.load("visualization", "1", {packages:["corechart"]});
+     	 google.setOnLoadCallback(drawChart);
+     	 var mySportsArr=new Array();
+     	 mySportsArr.push(['Sport', 'Games Played'])
+     	 {% for sport in fav_sports %}
+			   mySportsArr.push(["{{sport.0}}", {{sport.1}}])
+		{% endfor %}
 
-		<script type="text/javascript">
+      	function drawChart() {
+        var data = google.visualization.arrayToDataTable(mySportsArr);
 
-		var myColor = ["#660000","#990000","#CC3333","#FF3333","#FF6699","#FF66FF"];
-		var myData=new Array() ;
-
-		{% for sport in fav_sports %}
-			console.log({{sport.1}})
-			myData.push({{sport.1}});
-		{%endfor%}
-
-		function getTotal(){
-		var myTotal = 0;
-		for (var j = 0; j < myData.length; j++) {
-		myTotal += (typeof myData[j] == 'number') ? myData[j] : 0;
-		}
-		return myTotal;
-		}
-
-		function plotData() {
-		var canvas;
-		var ctx;
-		var lastend = 0;
-		var myTotal = getTotal();
-
-		canvas = document.getElementById("canvas");
-		ctx = canvas.getContext("2d");
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-		for (var i = 0; i < myData.length; i++) {
-		ctx.fillStyle = myColor[i];
-		ctx.beginPath();
-		ctx.moveTo(200,150);
-		ctx.arc(200,150,150,lastend,lastend+
-		  (Math.PI*2*(myData[i]/myTotal)),false);
-		ctx.lineTo(200,150);
-		ctx.fill();
-		lastend += Math.PI*2*(myData[i]/myTotal);
-		}
-		}
-
-		plotData();
-		</script>
+        var options = {
+          title: 'My Sports Breakdown',
+          is3D: true,
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
 
 
 		<div id="sport">
