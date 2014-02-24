@@ -330,7 +330,7 @@ def user(request, id):
 		return redirect('/profile')
 
 	games_created = Game.objects.filter(creator=player)
-	games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
+	games_played = player.game_set.all().filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = player.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
 
 	player_connected_to_instagram = False
@@ -556,5 +556,17 @@ def upload_profile_photo(request):
 
 	return redirect('/profile')
 
+@login_required
 def analytics(request):
-	return render(request, 'analytics.html')
+	games_played = request.user.game_set.all()
+	fav_sports = defaultdict(lambda:0)
+	for game_played in games_played:
+		fav_sports[game_played.sport] += 1
+	fav_sports = sorted(fav_sports.iteritems(),key=lambda (k,v): v,reverse=True)
+
+	print fav_sports
+
+	return render(request, 'analytics.html', {
+		'games_played': games_played,
+		'fav_sports': fav_sports,
+	})
