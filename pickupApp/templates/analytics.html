@@ -12,13 +12,12 @@
 
 		<div id="player">
 			<h5>Your Analytics</h5>
-			<p style="margin-left:15px">You have played {{games_played.count}} games</p>
-			<p style="margin-left:15px">Your favorite sports are:</p>
+			<p style="margin-left:15px"><b>You have played {{games_played.count}} games and your favorite sports are:</b></p>
 			{% for sport in fav_sports %}
 			 <div style="margin-left:25px">* {{sport.0}}: {{sport.1}} games played </div>
 			{% endfor %}
 		</div>
-	    <div id="piechart_3d" style="width: 800px; height: 500px;"></div>
+	    <div id="piechart_3d" style="width: 50%px; height: 300px;"></div>
 			
 		 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	     <script type="text/javascript">
@@ -48,25 +47,25 @@
 
 		<div id="sport">
 			<h5>Sport Analytics</h5>
-			Popular locations:
+			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
 			{% for k,v in sorted_freq_places.iteritems %}
-			<div>{{k}}: {{v.0.1}} games in {{v.0.0}}</div>
+			<div style="margin-left:25px"> * {{k}}: {{v.0.1}} games in {{v.0.0}}</div>
 			{% endfor %}
 		</div>
-   
-     
-		<div id="game">
+
+		<div id="game" style="margin-top:50px">
 			<h5>Game Analytics</h5>
-			<div>{{all_games_played.count}} games played overall</div>
+			<p style="margin-left:15px"><b>{{all_games_played.count}} games played overall:</b></p>
 
 			{% for sport,num in games_played_breakdown.iteritems %}
-			<div>{{sport}}: {{num}}</div>
+			<div style="margin-left:25px">* {{sport}}: {{num}}</div>
 			{% endfor %}
-	 </div>
-			<div id="piechart_3d_2" style="width: 800px; height: 500px;"></div>
+	  </div>
+			<div id="piechart_3d_2" style="width: 50%px; height: 300px;"></div>
 			
 			 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	     	<script type="text/javascript">
+
 	     	 google.load("visualization", "1", {packages:["corechart"]});
 	     	 google.setOnLoadCallback(drawChart_2);
 	     	 var mySportsArr=new Array();
