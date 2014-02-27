@@ -39,6 +39,7 @@ urlpatterns = patterns('',
     url(r'^post_photos/', 'pickupApp.views.post_photos', name='post_photos'),
     url(r'^upload_profile_photo/', 'pickupApp.views.upload_profile_photo', name='upload_profile_photo'),
     url(r'^analytics/', 'pickupApp.views.analytics', name='analytics'),
+    url(r'^first_login/', 'pickupApp.views.first_login', name='first_login'),
 )
 
 # urlpatterns = urlpatterns + 

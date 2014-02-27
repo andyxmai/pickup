@@ -115,3 +115,35 @@ div.fb-photo .modal-body {
   max-height: 600px;
   overflow-y: auto;
 }
+
+#sports_select ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#sports_select ul li { 
+  display: inline; 
+  margin: .4em;
+}
+
+#sports_select ul li a {
+  padding: .6em 1.2em;
+  color: #fff;
+  background-color: #bdc3c7;
+  font-weight: bold;
+}
+
+#sports_select ul li a:hover
+{
+color: #fff;
+background-color: #7f8c8d;
+}
+#sports_select ul li a.selected {
+  color:#fff;
+  background-color: #2ecc71;
+}
+
+
+
+

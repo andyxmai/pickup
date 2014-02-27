@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block navlist %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<section>
+		<h3>Welcome to Reqtime, {{user.first_name}}!</h3>
+		<div>
+			<h5>What are you favorite sports?</h5>
+			<br/>
+			<div id="sports_select">
+				<ul>
+					<li><a href="#" value="basketball">Basketball</a></li>
+					<li><a href="#" value="football">Football</a></li>
+					<li><a href="#" value="frisbee">Frisbee</a></li>
+					<li><a href="#" value="golf">Golf</a></li>
+					<li><a href="#" value="soccer">Soccer</a></li>
+					<li><a href="#" value="volleyball">Volleyball</a></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+$("#sports_select li a").click(function() {
+	var sport = $(this).attr("value");
+	var sports = localStorage.getItem("sports");
+	var obj ={};
+	
+	if($(this).hasClass("selected")) {
+		if(sports){
+		   obj = JSON.parse(sports);  
+		}
+		if(sport in obj) {
+			delete obj[sport];
+		}
+		$(this).removeClass("selected");
+	} else {
+		$(this).addClass("selected");
+		console.log(sport);
+		console.log(sports);
+		if(sports){
+		   obj = JSON.parse(sports);  
+		}
+		if (!(sport in obj)) {
+			console.log('here');
+			obj[sport] = true;
+		}
+	}
+
+	localStorage.setItem("sports",JSON.stringify(obj));
+
+	console.log(JSON.parse(localStorage.getItem("sports")));
+});
+</script>
+{% endblock %}
