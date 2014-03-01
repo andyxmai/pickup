@@ -635,3 +635,7 @@ def analytics(request):
 		'all_games_played'			: all_games_played,
 		'games_played_breakdown'	: games_played_breakdown
 	})
+
+@login_required
+def first_login(request):
+	return render(request, 'first_login.html', {'user':request.user})
