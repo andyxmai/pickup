@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
@@ -20,6 +20,11 @@ from django.db.models import Q
 from pickup.settings import INSTAGRAM_ID, INSTAGRAM_SECRET, REDIRECT_URL, FACEBOOK_APP_ID, FACEBOOK_URL
 import urllib2, urllib
 from instagram.client import InstagramAPI
+
+# For Django Activity Stream
+from django.db.models.signals import post_save
+from actstream import action 
+from actstream.models import Action, user_stream, actor_stream, action_object_stream, model_stream
 
 
 # Create your views here.
@@ -73,10 +78,23 @@ def get_games(request):
 	return games_data
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
+
 @login_required
 def home(request):
+	#Group.objects.create(name="All Users")
 	games_data = get_games(request)
 	#print games_data
+	print "In home"
+
+	print Action.objects.all()
+	# stream = actor_stream(request.user)
+	# for action in stream:
+	# 	print action
+	# 	print action.verb
+	# 	print action.actor
+	# 	print action.action_object
+	# 	# print action.timeStart
+
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
 	for note in unread:
@@ -101,10 +119,15 @@ def register(request):
 				new_user = User.objects.create_user(email, email, password)
 				new_user.first_name = first_name
 				new_user.last_name = last_name
+				new_user.groups = "All Users"
 				new_user.save()
 
 				user = authenticate(username=email, password=password)
 				login(request, user)
+				verb = first_name + ' ' + last_name + " created an account!"
+				print verb
+				action.send(user,verb=verb)
+
 
 				#return render(request, 'home.html', {'user': user})
 				return redirect('/home')
@@ -142,6 +165,7 @@ def create_game(request):
 			newGame.users.add(request.user)
 	
 			newGame.save()
+			action.send(request.user,verb="Game Created",action_object=newGame)
 			return redirect('/game/'+str(newGame.id))
 		else:
 			print 'invalid form'
@@ -189,6 +213,12 @@ def game(request,id):
 	game_exists = Game.objects.filter(id=id).count()
 	if game_exists:
 		game = Game.objects.get(id=id)
+		print action_object_stream(game)
+
+		# try:
+		# 	action_object_stream(game)
+		# except ValueError:
+		# 	print ValueError
 		comment_form = CommentForm(initial={'user_id': request.user.id, 'game_id':game.id})
 		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
@@ -230,6 +260,8 @@ def game(request,id):
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
 
+
+
 @login_required
 def join_quit_game(request):
 	#userID = request.user.id
@@ -244,11 +276,13 @@ def join_quit_game(request):
 			response = 'left'
 			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
 			notify.send(request.user,recipient=game.creator, verb=verb)
+			action.send(request.user, verb=verb, action_object=game)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
 			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
 			notify.send(request.user,recipient=game.creator, verb=verb)
+			action.send(request.user, verb=verb,action_object=game)
 	
 	#return HttpResponse(response)
 	return redirect('/game/'+game_id)
@@ -275,7 +309,8 @@ def delete_game(request):
 	if request.method == 'POST':
 		game_id = request.POST['game_id']
 		g = Game.objects.get(id=game_id)
-
+		verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name;
+		action.send(request.user,verb=verb,action_object=g)
 		receivers = []
 		allUsers = g.users.all()
 		if len(allUsers) != 0:
@@ -328,6 +363,8 @@ def user(request, id):
 	player = User.objects.get(pk=id)
 	if player == loggedinUser:
 		return redirect('/profile')
+
+	print user_stream(request.user)
 
 	games_created = Game.objects.filter(creator=player)
 	games_played = player.game_set.all().filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');

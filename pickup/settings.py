@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pickupApp',
     'notifications',
+    'actstream',
     #'social_auth'
 )
 
@@ -100,6 +101,16 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.load_extra_data',
     'social_auth.backends.pipeline.user.update_user_details'
 )
+
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('pickupApp.Game','auth.user', 'auth.group', 'sites.site', 'comments.comment'),
+    #'MANAGER': 'myapp.streams.MyActionManager',
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+    'USE_JSONFIELD': True,
+    'GFK_FETCH_DEPTH': 1,
+}
+
 
 ROOT_URLCONF = 'pickup.urls'
 
