@@ -103,7 +103,7 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('pickupApp.Game','auth.user', 'auth.group', 'sites.site', 'comments.comment'),
+    'MODELS': ('pickupApp.Game', 'pickupApp.GamePhoto','pickupApp.UserInfo','auth.user', 'auth.group', 'sites.site', 'comments.comment'),
     #'MANAGER': 'myapp.streams.MyActionManager',
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,

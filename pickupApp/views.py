@@ -128,11 +128,13 @@ def home(request):
 	following_people = following(request.user)
 	print "People I am following"
 	print following_people
+	if not len(following_people):
+		all_actions = []
 
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
 	for note in unread:
-		print note.verb
+		print note.ValueErrorrb
 	return render(request, 'home.html', {
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 
@@ -607,6 +609,7 @@ def post_photos(request):
 				photo_dict = ast.literal_eval(photo)
 				if not GamePhoto.objects.filter(thumbnail=photo_dict['thumbnail']).exists():
 					game_photo = GamePhoto.objects.create(thumbnail=photo_dict['thumbnail'], standard=photo_dict['standard'], game=game)
+					action.send(request.user,verb="photo upload",action_object=game_photo)
 
 	return redirect('/game/'+str(game.id)) 
 
@@ -617,6 +620,7 @@ def upload_profile_photo(request):
 		user_info = UserInfo.objects.get(user=request.user)
 		user_info.profile_picture = photo_url
 		user_info.save()
+		action.send(request.user,verb="profile photo",action_object=user_info)
 
 	return redirect('/profile')
 
