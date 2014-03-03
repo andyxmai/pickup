@@ -140,3 +140,21 @@ img.sport-icon {
 	line-height: 5px;
 	vertical-align: middle;
 }
+
+#map-canvas {
+    width: 100%;
+    height: 450px;
+    padding: 50px 0px 20px 0px;
+    margin: 5px;
+ }
+
+#home-container {
+	margin-top: 70px;
+	/*height: 500px;*/
+	position: fixed;
+}
+
+#map-container {
+	margin-left: auto;
+	margin-right: auto;
+}

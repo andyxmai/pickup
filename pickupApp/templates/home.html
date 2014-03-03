@@ -1,203 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-  html, body, #map-canvas {
-    width:95%;
-    height: 98%;
-    padding: 50px 0px 20px 0px;
-    margin: 0 auto;
-  }
-</style>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-
-<script>
-
-var infowindow=null;
-var markers= new Array ();
-
-function initialize() {
-
-  var myLatlng = new google.maps.LatLng(37.422, -122.16);
-  var initialLocation;
-  var browserSupportFlag = new Boolean();
-
-  var mapOptions = {
-    zoom: 14,
-    //center: myLatlng
-  };
-
-  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  
-  if(navigator.geolocation) {
-    browserSupportFlag = true;
-    navigator.geolocation.getCurrentPosition(function(position) {
-      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-      map.setCenter(initialLocation);
-
-      var image = 'http://i.stack.imgur.com/orZ4x.png';
-      var userLocationMarker = new google.maps.Marker({
-        position: initialLocation,
-        map: map,
-        icon: image
-      });
-    }, function() {
-      handleNoGeolocation(browserSupportFlag);
-    });
-  } else {
-    browserSupportFlag = false;
-    handleNoGeolocation(browserSupportFlag);
-  }
-
-  function handleNoGeolocation(errorFlag) {
-    if (errorFlag == true) {
-      alert("Geolocation service failed.");
-      initialLocation = myLatlng;
-    } else {
-      alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
-      initialLocation = myLatlng;
-    }
-    map.setCenter(initialLocation);
-  }
-
-  var locations = new Array();
-  var games={};
-
-  var json = '{{games_json|safe}}';
-  var json_game_string = JSON.parse(json);
-  //console.log(json_game_string);
-
-  var i=0
-  for (var key in json_game_string) {
-    if (json_game_string.hasOwnProperty(key)) {
-      var hash_key = key;
-      var object = json_game_string[key];
-      var lat = object['location_info']['latitude'];
-      var longi = object ['location_info']['longitude'];
-      games[hash_key]= object['games']
-      locations[i]= new Array();
-      locations[i].push(hash_key);
-      locations[i].push(lat);
-      locations[i].push(longi);
-      i+=1;
-    }
-
-  }
-
-
-  
-  var marker; 
-  var curr_sport;
-
-  var infowindow = new google.maps.InfoWindow;
-  
-  var games_by_loc = {};
-
-  for (var key in games) {
-    if (json_game_string.hasOwnProperty(key)) {
-      games_by_loc[key] = [new Array()];
-    }
-    var i=0;
-    for (var key_2 in games[key]) {
-      games_by_loc[key][i]=new Array();
-      var curr_game = (games[key][key_2]);
-      var game_id = curr_game['id'];
-      var sport = curr_game['sport'];
-      var name = curr_game['name'];
-      var remaining= curr_game['curr_num_players'];
-      var total = curr_game['max_num_players'];
-      if (!total){
-        total="Unlimited";
-      }
-      var game_arr = [sport, game_id,  name, remaining, total ]
-      games_by_loc[key][i].push(game_arr);
-      i+=1;
-    }
-  }
-
-
-  var content_1;
-  var content_2; 
-  var myIcon;
-
-  for (i = 0; i < locations.length; i++) { 
-      loc = locations[i][0]
-      for (j=0; j<games_by_loc[loc].length; j++){
-        loc_string=games_by_loc[loc][j][0]
-        curr_sport= loc_string[0];
-        var markerImage;
-        markerImage = new google.maps.MarkerImage(
-            '/static/images/'+curr_sport+'.png',
-            new google.maps.Size(50,50), //size
-            null, //origin
-            null, //anchor
-            new google.maps.Size(50,50) //scale
-         );
-      
-  
-        marker = new google.maps.Marker({
-          position: new google.maps.LatLng(locations[i][1] , locations[i][2]+j*0.0002),
-          map: map,
-          title: curr_sport,
-          icon: markerImage
-        });
-      markers.push(marker);
-
-
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          var content_1 = '<div style="font-weight:bold; text-align:center">' + locations[i][0] + '</div>';
-          loc = locations[i][0]
-          var content_1 = '<p> <b>'+loc + '</b> </p>';
-          for (j=0; j<games_by_loc[loc].length; j++){
-            console.log(games_by_loc[loc][j][0]);
-            if (games_by_loc[loc][j][0][0]==marker.getTitle()){
-
-              var link = "/game/" + games_by_loc[loc][j][0][1];
-              content_1 += '<p>'+ games_by_loc[loc][j][0][0]+ ': '+ '<u> <a href='+link+'>'+ games_by_loc[loc][j][0][2]+'</a></u>' +': ' + games_by_loc[loc][j][0][3]+ '/' + games_by_loc[loc][j][0][4]+ '</p>';
-            }
-              
-          }
-          infowindow.setContent(content_1);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }
-  }
-}
-
-
-google.maps.event.addDomListener(window, 'load', initialize);
-
-
- function boxclick(box,category,type) {
-  for (var i=0; i<markers.length; i++) {
-    markers[i].setVisible(false);
-  }
-   show(category, type);
-  }
-
- function show(category, type) {
-    if (type=='all'){
-      for (var i=0; i<markers.length; i++) {
-            markers[i].setVisible(true);
-      }
-    } else{
-      for (var i=0; i<markers.length; i++) {
-         if (markers[i].getTitle() == type){
-            markers[i].setVisible(true);
-         }
-       }
-     
-       document.getElementById(type).checked = true;
-    }
-       
-  }
-
-
-</script>
-
   {% if messages %}
   <section style="padding-bottom:0">
     {% for message in messages %}
@@ -208,7 +10,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
     {% endfor %}
   </section>
   {% endif %}
-  <p><b> Filter games by sport </b></p>
+  <div id="home-container" class="col-xs-12" style="background-image: url(/static/img/white_wall.png); overflow:scroll">
+    <div id="map-container" class="col-xs-6">
+       <!-- <p><b> Filter games by sport </b></p> -->
+       <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">
+      <i class="fa fa-pencil fa-lg"></i> Create Game</a><br/>
   <label><input type="radio" id="all" name='sport'onclick="boxclick(this,'sport','all')" checked /> All </label>
 <label><input type="radio" id="basketball" name='sport'onclick="boxclick(this,'sport','basketball')" /> Basketball </label>
 <label><input type="radio" id="football" name='sport' onclick="boxclick(this,'sport','football')"  /> Football </label>
@@ -217,13 +23,78 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <label><input type="radio" id="tennis" name='sport' onclick="boxclick(this,'sport','tennis')"  /> Tennis</label>
 <label><input type="radio" id="golf" name='sport' onclick="boxclick(this,'sport','golf')" /> Golf</label>
 <label><input type="radio" id="volleyball"  name='sport' onclick="boxclick(this,'sport','volleyball')" /> Volleyball</label>
-  <div style="float:right">
-    <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">
-      <i class="fa fa-pencil fa-lg"></i> Create Game</a>
-  </div> 
-  <div id="map-canvas" style= "position:relative; z-index:1"></div>
-    <!-- <a href="/logout" type="button" class="btn btn-primary">Logout</a>  -->
+    <div id="map-canvas"></div>
+   
+ 
+</div>
+  <div class="col-xs-6">
+        
+        <h3>Upcoming Games</h3>
+        <table id="games">
+            {% for action in actions %}
+            <tr class="{% cycle 'odd' 'even' %}"><td class="date"><!-- <i class="fa fa-dribbble fa-lg"></i> --><span class="game-month">{{action.timestamp.date | date:"M"}}</span><br/><span class="game-day">{{game.timeStart.date.day}}</span></td><td class="info">
+        <div class="single-game">     
+<!--         <div class="accordion" id="accordion{{game.id}}">
+            <div class="accordion-group">
+             <div class="accordion-heading"> --> 
+                    <h5 class="game-name">
+                    {% if game.sport == "soccer" %}
+                    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img>
+                    {% elif game.sport == "football" %}
+                    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img>
+                    {% elif game.sport == "basketball" %}
+                    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img>
+                    {% elif game.sport == "frisbee" %}
+                    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img>
+                    {% elif game.sport == "golf" %}
+                    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img>
+                    {% elif game.sport == "tennis" %}
+                    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img>
+                    {% elif game.sport == "volleyball" %}
+                    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img>
+                    {% endif %}
+                    {{game.name}}
+                    </h5>
+                <ul class="game-details">
+                    <li class="game-location">{{game.location.name}}</li>
+                    <li class="game-time">{{game.timeStart.time}}</li>
+                    <li class="game-status">Status: {{game.users.count}}/{{game.cap}} Players</li>
+                </ul>
+            </td>
+               <!--  <form action="/game/{{game.id}}"> -->
+                       <form role="form" action="/join_quit_game/" method="POST" id="join_form_{{game.id}}">{% csrf_token %}
+                    <input type="hidden" name="game_id" value="{{game.id}}">
+                  </form>
+                   <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a>
+                    {% if loggedinUser != game.creator %}
+                     {% if loggedinUser not in game.users.all %}
+                        {% if game.users.all.count < game.cap %}
+                    <button id="join_{{game.id}}" type="button" class="btn btn-success visit-game join_button">
+                        
+                        <i class="fa fa-plus fa-md"></i>Join</button> </td>
+                        {% endif %}
+                    {% else %}
+                        <button type="button" class="visit-game btn btn-danger join_button" id="leave_{{game.id}}">
+                        <i class="fa fa-minus fa-lg"></i> Leave</button> 
 
-
-
+                    {% endif %}
+                    {% else %}
+                    <form role="form" action="/delete_game/" method="POST" id="delete_form">{% csrf_token %}
+                      <input type="hidden" name="game_id" value="{{game.id}}">
+                    </form>
+                    <button type="button" class="btn btn-danger delete_button visit-game" id="delete">
+                      <i class="fa fa-trash-o fa-lg"></i> Delete Game
+                    </button> 
+                    {% endif %}
+               <!--  </form> -->
+                {% empty %}
+                No games found. Please join one!
+                {% endfor %}
+<!--                 </div>
+                </div>
+            </div> -->
+    </div></td></tr>
+</table>
+</div>
 {%endblock%}
+
