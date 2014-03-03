@@ -222,15 +222,11 @@
                 'player' : "{{player.username}}"
             },
             success: function(data){
-                console.log(data)
-                // console.log(data['follow'])
-                console.log("posting html")
-                // var is_following = data['follow']
-                // console.log(is_following)
-                // if is_following == "Yes":
-                //      $(".follow").html("Unfollow")
-                // else:
-                //     $(".follow").html("Follow")
+                if(data == "Yes"){
+                    $(".follow").html("UnFollow");
+                }else{
+                    $(".follow").html("Follow");
+                }
             }
         });
     });

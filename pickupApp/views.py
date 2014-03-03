@@ -27,6 +27,8 @@ from actstream import action
 from actstream.models import Action, user_stream, actor_stream, action_object_stream, model_stream, following, followers
 from actstream.actions import follow,unfollow
 
+from django.core import serializers
+
 # Create your views here.
 def index(request):
 	print request.user
@@ -79,6 +81,23 @@ def get_games(request):
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
 
+
+# {"pk": 12, 
+# "model": "actstream.action", 
+# "fields": {
+# 	"action_object_object_id": null, 
+# 	"description": null, 
+# 	"timestamp": "2014-03-02T00:24:34.843Z", 
+# 	"action_object_content_type": null, 
+# 	"actor_object_id": "1", 
+# 	"verb": "started following", 
+# 	"target_object_id": "2", 
+# 	"actor_content_type": 4, 
+# 	"data": null, 
+# 	"public": true, 
+# 	"target_content_type": 4
+# 	}
+# }
 @login_required
 def home(request):
 	#Group.objects.create(name="All Users")
@@ -88,14 +107,24 @@ def home(request):
 
 	#print Action.objects.all()
 	print user_stream(request.user)
-	actions = user_stream(request.user)
-	# stream = actor_stream(request.user)
-	# for action in stream:
-	# 	print action
-	# 	print action.verb
-	# 	print action.actor
-	# 	print action.action_object
-	# 	# print action.timeStart
+	mystream = user_stream(request.user)
+	#stream = actor_stream(request.user)
+	
+
+	#for action in stream:
+		#print json.stringify(action)
+		# print action
+		# print action.verb
+		# print action.actor
+		# print action.action_object
+		# print action.timestamp.strftime('%Y')
+		#data = serializers.serialize("json", Action.objects.all())
+		#print data
+
+	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('timestamp');
+	print "Printing all_actions"
+	print all_actions
+
 	following_people = following(request.user)
 	print "People I am following"
 	print following_people
@@ -107,8 +136,8 @@ def home(request):
 	return render(request, 'home.html', {
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 
-		'messages':messages,
-		'actions' : actions
+		'messages': messages,
+		'actions' : all_actions
 		})
 
 def register(request):
@@ -132,7 +161,7 @@ def register(request):
 				login(request, user)
 				verb = first_name + ' ' + last_name + " created an account!"
 				print verb
-				action.send(user,verb=verb)
+				#action.send(user,verb=verb)
 
 
 				#return render(request, 'home.html', {'user': user})
@@ -171,7 +200,7 @@ def create_game(request):
 			newGame.users.add(request.user)
 	
 			newGame.save()
-			action.send(request.user,verb="Game Created",action_object=newGame)
+			action.send(request.user,verb="game created",action_object=newGame)
 			return redirect('/game/'+str(newGame.id))
 		else:
 			print 'invalid form'
@@ -282,31 +311,18 @@ def join_quit_game(request):
 			response = 'left'
 			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
 			notify.send(request.user,recipient=game.creator, verb=verb)
-			action.send(request.user, verb=verb, action_object=game)
+			action.send(request.user, verb="leave game", action_object=game)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
 			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
 			notify.send(request.user,recipient=game.creator, verb=verb)
-			action.send(request.user, verb=verb,action_object=game)
+			action.send(request.user, verb="join game", action_object=game)
 	
 	#return HttpResponse(response)
 	return redirect(request.META['HTTP_REFERER'])
 
 def send_an_email(receivers,subj,msg):
-	# sender = "ReqTime <debugsafedriven@gmail.com>"
-	# server = smtplib.SMTP('smtp.gmail.com',587)
-	# username = 'debugsafedriven'
-	# password = 'fratpad2014'
-	# server.starttls()
-	# server.ehlo()
-	# server.login(username,password)
-	# date = datetime.datetime.now().strftime( "%d/%m/%Y %H:%M" )
-	# fullMsg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, receivers, subj, date, msg )
-	# print receivers
-	# server.sendmail(sender,receivers,fullMsg)
-	# server.quit()
-
 	sender = "ReqTime <debugsafedriven@gmail.com>"
 	send_mail(subj, msg, sender, receivers, fail_silently=False)
 
@@ -390,8 +406,7 @@ def user(request, id):
 		'upcoming_games': upcoming_games, 
 		'loggedinUser':loggedinUser,
 		'player_connected_to_instagram': player_connected_to_instagram,
-		'is_following' : is_following,
-		'following' : following_people
+		'is_following' : is_following
 		})
 	
 @login_required
@@ -611,10 +626,11 @@ def toggle_follow(request):
 		following_people= following(request.user)
 		follow_username = request.POST['player']
 
-		is_following = False
-		for user in following_people:
-			if user.username == follow_username:
-				is_following = True
+		# is_following = False
+		# for user in following_people:
+		# 	if user.username == follow_username:
+		# 		is_following = True
+		is_following = follow_username in following_people
 
 		user = User.objects.get(username=follow_username)
 		if not is_following:
@@ -622,13 +638,13 @@ def toggle_follow(request):
 		else:
 			unfollow(request.user, user)
 
-		responseData = {}
+		#responseData = {}
 		response = ""
 		if is_following:
-			responseData['follow'] = "No"
+			#responseData['follow'] = "No"
 			response = "No"
 		else:
-			responseData['follow'] = "Yes"
+			#responseData['follow'] = "Yes"
 			response = "Yes"
 
 	# return HttpResponse(json.dumps(responseData),mimetype="application/json")
