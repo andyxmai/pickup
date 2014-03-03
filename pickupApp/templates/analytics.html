@@ -12,10 +12,7 @@
 
 		<div id="player">
 			<h5>Your Analytics</h5>
-			<p style="margin-left:15px"><b>You have played {{games_played.count}} games and your favorite sports are:</b></p>
-			{% for sport in fav_sports %}
-			 <div style="margin-left:25px">* {{sport.0}}: {{sport.1}} games played </div>
-			{% endfor %}
+			<p style="margin-left:15px"><b>You have played {{games_played.count}} games</b></p>
 		</div>
 	    <div id="piechart_3d" style="width: 50%px; height: 300px;"></div>
 			
@@ -50,16 +47,36 @@
 			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
 			{% for k,v in sorted_freq_places.iteritems %}
 			<div style="margin-left:25px"> * {{k}}: {{v.0.1}} games in {{v.0.0}}</div>
+			<div id="{{k}}" style="width: 50%px; height: 300px;"></div>
 			{% endfor %}
+
+			 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	     	 <script type="text/javascript">
+	     	 var locations = new Array();
+	     	 locations[0] = new Array();
+	     	 locations[1]= new Array();
+	     	 locations[2] = new Array();
+	     	 {% for k,v in sorted_freq_places.iteritems %}
+	     		 {% for elem in v %}
+	     	 	console.log('{{elem.0}}')
+	     		 {% if '{{elem.0}}' == 'Wilbur field' %}
+	     	 		locations[0].push (['{{k}}', {{elem.1}} ])
+	     	 	 {% elif '{{elem.0}}' == 'Arillaga Gym' %}
+	     	  		locations[1].push (['{{k}}', {{elem.1}} ])
+	     	 	 {% elif '{{elem.0}}' == 'Golf Course' %}
+	     	  		locations[1].push (['{{k}}', {{elem.1}} ])
+	     	  	{% endif %}
+	     	   {%endfor %}
+	     	 {%endfor %}
+	     	  console.log(locations[0])
+	     	 </script> 
 		</div>
+
+
 
 		<div id="game" style="margin-top:50px">
 			<h5>Game Analytics</h5>
-			<p style="margin-left:15px"><b>{{all_games_played.count}} games played overall:</b></p>
-
-			{% for sport,num in games_played_breakdown.iteritems %}
-			<div style="margin-left:25px">* {{sport}}: {{num}}</div>
-			{% endfor %}
+			<p style="margin-left:15px"><b>{{all_games_played.count}} games played overall</b></p>
 	  </div>
 			<div id="piechart_3d_2" style="width: 50%px; height: 300px;"></div>
 			
@@ -68,14 +85,14 @@
 
 	     	 google.load("visualization", "1", {packages:["corechart"]});
 	     	 google.setOnLoadCallback(drawChart_2);
-	     	 var mySportsArr=new Array();
-	     	 mySportsArr.push(['Sport', 'Games Played'])
+	     	 var mySportsArr2=new Array();
+	     	 mySportsArr2.push(['Sport', 'Games Played'])
 	     	 {% for sport,num in games_played_breakdown.iteritems %}
-				   mySportsArr.push(["{{sport}}", {{num}}])
+				   mySportsArr2.push(["{{sport}}", {{num}}])
 			{% endfor %}
 
 	      	function drawChart_2() {
-	        var data = google.visualization.arrayToDataTable(mySportsArr);
+	        var data = google.visualization.arrayToDataTable(mySportsArr2);
 
 	        var options = {
 	          title: 'Sports Breakdown',
