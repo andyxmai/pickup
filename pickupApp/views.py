@@ -24,8 +24,8 @@ from instagram.client import InstagramAPI
 # For Django Activity Stream
 from django.db.models.signals import post_save
 from actstream import action 
-from actstream.models import Action, user_stream, actor_stream, action_object_stream, model_stream
-
+from actstream.models import Action, user_stream, actor_stream, action_object_stream, model_stream, following, followers
+from actstream.actions import follow,unfollow
 
 # Create your views here.
 def index(request):
@@ -86,7 +86,9 @@ def home(request):
 	#print games_data
 	print "In home"
 
-	print Action.objects.all()
+	#print Action.objects.all()
+	print user_stream(request.user)
+	actions = user_stream(request.user)
 	# stream = actor_stream(request.user)
 	# for action in stream:
 	# 	print action
@@ -94,6 +96,9 @@ def home(request):
 	# 	print action.actor
 	# 	print action.action_object
 	# 	# print action.timeStart
+	following_people = following(request.user)
+	print "People I am following"
+	print following_people
 
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
@@ -103,6 +108,7 @@ def home(request):
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 
 		'messages':messages,
+		'actions' : actions
 		})
 
 def register(request):
@@ -374,13 +380,18 @@ def user(request, id):
 	if InstagramInfo.objects.filter(user=player).count():
 		player_connected_to_instagram = True
 
+	following_people = following(request.user)
+	is_following = player in following_people
+
 	return render(request, 'user.html', {
 		'player':player, 
 		'games_played':games_played, 
 		'games_created':games_created, 
 		'upcoming_games': upcoming_games, 
 		'loggedinUser':loggedinUser,
-		'player_connected_to_instagram': player_connected_to_instagram
+		'player_connected_to_instagram': player_connected_to_instagram,
+		'is_following' : is_following,
+		'following' : following_people
 		})
 	
 @login_required
@@ -456,6 +467,7 @@ def profile(request):
 		'connected_to_instagram': connected_to_instagram,
 		'facebookID' : FACEBOOK_APP_ID,
 		'websiteURL' : FACEBOOK_URL,
+		'following' : following(request.user)
 		})
 
 def sports(request):
@@ -594,6 +606,36 @@ def upload_profile_photo(request):
 	return redirect('/profile')
 
 @login_required
+def toggle_follow(request):
+	if request.method == 'POST':
+		following_people= following(request.user)
+		follow_username = request.POST['player']
+
+		is_following = False
+		for user in following_people:
+			if user.username == follow_username:
+				is_following = True
+
+		user = User.objects.get(username=follow_username)
+		if not is_following:
+			follow(request.user, user)
+		else:
+			unfollow(request.user, user)
+
+		responseData = {}
+		response = ""
+		if is_following:
+			responseData['follow'] = "No"
+			response = "No"
+		else:
+			responseData['follow'] = "Yes"
+			response = "Yes"
+
+	# return HttpResponse(json.dumps(responseData),mimetype="application/json")
+	return HttpResponse(response)
+
+
+@login_required
 def analytics(request):
 	# Player Analytics
 	games_played = request.user.game_set.all()
@@ -639,3 +681,13 @@ def analytics(request):
 @login_required
 def first_login(request):
 	return render(request, 'first_login.html', {'user':request.user})
+
+
+
+
+
+
+
+
+
+

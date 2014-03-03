@@ -41,6 +41,7 @@ urlpatterns = patterns('',
     url(r'^get_instagram_photos/(\d+)$', 'pickupApp.views.get_instagram_photos', name='get_instagram_photos'),
     url(r'^post_photos/', 'pickupApp.views.post_photos', name='post_photos'),
     url(r'^upload_profile_photo/', 'pickupApp.views.upload_profile_photo', name='upload_profile_photo'),
+    url(r'^toggle_follow/','pickupApp.views.toggle_follow',name='toggle_follow'),
     url(r'^analytics/', 'pickupApp.views.analytics', name='analytics'),
     url(r'^first_login/', 'pickupApp.views.first_login', name='first_login'),
 )

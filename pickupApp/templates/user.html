@@ -47,7 +47,7 @@
     <h2>{{player.first_name}} {{player.last_name}}</h2>
     <img id="prof-pic" src="{{player.userinfo.profile_picture}}">
     <br></br>
-    {% if player.id == loggedinUser.id %}    
+    {% if player.id == loggedinUser.id %}   
         <div>
             <a data-toggle="modal" href="#facebook_photo_selector" type="button" class="btn btn-facebook" style="position: relative; z-index:2">
                 <i class="fa fa-facebook"></i> | Upload Photo</a>
@@ -61,10 +61,25 @@
         <i class="fa fa-camera-retro"></i> | Connected to Instagram
         </a>
         {% endif %}
+    {% else %}
+        {% if is_following %}
+        <div>
+            <button type="button" class="btn btn-default follow">UnFollow</button>
+        </div> 
+        {% else %}
+        <div>
+            <button type="button" class="btn btn-default follow">Follow</button>
+        </div> 
+        {% endif %}
     {% endif %}
 
+
     <p><a href="mailto:{{player.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{player.username}}</a></p>
+        <div>
+            {{following}}
+        </div>
     </div>
+
 
     <div class="games-feed col-md-8">
         
@@ -145,6 +160,28 @@
 {%endblock%}
 {% block javascript %}
 <script>
+
+    $(".follow").click(function(){
+        $.ajax({
+            type: "POST",
+            url:"/toggle_follow/",
+            data: {
+                'csrfmiddlewaretoken':'{{csrf_token}}',
+                'player' : "{{player.username}}"
+            },
+            success: function(data){
+                console.log(data)
+                // console.log(data['follow'])
+                console.log("posting html")
+                // var is_following = data['follow']
+                // console.log(is_following)
+                // if is_following == "Yes":
+                //      $(".follow").html("Unfollow")
+                // else:
+                //     $(".follow").html("Follow")
+            }
+        });
+    });
 
     $(function()
     {
