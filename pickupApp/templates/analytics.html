@@ -63,36 +63,6 @@
 	     </script>
 
 
-		<div id="sport">
-			<h5>Sport Analytics</h5>
-			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
-			{% for k,v in sorted_freq_places.iteritems %}
-			<div style="margin-left:25px"> * {{k}}: {{v.0.1}} games in {{v.0.0}}</div>
-			<div id="{{k}}" style="width: 50%px; height: 300px;"></div>
-			{% endfor %}
-
-			 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	     	 <script type="text/javascript">
-	     	 var locations = new Array();
-	     	 locations[0] = new Array();
-	     	 locations[1]= new Array();
-	     	 locations[2] = new Array();
-	     	 {% for k,v in sorted_freq_places.iteritems %}
-	     		 {% for elem in v %}
-	     	 	console.log('{{elem.0}}')
-	     		 {% if '{{elem.0}}' == 'Wilbur field' %}
-	     	 		locations[0].push (['{{k}}', {{elem.1}} ])
-	     	 	 {% elif '{{elem.0}}' == 'Arillaga Gym' %}
-	     	  		locations[1].push (['{{k}}', {{elem.1}} ])
-	     	 	 {% elif '{{elem.0}}' == 'Golf Course' %}
-	     	  		locations[1].push (['{{k}}', {{elem.1}} ])
-	     	  	{% endif %}
-	     	   {%endfor %}
-	     	 {%endfor %}
-	     	  console.log(locations[0])
-	     	 </script> 
-		</div>
-
 
 
 		<div id="game" style="margin-top:50px">
@@ -128,6 +98,13 @@
 	     </script>
 	
 
+<div id="sport">
+			<h5>Sport Analytics</h5>
+			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
+			{% for k,v in sorted_freq_places.iteritems %}
+			<div style="margin-left:25px"> * <b> {{v.0.0}}:</b> {{v.0.1}} {{k}} games</div>
+			{% endfor %}
+	   </div> 
 	</section>
 </div>
 {% endblock %}
