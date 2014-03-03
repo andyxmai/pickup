@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 {% block navlist %}
-        <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
-        <li class=""><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
-        <li class="active"><a href="/analytics"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Analytics</a></li>
-        <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
+        <li class=><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
+        <li><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
+        <li class="active"><a href="/analytics"><i class="fa fa-tasks fa-lg"></i>&nbsp;Analytics</a></li>
+        <li><div id="nav-div">
+        <form class="navbar-form navbar-center" role="search">
+          <div id="nav-search" class="input-group input-group-sm col-xs-4">
+            <input type="text" class="form-control" id="search" placeholder="Search for People and Games"></input>
+          </div>
+        </form>
+        </div></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+            <i class="fa fa-bell-o fa-lg"></i>
+            {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
+          </a>
+          {% if unread_count %}
+          <ul class="dropdown-menu">
+            {% for note in user.notifications.unread %}
+            <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        <li><a id="nav-name" href="/profile">{{user.first_name}} {{user.last_name}}</a></li>
+        <li id="logout-link"><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
 {% endblock %}
 {% block content %}
 <div class="container">
