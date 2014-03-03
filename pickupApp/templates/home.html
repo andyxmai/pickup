@@ -29,23 +29,22 @@
 </div>
   <div class="col-xs-6">
         
-        <h3>Upcoming Games</h3>
-        <table id="games">
+        <h3>Activity Feed</h3>
+        <table id="activity">
             {% for action in actions %}
-            <tr class="{% cycle 'odd' 'even' %}"><td class="date"><!-- <i class="fa fa-dribbble fa-lg"></i> --><span class="game-month">{{action.timestamp.date | date:"M"}}</span><br/><span class="game-day">{{game.timeStart.date.day}}</span></td><td class="info">
+            {% if action.actor != user %}
+            <tr class="{% cycle 'odd' 'even' %}"><td class="date"><!-- <i class="fa fa-dribbble fa-lg"></i> --><span class="game-month">{{action.timestamp.date | date:"M"}} {{action.timestamp.date.day}}</span><br/><span class="game-time" style="text-align:center; font-weight: bold;">
+              {{action.timestamp.time | time:"g:i A"}}</span></td><td class="info">
         <div class="single-game">     
-<!--         <div class="accordion" id="accordion{{game.id}}">
-            <div class="accordion-group">
-             <div class="accordion-heading"> --> 
-                    <h5 class="game-name">
-                    {% if game.sport == "soccer" %}
-                    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img>
-                    {% elif game.sport == "football" %}
-                    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img>
-                    {% elif game.sport == "basketball" %}
-                    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img>
-                    {% elif game.sport == "frisbee" %}
-                    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img>
+          <h5 class="activity-name">
+                    {% if action.verb == "leave game" %}
+                    <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> left <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                    {% elif action.verb == "create game" %}
+                    <i class="fa fa-rocket fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> created <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                    {% elif action.verb == "join game" %}
+                    <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> joined <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                    {% elif action.verb == "started following" %}
+                    <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> is now following <a href="/user/{{action.target.id}}" class="game-name">{{action.target.first_name}} {{action.target.last_name}}</a>.
                     {% elif game.sport == "golf" %}
                     <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img>
                     {% elif game.sport == "tennis" %}
@@ -53,19 +52,18 @@
                     {% elif game.sport == "volleyball" %}
                     <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img>
                     {% endif %}
-                    {{game.name}}
                     </h5>
-                <ul class="game-details">
+                <!-- <ul class="game-details">
                     <li class="game-location">{{game.location.name}}</li>
                     <li class="game-time">{{game.timeStart.time}}</li>
                     <li class="game-status">Status: {{game.users.count}}/{{game.cap}} Players</li>
-                </ul>
+                </ul> -->
             </td>
                <!--  <form action="/game/{{game.id}}"> -->
                        <form role="form" action="/join_quit_game/" method="POST" id="join_form_{{game.id}}">{% csrf_token %}
                     <input type="hidden" name="game_id" value="{{game.id}}">
                   </form>
-                   <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a>
+                   <!-- <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a>
                     {% if loggedinUser != game.creator %}
                      {% if loggedinUser not in game.users.all %}
                         {% if game.users.all.count < game.cap %}
@@ -87,13 +85,14 @@
                     </button> 
                     {% endif %}
                <!--  </form> -->
+                {% endif %}
                 {% empty %}
                 No games found. Please join one!
                 {% endfor %}
 <!--                 </div>
                 </div>
-            </div> -->
-    </div></td></tr>
+            </div> 
+    </div></td>--></tr>
 </table>
 </div>
 {%endblock%}

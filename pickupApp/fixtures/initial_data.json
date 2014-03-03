@@ -1,4 +1,11 @@
 [
+{	"pk": 1, 
+	"model": "auth.group", 
+	"fields": {
+		"name": "All Users", 
+		"permissions": []
+	}
+},
 {
 	"model" : "auth.user",
 	"pk" : 1,
@@ -6,7 +13,8 @@
 		"first_name" : "Ethan",
 		"last_name"	: "Myers",
 		"username" : "eymyers@stanford.edu",
-		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe",
+		"groups" : [1]
 	}
 },
 {
@@ -24,7 +32,8 @@
 		"first_name" : "Andy",
 		"last_name"	: "Mai",
 		"username" : "andymai@stanford.edu",
-		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe"
+		"password" : "bcrypt_sha256$$2a$12$G3mGT3m8EDNM6phXH7c8Z.7e.a4q8NEBElnRfsPCR6u39FeKxaZDe",
+		"groups" : [1]
 	}
 },
 {
