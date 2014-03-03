@@ -18,7 +18,7 @@
       </div> -->
     </div>
 <!-- <section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg); overflow:scroll" >
- --><section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
+ --><section class= "overlay" style="background-image: url(/static/img/white_wall.png); overflow:scroll" >
   <div class="container" >
     {% if game_exists %}
     <h2 style="">{{game.name}}
@@ -47,9 +47,9 @@
           </form>
           {% if not joined %}
             <button type="button" class="btn btn-success join_button" id="join">
-              <i class="fa fa-plus fa-lg"></i> Join</button>    
+              <i class="fa fa-plus fa-med"></i> Join</button>    
           {% else %}
-            <button type="button" class="btn btn-default join_button" id="leave">
+            <button type="button" class="btn btn-danger join_button" id="leave">
               <i class="fa fa-minus fa-lg"></i> Leave</button> 
             {% if connected_to_instagram %}
             <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">

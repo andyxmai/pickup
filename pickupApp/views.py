@@ -251,7 +251,7 @@ def join_quit_game(request):
 			notify.send(request.user,recipient=game.creator, verb=verb)
 	
 	#return HttpResponse(response)
-	return redirect('/game/'+game_id)
+	return redirect(request.META['HTTP_REFERER'])
 
 def send_an_email(receivers,subj,msg):
 	# sender = "ReqTime <debugsafedriven@gmail.com>"
@@ -568,6 +568,7 @@ def analytics(request):
 	# Sport Analytics
 	freq_places = {}
 	all_games = Game.objects.all()
+	user = request.user
 	for game in all_games:
 		if game.sport in freq_places:
 			freq_places[game.sport][game.location.name] += 1
@@ -592,6 +593,7 @@ def analytics(request):
 	print games_played_breakdown
 
 	return render(request, 'analytics.html', {
+		'user' : user,
 		'games_played'				: games_played,
 		'fav_sports'				: fav_sports,
 		'sorted_freq_places'		: sorted_freq_places,

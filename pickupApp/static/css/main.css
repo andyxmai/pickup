@@ -13,6 +13,12 @@
    Global styles
    ========================================================================== */
 
+@font-face
+{
+font-family: myFirstFont;
+src: url(sansation_light.woff);
+}
+
 .navbar, .btn, .main-menu, .filter {
   font-family: 'Yanone Kaffeesatz', sans-serif;
   text-transform: uppercase;
