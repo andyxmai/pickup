@@ -33,13 +33,12 @@ h5.game-name {
 	padding-left: 5px;
 }
 h5.activity-name {
-	text-align: left;
 	font-weight: 500;
 	color: gray;
 	margin-bottom: 5px;
-	font-size: 20px;
+	font-size: 16px;
 	padding-left: 5px;
-	margin-top: 30px;
+	margin-top: 43px;
 }
 table#games {
 	width: 100%;
@@ -53,6 +52,10 @@ table#activity {
 	border-bottom: 1px solid gray;
 }
 
+div.activity-feed {
+	margin-left: 51%;
+}
+
 td.info {
 	float: left;
 	padding: 0;
@@ -71,6 +74,10 @@ td.info {
 	color: black;
 	width: 75%;
 	height: 100px;
+}
+
+table#activity td.info {
+	width: 80%;
 }
 
 td.links {
@@ -108,6 +115,10 @@ li.game-desc {
 	font-size: 12px;
 }
 
+table#activity td.date {
+	padding-top: 15px;
+}
+
 td.date {
 	padding-top: 10px;
 	margin-bottom: 5px;
@@ -141,12 +152,12 @@ table#activity tr {
 }
 
 table#activity td {
-	height: 75px;
+	height: 100px;
 }
 
 div.single-game {
 	width: 100%;
-	height: 75px;
+	height: 100px;
 }
 
 .visit-button {
@@ -185,12 +196,13 @@ img.sport-icon {
 #home-container {
 	margin-top: 70px;
 	/*height: 500px;*/
-	position: fixed;
 }
 
 #map-container {
+	margin-top: 10px;
 	margin-left: auto;
 	margin-right: auto;
+	position: fixed;
 }
 
 a.user-name {
@@ -199,4 +211,15 @@ a.user-name {
 
 a.game-name {
 	color: darkblue;
+}
+
+img.thumbnail-img {
+	height: 100px;
+	margin-top: -65px;
+	float: right;
+	border: 3px solid black;
+}
+
+h3.activity-feed-label {
+	text-align: center;
 }

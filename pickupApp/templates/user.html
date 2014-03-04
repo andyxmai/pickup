@@ -251,7 +251,7 @@
         });
 
 
-
+        $(document).ready(function() {
         $.getScript('//connect.facebook.net/en_US/all.js', function()
         {
             FB.init({
@@ -263,6 +263,7 @@
 
             FacebookPhotoSelector.setFacebookSDK(FB);
         });
+    });
 
         $('#facebook_photo_selector').facebookPhotoSelector({
             onFinalSelect : function(photos)
