@@ -1,0 +1,37 @@
+     <div class="modal-dialog register">
+        <div class="modal-content signup">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Select Photos</h4>
+          </div>
+
+          <div class="modal-body">
+             <form class="form-horizontal" role="form" id="invite_friends_form" action="/invite_friends/{{game_id}}" method="POST">{% csrf_token %}
+             <select multiple name="friends" class="image-picker show-html">
+             {% for player in users %}
+              {% if player != user %}
+                <option data-img-src="{{player.userinfo.profile_picture}}" class="select_friends" value="{{player}}" >{{player.userinfo.profile_picture}}</option>
+                <label> {{player.username}}</label> 
+                {% endif %}
+              {%endfor %}
+             </select> 
+             </form> 
+          </div>
+
+          <div style="text-align: center;"><button type="button" class="btn btn-primary" id="invite_submit" data-loading-text="Invite friends...">Invite!</button> </div>
+
+        </div>
+      </div>
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function() { 
+  $("select").imagepicker();
+  $( "#invite_submit" ).click(function() {
+    $( "#invite_friends_form" ).submit();
+  });
+});
+
+</script> 

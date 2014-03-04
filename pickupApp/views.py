@@ -102,7 +102,7 @@ def home(request):
 		#data = serializers.serialize("json", Action.objects.all())
 		#print data
 
-	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('timestamp');
+	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('-timestamp');
 	print "Printing all_actions"
 	print all_actions
 
@@ -114,6 +114,7 @@ def home(request):
 
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
+
 	for note in unread:
 		print note.verb
 
@@ -329,7 +330,7 @@ def delete_game(request):
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
 			subj = "%s Game Cancellation" % (g.name)
-			send_an_email(receivers,subj,msg)
+			# send_an_email(receivers,subj,msg)
 
 		msg = g.name + ' (' + g.sport + ')' + ' was deleted.'
 		g.delete()
@@ -595,6 +596,8 @@ def post_photos(request):
 
 	return redirect('/game/'+str(game.id)) 
 
+
+
 @login_required
 def upload_profile_photo(request):
 	if request.method == 'POST':
@@ -689,8 +692,29 @@ def first_login(request):
 
 
 
+@login_required
+def invite_friends(request, game_id):
+	users = User.objects.all()
+	if request.method == 'POST':
+		invited_friends = request.POST.getlist('friends')
+		print invited_friends
 
+		if invited_friends:
+			for friend in invited_friends:
+				friend = User.objects.get(username=friend)
+				if friend != request.user: 
+					inviter = request.user.first_name + request.user.last_name
+					game = Game.objects.get(id=game_id)
+					verb = inviter + 'invited you to join' +game.name
+					notify.send(request.user,recipient=friend, verb=verb)
 
+		return redirect('/game/'+str(game_id)) 
+		
+	return render(request, 'invite_friends.html', {
+		'users':users,
+		'game_id':game_id,
+		'user': request.user
+	})
 
 
 

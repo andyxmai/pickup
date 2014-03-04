@@ -33,10 +33,7 @@
 
 		<div id="player">
 			<h5>Your Analytics</h5>
-			<p style="margin-left:15px"><b>You have played {{games_played.count}} games and your favorite sports are:</b></p>
-			{% for sport in fav_sports %}
-			 <div style="margin-left:25px">* {{sport.0}}: {{sport.1}} games played </div>
-			{% endfor %}
+			<p style="margin-left:15px"><b>You have played {{games_played.count}} games</b></p>
 		</div>
 	    <div id="piechart_3d" style="width: 50%px; height: 300px;"></div>
 			
@@ -66,21 +63,11 @@
 	     </script>
 
 
-		<div id="sport">
-			<h5>Sport Analytics</h5>
-			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
-			{% for k,v in sorted_freq_places.iteritems %}
-			<div style="margin-left:25px"> * {{k}}: {{v.0.1}} games in {{v.0.0}}</div>
-			{% endfor %}
-		</div>
+
 
 		<div id="game" style="margin-top:50px">
 			<h5>Game Analytics</h5>
-			<p style="margin-left:15px"><b>{{all_games_played.count}} games played overall:</b></p>
-
-			{% for sport,num in games_played_breakdown.iteritems %}
-			<div style="margin-left:25px">* {{sport}}: {{num}}</div>
-			{% endfor %}
+			<p style="margin-left:15px"><b>{{all_games_played.count}} games played overall</b></p>
 	  </div>
 			<div id="piechart_3d_2" style="width: 50%px; height: 300px;"></div>
 			
@@ -89,14 +76,14 @@
 
 	     	 google.load("visualization", "1", {packages:["corechart"]});
 	     	 google.setOnLoadCallback(drawChart_2);
-	     	 var mySportsArr=new Array();
-	     	 mySportsArr.push(['Sport', 'Games Played'])
+	     	 var mySportsArr2=new Array();
+	     	 mySportsArr2.push(['Sport', 'Games Played'])
 	     	 {% for sport,num in games_played_breakdown.iteritems %}
-				   mySportsArr.push(["{{sport}}", {{num}}])
+				   mySportsArr2.push(["{{sport}}", {{num}}])
 			{% endfor %}
 
 	      	function drawChart_2() {
-	        var data = google.visualization.arrayToDataTable(mySportsArr);
+	        var data = google.visualization.arrayToDataTable(mySportsArr2);
 
 	        var options = {
 	          title: 'Sports Breakdown',
@@ -111,6 +98,13 @@
 	     </script>
 	
 
+<div id="sport">
+			<h5>Sport Analytics</h5>
+			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
+			{% for k,v in sorted_freq_places.iteritems %}
+			<div style="margin-left:25px"> * <b> {{v.0.0}}:</b> {{v.0.1}} {{k}} games</div>
+			{% endfor %}
+	   </div> 
 	</section>
 </div>
 {% endblock %}
