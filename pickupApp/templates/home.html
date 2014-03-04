@@ -23,17 +23,15 @@
 <label><input type="radio" id="tennis" name='sport' onclick="boxclick(this,'sport','tennis')"  /> Tennis</label>
 <label><input type="radio" id="golf" name='sport' onclick="boxclick(this,'sport','golf')" /> Golf</label>
 <label><input type="radio" id="volleyball"  name='sport' onclick="boxclick(this,'sport','volleyball')" /> Volleyball</label>
-    <div id="map-canvas"></div>
-   
- 
-</div>
+  <div id="map-canvas"></div>
+    
+  </div>
 
   <div class="activity-feed col-xs-6">
-        
-        <h3 class="activity-feed-label">Activity Feed</h3>
-        <table id="activity">
-            {% for action in actions %}
-            {% if action.actor != user %}
+    <h3 class="activity-feed-label">Activity Feed</h3>
+      <table id="activity">
+         {% for action in actions %}
+         {% if action.actor != user %}
             <tr class="{% cycle 'odd' 'even' %}"><td class="date"><!-- <i class="fa fa-dribbble fa-lg"></i> --><span class="game-month">{{action.timestamp.date | date:"M"}} {{action.timestamp.date.day}}</span><br/><span class="game-time" style="text-align:center; font-weight: bold;">
               {{action.timestamp.time | time:"g:i A"}}</span></td><td class="info">
         <div class="single-game">     
@@ -306,10 +304,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
             markers[i].setVisible(true);
          }
        }
-     
        document.getElementById(type).checked = true;
-    }
-       
+    }      
   }
 </script>
 

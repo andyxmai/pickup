@@ -289,5 +289,54 @@
 		"location":1,
 		"cap":10
 	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 1,
+	"fields": {
+		"name":"basketball"
+	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 2,
+	"fields": {
+		"name":"football"
+	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 3,
+	"fields": {
+		"name":"soccer"
+	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 4,
+	"fields": {
+		"name":"volleyball"
+	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 5,
+	"fields": {
+		"name":"tennis"
+	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 5,
+	"fields": {
+		"name":"golf"
+	}
+},
+{
+	"model" : "pickupApp.sport",
+	"pk" : 6,
+	"fields": {
+		"name":"frisbee"
+	}
 }
 ]

@@ -44,6 +44,7 @@ urlpatterns = patterns('',
     url(r'^toggle_follow/','pickupApp.views.toggle_follow',name='toggle_follow'),
     url(r'^analytics/', 'pickupApp.views.analytics', name='analytics'),
     url(r'^first_login/', 'pickupApp.views.first_login', name='first_login'),
+    url(r'^first_login2/', 'pickupApp.views.first_login2', name='first_login2'),
     url(r'^invite_friends/(\d+)$', 'pickupApp.views.invite_friends', name='invite_friends')
 )
 
