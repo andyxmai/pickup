@@ -5,46 +5,159 @@
 .prof-info {
 	margin-top: 5%;
 	text-align: center;
-	background-color: lightgray;
+	position: fixed;
 }
 
 .games-feed {
 	margin-top: 5%;
 	text-align: center;
-	margin-left: 5%
-}
-
-.details-left, .details-right {
-	padding: 30px;
-	text-align: left;
-	background-color: white;
-	font-color: black;
+	margin-left: 300px;
+	width: 74%;
 }
 
 .games-feed .col-md-8 {
+	width: 100%;
+	float: right;
+}
+
+h2.profile-name {
+	font-weight: 100;
 }
 
 h5.game-name {
 	text-align: left;
-	width: 725px;
-	padding: 10px;
+	font-weight: 500;
+	color: gray;
+	margin-bottom: 5px;
+	font-size: 24px;
+	padding-left: 5px;
+}
+h5.activity-name {
+	font-weight: 500;
+	color: gray;
+	margin-bottom: 5px;
+	font-size: 16px;
+	padding-left: 5px;
+	margin-top: 43px;
+}
+table#games {
+	width: 100%;
+	margin-right: 0;
+	border-bottom: 1px solid gray;
+} 
+
+table#activity {
+	width: 100%;
+	margin-right: 0;
+	border-bottom: 1px solid gray;
 }
 
-table#games td{
-	width: 720px;
-	border-bottom: 1px solid white;
+div.activity-feed {
+	margin-left: 51%;
+}
+
+td.info {
+	float: left;
+	padding: 0;
+	margin: 2px;
+	padding-left: 5px;
+	color: black;
+	width: 75%;
+	height: 100px;
+}
+
+td.info {
+	float: left;
+	padding: 0;
+	margin: 2px;
+	padding-left: 5px;
+	color: black;
+	width: 75%;
+	height: 100px;
+}
+
+table#activity td.info {
+	width: 80%;
+}
+
+td.links {
+	/*height: 90px;*/
+	height: 50%;
+}
+
+ul.game-details {
+	list-style: none;
+	float: left;
+	padding-left: 10px;
+	text-align: left;
+	margin: 0;
+	font-size: 14px;
+}
+
+a.visit-game, button.visit-game {
+	float: right;
+	/*height: 100%;*/
+	width: 100%;
+	margin-bottom: 0;
+}
+
+li.game-location {
+	font-size: 16px;
+	font-weight: 300;
+}
+
+li.game-time, li.game-status, li.game-year {
+	font-size: 12px;
+	font-weight: 500;
+}
+
+li.game-desc {
+	font-size: 12px;
+}
+
+table#activity td.date {
+	padding-top: 15px;
+}
+
+td.date {
+	padding-top: 10px;
+	margin-bottom: 5px;
+	float: left;
+	width: 100px;
+	height: 100px;
+	text-align: center;
+	border-right: 5px double #8C1515;
+	margin-top: 5px;
+	color: #8C1515;
 }
 
 table#games .odd {
-	background-color: lightgray;
+	/*background-color: whitesmoke;*/
+
 }
 table#games .even {
-	background-color: lightgray;
+	/*background-color: whitesmoke;*/
 
 }
 
-table#games td {
+table#games tr {
+	height: 100px;
+	width: 100%;
+	border-top: 1px solid gray;
+}
 
+table#activity tr {
+	height: 50px;
+	border-bottom: 1px solid gray;
+}
+
+table#activity td {
+	height: 100px;
+}
+
+div.single-game {
+	width: 100%;
+	height: 100px;
 }
 
 .visit-button {
@@ -54,4 +167,59 @@ table#games td {
 span.arrow {
 	float: right;
 	padding-right: 10px;
+	margin-right: 10px;
+}
+
+span.game-month {
+	font-size: 32px;
+	font-weight: 100;
+}
+
+span.game-day {
+	font-size: 20px;
+	text-align: center;
+	font-weight: 300;
+}
+
+img.sport-icon {
+	line-height: 5px;
+	vertical-align: middle;
+}
+
+#map-canvas {
+    width: 100%;
+    height: 450px;
+    padding: 50px 0px 20px 0px;
+    margin: 5px;
+ }
+
+#home-container {
+	margin-top: 70px;
+	/*height: 500px;*/
+}
+
+#map-container {
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	position: fixed;
+}
+
+a.user-name {
+	color: #8C1515;
+}
+
+a.game-name {
+	color: darkblue;
+}
+
+img.thumbnail-img {
+	height: 100px;
+	margin-top: -65px;
+	float: right;
+	border: 3px solid black;
+}
+
+h3.activity-feed-label {
+	text-align: center;
 }

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
@@ -10,8 +10,6 @@ from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
 from pickupApp.constants import sports_dict
-#import smtplib # For sending emails
-#import datetime
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.messages import get_messages
@@ -21,6 +19,13 @@ from pickup.settings import INSTAGRAM_ID, INSTAGRAM_SECRET, REDIRECT_URL, FACEBO
 import urllib2, urllib
 from instagram.client import InstagramAPI
 
+# For Django Activity Stream
+from django.db.models.signals import post_save
+from actstream import action 
+from actstream.models import Action, user_stream, actor_stream, action_object_stream, model_stream, following, followers
+from actstream.actions import follow,unfollow
+
+from django.core import serializers
 
 # Create your views here.
 def index(request):
@@ -73,18 +78,51 @@ def get_games(request):
 	return games_data
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
+
+
 @login_required
 def home(request):
+	#Group.objects.create(name="All Users")
 	games_data = get_games(request)
 	#print games_data
+	print "In home"
+
+	#print Action.objects.all()
+	print user_stream(request.user)
+	mystream = user_stream(request.user)
+	#stream = actor_stream(request.user)
+	
+	#for action in stream:
+		#print json.stringify(action)
+		# print action
+		# print action.verb
+		# print action.actor
+		# print action.action_object
+		# print action.timestamp.strftime('%Y')
+		#data = serializers.serialize("json", Action.objects.all())
+		#print data
+
+	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('-timestamp');
+	print "Printing all_actions"
+	print all_actions
+
+	following_people = following(request.user)
+	print "People I am following"
+	print following_people
+	if not len(following_people):
+		all_actions = []
+
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
+
 	for note in unread:
 		print note.verb
+
 	return render(request, 'home.html', {
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 
-		'messages':messages,
+		'messages': messages,
+		'actions' : all_actions
 		})
 
 def register(request):
@@ -101,10 +139,15 @@ def register(request):
 				new_user = User.objects.create_user(email, email, password)
 				new_user.first_name = first_name
 				new_user.last_name = last_name
+				new_user.groups = "All Users"
 				new_user.save()
 
 				user = authenticate(username=email, password=password)
 				login(request, user)
+				verb = first_name + ' ' + last_name + " created an account!"
+				print verb
+				#action.send(user,verb=verb)
+
 
 				#return render(request, 'home.html', {'user': user})
 				return redirect('/home')
@@ -142,6 +185,7 @@ def create_game(request):
 			newGame.users.add(request.user)
 	
 			newGame.save()
+			action.send(request.user,verb="game created",action_object=newGame)
 			return redirect('/game/'+str(newGame.id))
 		else:
 			print 'invalid form'
@@ -189,6 +233,12 @@ def game(request,id):
 	game_exists = Game.objects.filter(id=id).count()
 	if game_exists:
 		game = Game.objects.get(id=id)
+		print action_object_stream(game)
+
+		# try:
+		# 	action_object_stream(game)
+		# except ValueError:
+		# 	print ValueError
 		comment_form = CommentForm(initial={'user_id': request.user.id, 'game_id':game.id})
 		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
@@ -230,6 +280,8 @@ def game(request,id):
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
 
+
+
 @login_required
 def join_quit_game(request):
 	#userID = request.user.id
@@ -244,29 +296,18 @@ def join_quit_game(request):
 			response = 'left'
 			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
 			notify.send(request.user,recipient=game.creator, verb=verb)
+			action.send(request.user, verb="leave game", action_object=game)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
 			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
 			notify.send(request.user,recipient=game.creator, verb=verb)
+			action.send(request.user, verb="join game", action_object=game)
 	
 	#return HttpResponse(response)
-	return redirect('/game/'+game_id)
+	return redirect(request.META['HTTP_REFERER'])
 
 def send_an_email(receivers,subj,msg):
-	# sender = "ReqTime <debugsafedriven@gmail.com>"
-	# server = smtplib.SMTP('smtp.gmail.com',587)
-	# username = 'debugsafedriven'
-	# password = 'fratpad2014'
-	# server.starttls()
-	# server.ehlo()
-	# server.login(username,password)
-	# date = datetime.datetime.now().strftime( "%d/%m/%Y %H:%M" )
-	# fullMsg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, receivers, subj, date, msg )
-	# print receivers
-	# server.sendmail(sender,receivers,fullMsg)
-	# server.quit()
-
 	sender = "ReqTime <debugsafedriven@gmail.com>"
 	send_mail(subj, msg, sender, receivers, fail_silently=False)
 
@@ -275,7 +316,8 @@ def delete_game(request):
 	if request.method == 'POST':
 		game_id = request.POST['game_id']
 		g = Game.objects.get(id=game_id)
-
+		verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name;
+		action.send(request.user,verb=verb,action_object=g)
 		receivers = []
 		allUsers = g.users.all()
 		if len(allUsers) != 0:
@@ -288,7 +330,7 @@ def delete_game(request):
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
 			subj = "%s Game Cancellation" % (g.name)
-			send_an_email(receivers,subj,msg)
+			# send_an_email(receivers,subj,msg)
 
 		msg = g.name + ' (' + g.sport + ')' + ' was deleted.'
 		g.delete()
@@ -329,6 +371,8 @@ def user(request, id):
 	if player == loggedinUser:
 		return redirect('/profile')
 
+	print user_stream(request.user)
+
 	games_created = Game.objects.filter(creator=player)
 	games_played = player.game_set.all().filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	upcoming_games = player.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
@@ -337,13 +381,17 @@ def user(request, id):
 	if InstagramInfo.objects.filter(user=player).count():
 		player_connected_to_instagram = True
 
+	following_people = following(request.user)
+	is_following = player in following_people
+
 	return render(request, 'user.html', {
 		'player':player, 
 		'games_played':games_played, 
 		'games_created':games_created, 
 		'upcoming_games': upcoming_games, 
 		'loggedinUser':loggedinUser,
-		'player_connected_to_instagram': player_connected_to_instagram
+		'player_connected_to_instagram': player_connected_to_instagram,
+		'is_following' : is_following
 		})
 	
 @login_required
@@ -419,6 +467,7 @@ def profile(request):
 		'connected_to_instagram': connected_to_instagram,
 		'facebookID' : FACEBOOK_APP_ID,
 		'websiteURL' : FACEBOOK_URL,
+		'following' : following(request.user)
 		})
 
 def sports(request):
@@ -543,8 +592,11 @@ def post_photos(request):
 				photo_dict = ast.literal_eval(photo)
 				if not GamePhoto.objects.filter(thumbnail=photo_dict['thumbnail']).exists():
 					game_photo = GamePhoto.objects.create(thumbnail=photo_dict['thumbnail'], standard=photo_dict['standard'], game=game)
+					action.send(request.user,verb="photo upload",action_object=game_photo)
 
 	return redirect('/game/'+str(game.id)) 
+
+
 
 @login_required
 def upload_profile_photo(request):
@@ -553,8 +605,40 @@ def upload_profile_photo(request):
 		user_info = UserInfo.objects.get(user=request.user)
 		user_info.profile_picture = photo_url
 		user_info.save()
+		action.send(request.user,verb="profile photo",action_object=user_info)
 
 	return redirect('/profile')
+
+@login_required
+def toggle_follow(request):
+	if request.method == 'POST':
+		following_people= following(request.user)
+		follow_username = request.POST['player']
+
+		# is_following = False
+		# for user in following_people:
+		# 	if user.username == follow_username:
+		# 		is_following = True
+		is_following = follow_username in following_people
+
+		user = User.objects.get(username=follow_username)
+		if not is_following:
+			follow(request.user, user)
+		else:
+			unfollow(request.user, user)
+
+		#responseData = {}
+		response = ""
+		if is_following:
+			#responseData['follow'] = "No"
+			response = "No"
+		else:
+			#responseData['follow'] = "Yes"
+			response = "Yes"
+
+	# return HttpResponse(json.dumps(responseData),mimetype="application/json")
+	return HttpResponse(response)
+
 
 @login_required
 def analytics(request):
@@ -568,6 +652,7 @@ def analytics(request):
 	# Sport Analytics
 	freq_places = {}
 	all_games = Game.objects.all()
+	user = request.user
 	for game in all_games:
 		if game.sport in freq_places:
 			freq_places[game.sport][game.location.name] += 1
@@ -592,6 +677,7 @@ def analytics(request):
 	print games_played_breakdown
 
 	return render(request, 'analytics.html', {
+		'user' : user,
 		'games_played'				: games_played,
 		'fav_sports'				: fav_sports,
 		'sorted_freq_places'		: sorted_freq_places,
@@ -622,3 +708,27 @@ def first_login2(request):
 			return redirect('/home')
 
 	return render(request, 'first_login2.html', {'user':request.user, 'fav_sports':fav_sports})
+
+@login_required
+def invite_friends(request, game_id):
+	users = User.objects.all()
+	if request.method == 'POST':
+		invited_friends = request.POST.getlist('friends')
+		print invited_friends
+
+		if invited_friends:
+			for friend in invited_friends:
+				friend = User.objects.get(username=friend)
+				if friend != request.user: 
+					inviter = request.user.first_name + ' ' + request.user.last_name
+					game = Game.objects.get(id=game_id)
+					verb = inviter + ' invited you to join ' +game.name
+					notify.send(request.user,recipient=friend, verb=verb)
+
+		return redirect('/game/'+str(game_id)) 
+		
+	return render(request, 'invite_friends.html', {
+		'users':users,
+		'game_id':game_id,
+		'user': request.user
+	})

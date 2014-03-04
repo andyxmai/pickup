@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
+#from django.conf.urls import *
 import notifications
+import actstream
 
 from django.contrib import admin
 admin.autodiscover()
@@ -26,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^sport/(\w+)$', 'pickupApp.views.sport', name='join_quit_game'),
     url(r'^user/(\d+)$', 'pickupApp.views.user', name='user'), 
     url(r'^inbox/notifications/', include(notifications.urls)),
+    url(r'^activity/', include('actstream.urls')),
     url(r'^remove_notifications/', 'pickupApp.views.remove_notifications', name='remove_notifications'),
     url(r'^searchgame/', 'pickupApp.views.search_game', name='search_game'),
     url(r'^profile/', 'pickupApp.views.profile', name='profile'),
@@ -38,9 +41,11 @@ urlpatterns = patterns('',
     url(r'^get_instagram_photos/(\d+)$', 'pickupApp.views.get_instagram_photos', name='get_instagram_photos'),
     url(r'^post_photos/', 'pickupApp.views.post_photos', name='post_photos'),
     url(r'^upload_profile_photo/', 'pickupApp.views.upload_profile_photo', name='upload_profile_photo'),
+    url(r'^toggle_follow/','pickupApp.views.toggle_follow',name='toggle_follow'),
     url(r'^analytics/', 'pickupApp.views.analytics', name='analytics'),
     url(r'^first_login/', 'pickupApp.views.first_login', name='first_login'),
     url(r'^first_login2/', 'pickupApp.views.first_login2', name='first_login2'),
+    url(r'^invite_friends/(\d+)$', 'pickupApp.views.invite_friends', name='invite_friends')
 )
 
 # urlpatterns = urlpatterns + 

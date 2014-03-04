@@ -3,22 +3,10 @@
 {% block content %}
 
  <!-- SignUp Modal -->
-    <div class="modal fade" id="photosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <!-- <div class="modal-dialog register">
-        <div class="modal-content signup">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Select Photos</h4>
-          </div>
-          <div class="modal-body">
-          </div>
-          <div style="text-align: center;"><button type="button" class="btn btn-primary" id="signup_submit" data-loading-text="Creating Account...">Post!</button>
-          </div>
-        </div>
-      </div> -->
-    </div>
+    <div class="modal fade" id="photosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> </div>
+    <div class="modal fade" id="friendsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> </div> 
 <!-- <section class= "overlay" style="background-image: url(/static/images/{{game.sport}}.jpg); overflow:scroll" >
- --><section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
+ --><section class= "overlay" style="background-image: url(/static/img/white_wall.png); overflow: scroll;" >
   <div class="container" >
     {% if game_exists %}
     <h2 style="">{{game.name}}
@@ -35,11 +23,14 @@
         <button type="button" class="btn btn-danger delete_button" id="delete">
           <i class="fa fa-trash-o fa-lg"></i> Delete Game
         </button> 
+        
+        <a type="button" class="btn btn-instagram instagram" href='/invite_friends/{{game.id}}' id="" data-toggle="modal" data-target="#friendsModal"> Invite friends </a>
+
         {% if connected_to_instagram %}
         <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
           <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
         </a>
-        {% endif %}
+        {% endif %} 
       {% else %}
         {% if not maxed %} 
           <form role="form" action="/join_quit_game/" method="POST" id="join_form">{% csrf_token %}
@@ -47,14 +38,13 @@
           </form>
           {% if not joined %}
             <button type="button" class="btn btn-success join_button" id="join">
-              <i class="fa fa-plus fa-lg"></i> Join</button>    
+              <i class="fa fa-plus fa-med"></i> Join</button>    
           {% else %}
-            <button type="button" class="btn btn-default join_button" id="leave">
+            <button type="button" class="btn btn-danger join_button" id="leave">
               <i class="fa fa-minus fa-lg"></i> Leave</button> 
             {% if connected_to_instagram %}
             <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
-          <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
-        </a>
+          <i class="fa fa-camera-retro"></i> | Post Photos From Instagram </a>
             {% endif %}
           {% endif %}
         {% else %}
@@ -67,6 +57,7 @@
           <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
         </a>
       {% endif %}
+
     {% endif %}
   </div> 
  
@@ -187,13 +178,13 @@
     center: myLatlng,
     }
     var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-   var image = {
+    var image = {
     url: "/static/images/{{game.sport}}.png",
     size: new google.maps.Size(71, 71),
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(17, 34),
     scaledSize: new google.maps.Size(25, 25)
-  };
+    };
     var marker = new google.maps.Marker({
       position: myLatlng,
       map: map,
@@ -224,6 +215,11 @@ $(document).ready(function() {
   $('#post_photos').click(function(){
       $('#photosModal').modal('show');
     });
+  $("select").imagepicker();
+
+  $('#post_photos').click(function(){
+    $('#friendsModal').modal('show');
+  });
   $("select").imagepicker();
 });
 

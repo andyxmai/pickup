@@ -1,20 +1,29 @@
 #nav-search {
 	padding-top: 2px;
-	width: 400px;
+	width: 500px;
 	font-family: Arial;
 	font-size: 14px;
-}
-
-#nav-div {
-	padding-top: 10px;
+/*	margin-left: auto;
+	margin-right: auto;*/
 }
 
 #navbar-links {
-	margin-right: 10%;
-	margin-top: 7px;
+	margin-top: 10px;
+	font-size: 12px;
+	width: 100%;
+	/*float: right;*/
 }
 
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
 	color: white;
 	background-color: transparent;
+}
+
+#logout-link {
+	float: right;
+	margin-right: 10px;
+}
+
+li img {
+	margin-top: -7px;
 }

@@ -148,6 +148,10 @@ background-color: #7f8c8d;
   display: inline;
   margin-right: 10px;
 }
+.image_picker_image{
+  max-width:100px !important; 
+  height:30px;
+}
 
 div.skill_sports {
   margin-top: 15px;

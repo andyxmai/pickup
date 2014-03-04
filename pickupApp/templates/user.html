@@ -4,13 +4,30 @@
 
 {% block navlist %}
         <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
-        {% if loggedinUser == player %}
-            <li class="active"><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
-        {% else %}
-            <li class=""><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
-        {% endif %}
-        <li><a href="/analytics"><i class="fa fa-bullseye fa-lg"></i>&nbsp;Analytics</a></li>
-        <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
+        <li class="active"><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
+        <li><a href="/analytics"><i class="fa fa-tasks fa-lg"></i>&nbsp;Analytics</a></li>
+        <li><div id="nav-div">
+        <form class="navbar-form navbar-center" role="search">
+          <div id="nav-search" class="input-group input-group-sm col-xs-4">
+            <input type="text" class="form-control" id="search" placeholder="Search for People and Games"></input>
+          </div>
+        </form>
+        </div></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+            <i class="fa fa-bell-o fa-lg"></i>
+            {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
+          </a>
+          {% if unread_count %}
+          <ul class="dropdown-menu">
+            {% for note in user.notifications.unread %}
+            <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        <li><a id="nav-name" href="/profile">{{user.first_name}} {{user.last_name}}</a></li>
+        <li id="logout-link"><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
 {% endblock %}
 
 {% block content %}
@@ -41,13 +58,13 @@
     </div><!-- /.modal-dialog -->
 </div><!-- END Facebook photo selector modal -->
 
-<section class= "overlay" style="background-image: url(http://www.lyft.com/images/bg-quilt.png); overflow:scroll" >
+<section class= "overlay" style="background-image: url(/static/img/white_wall.png); overflow:scroll" >
   <div class="container">
     <div class="prof-info col-md-3">
-    <h2>{{player.first_name}} {{player.last_name}}</h2>
+    <h2 class="profile-name">{{player.first_name}} {{player.last_name}}</h2>
     <img id="prof-pic" src="{{player.userinfo.profile_picture}}">
     <br></br>
-    {% if player.id == loggedinUser.id %}    
+    {% if player.id == loggedinUser.id %}   
         <div>
             <a data-toggle="modal" href="#facebook_photo_selector" type="button" class="btn btn-facebook" style="position: relative; z-index:2">
                 <i class="fa fa-facebook"></i> | Upload Photo</a>
@@ -61,9 +78,23 @@
         <i class="fa fa-camera-retro"></i> | Connected to Instagram
         </a>
         {% endif %}
+    {% else %}
+        {% if is_following %}
+        <div>
+            <button type="button" class="btn btn-default follow">UnFollow</button>
+        </div> 
+        {% else %}
+        <div>
+            <button type="button" class="btn btn-default follow">Follow</button>
+        </div> 
+        {% endif %}
     {% endif %}
 
+
     <p><a href="mailto:{{player.username}}"><i class="fa fa-envelope fa-lg"></i>&nbsp;{{player.username}}</a></p>
+        <div>
+            {{following}}
+        </div>
     </div>
 
     <div class="games-feed col-md-8">
@@ -71,73 +102,109 @@
         <h3>Upcoming Games</h3>
         <table id="games">
             {% for game in upcoming_games %}
-            <tr class="{% cycle 'odd' 'even' %}"><td>
+            <tr class="{% cycle 'odd' 'even' %}"><td class="date"><!-- <i class="fa fa-dribbble fa-lg"></i> --><span class="game-month">{{game.timeStart.date | date:"M"}}</span><br/><span class="game-day">{{game.timeStart.date.day}}</span></td><td class="info">
         <div class="single-game">     
-        <div class="accordion" id="accordion{{game.id}}">
+<!--         <div class="accordion" id="accordion{{game.id}}">
             <div class="accordion-group">
-             <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{game.id}}" href="#collapse{{game.id}}"> 
+             <div class="accordion-heading"> --> 
                     <h5 class="game-name">
-                        <i class="fa fa-dribbble fa-lg"></i> &nbsp;{{game.name}} ({{game.timeStart.date}})
-                        <span class="arrow"><i class="fa fa-chevron-down fa-xs"></i></span>
+                    {% if game.sport == "soccer" %}
+                    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img>
+                    {% elif game.sport == "football" %}
+                    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img>
+                    {% elif game.sport == "basketball" %}
+                    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img>
+                    {% elif game.sport == "frisbee" %}
+                    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img>
+                    {% elif game.sport == "golf" %}
+                    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img>
+                    {% elif game.sport == "tennis" %}
+                    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img>
+                    {% elif game.sport == "volleyball" %}
+                    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img>
+                    {% endif %}
+                    {{game.name}}
                     </h5>
-                </a>
-                <div id="collapse{{game.id}}" class="accordion-body collapse">
-                        <div class="details-left col-md-6">
-                            <p><b>Sport:</b> {{game.sport}}</p>
-                            <p><b>Description:</b> {{game.description}}</p>
-                            <p><b>Start Time:</b> {{game.timeStart.time}}</p>
-                        </div>
-                        <div class="details-right col-md-6">
-                            <p><b>Location:</b> {{game.location}}</p>   
-                            <p><b>Max Players:</b> {{game.cap}}</p>
-                            <p><b>Creator:</b> {{game.creator}}</p>
-                        </div>
-                        <div class="col-md-12">
-                            <a href="/game/{{game.id}}">See More</a>
-                        </div>
-                    </div>
+                <ul class="game-details">
+                    <li class="game-location">{{game.location.name}}</li>
+                    <li class="game-time">{{game.timeStart.time}}</li>
+                    <li class="game-status">Status: {{game.users.count}}/{{game.cap}} Players</li>
+                </ul>
+            </td>
+               <!--  <form action="/game/{{game.id}}"> -->
+                       <form role="form" action="/join_quit_game/" method="POST" id="join_form_{{game.id}}">{% csrf_token %}
+                    <input type="hidden" name="game_id" value="{{game.id}}">
+                  </form>
+                   <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a>
+                    {% if loggedinUser != game.creator %}
+                     {% if loggedinUser not in game.users.all %}
+                        {% if game.users.all.count < game.cap %}
+                    <button id="join_{{game.id}}" type="button" class="btn btn-success visit-game join_button">
+                        
+                        <i class="fa fa-plus fa-md"></i>Join</button> </td>
+                        {% endif %}
+                    {% else %}
+                        <button type="button" class="visit-game btn btn-danger join_button" id="leave_{{game.id}}">
+                        <i class="fa fa-minus fa-lg"></i> Leave</button> 
+
+                    {% endif %}
+                    {% else %}
+                    <form role="form" action="/delete_game/" method="POST" id="delete_form">{% csrf_token %}
+                      <input type="hidden" name="game_id" value="{{game.id}}">
+                    </form>
+                    <button type="button" class="btn btn-danger delete_button visit-game" id="delete">
+                      <i class="fa fa-trash-o fa-lg"></i> Delete Game
+                    </button> 
+                    {% endif %}
+               <!--  </form> -->
+                {% empty %}
+                No games found. Please join one!
                 {% endfor %}
+<!--                 </div>
                 </div>
-                </div>
-            </div>
+            </div> -->
     </div></td></tr>
 </table>
 
-
+<br/>
 <h3>Game History</h3>
         <table id="games">
             {% for game in games_played %}
-            <tr class="{% cycle 'odd' 'even' %}"><td>
+            <tr class="{% cycle 'odd' 'even' %}"><td class="date"><span class="game-year">{{game.timeStart.date.year}}</span><br/><span class="game-month">{{game.timeStart.date | date:"M"}}</span><br/><span class="game-day">{{game.timeStart.date.day}}</span></td><td class="info">
         <div class="single-game">     
-        <div class="accordion" id="accordion{{game.id}}">
+       <!--  <div class="accordion" id="accordion{{game.id}}">
             <div class="accordion-group">
              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{game.id}}" href="#collapse{{game.id}}"> 
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{game.id}}" href="#collapse{{game.id}}">  -->
                     <h5 class="game-name">
-                        <i class="fa fa-dribbble fa-lg"></i> &nbsp;{{game.name}} ({{game.timeStart.date}})
-                        <span class="arrow"><i class="fa fa-chevron-down fa-xs"></i></span>
+                        {% if game.sport == "soccer" %}
+                    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img>
+                    {% elif game.sport == "football" %}
+                    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img>
+                    {% elif game.sport == "basketball" %}
+                    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img>
+                    {% elif game.sport == "frisbee" %}
+                    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img>
+                    {% elif game.sport == "golf" %}
+                    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img>
+                    {% elif game.sport == "tennis" %}
+                    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img>
+                    {% elif game.sport == "volleyball" %}
+                    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img>
+                    {% endif %}
+                        {{game.name}}
                     </h5>
-                </a>
-                <div id="collapse{{game.id}}" class="accordion-body collapse">
-                        <div class="details-left col-md-6">
-                            <p><b>Sport:</b> {{game.sport}}</p>
-                            <p><b>Description:</b> {{game.description}}</p>
-                            <p><b>Start Time:</b> {{game.timeStart.time}}</p>
-                        </div>
-                        <div class="details-right col-md-6">
-                            <p><b>Location:</b> {{game.location}}</p>   
-                            <p><b>Max Players:</b> {{game.cap}}</p>
-                            <p><b>Creator:</b> {{game.creator}}</p>
-                        </div>
-                        <div class="col-md-12">
-                            <i class="fa fa-info fa-xs"></i><a href="/game/{{game.id}}">&nbsp;<b>{{game.name}} Page</b></a>
-                        </div>
-                    </div>
+                    <ul class="game-details">
+                    <li class="game-location">{{game.location.name}}</li>
+                    <li class="game-time">{{game.timeStart.time}}</li>
+                    <li class="game-desc">{{game.description}}</li>
+                    </ul>
+                </td>
+                <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a></td>
                 {% endfor %}
+               <!--  </div>
                 </div>
-                </div>
-            </div>
+            </div> -->
     </div></td></tr>
 </table>
 
@@ -146,8 +213,45 @@
 {% block javascript %}
 <script>
 
+    $(".follow").click(function(){
+        $.ajax({
+            type: "POST",
+            url:"/toggle_follow/",
+            data: {
+                'csrfmiddlewaretoken':'{{csrf_token}}',
+                'player' : "{{player.username}}"
+            },
+            success: function(data){
+                if(data == "Yes"){
+                    $(".follow").html("UnFollow");
+                }else{
+                    $(".follow").html("Follow");
+                }
+            }
+        });
+    });
+
     $(function()
     {
+        $(document).ready(function() { 
+        $(".join_button").click(function(e){
+            $( "#join_form_"+this.id.match(/\d+/)).submit();
+        });
+
+        $('#post_photos').click(function(){
+        $('#photosModal').modal('show');
+        });
+        $("select").imagepicker();
+        });
+
+        $(document).ready(function(){
+        $(".delete_button").click(function(e){
+        $("#delete_form").submit();
+        });
+        });
+
+
+        $(document).ready(function() {
         $.getScript('//connect.facebook.net/en_US/all.js', function()
         {
             FB.init({
@@ -159,6 +263,7 @@
 
             FacebookPhotoSelector.setFacebookSDK(FB);
         });
+    });
 
         $('#facebook_photo_selector').facebookPhotoSelector({
             onFinalSelect : function(photos)
