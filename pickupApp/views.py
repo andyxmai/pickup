@@ -121,7 +121,7 @@ def home(request):
 		#data = serializers.serialize("json", Action.objects.all())
 		#print data
 
-	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('timestamp');
+	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('-timestamp');
 	print "Printing all_actions"
 	print all_actions
 
@@ -133,8 +133,8 @@ def home(request):
 
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
-	for note in unread:
-		print note.ValueErrorrb
+	# for note in unread:
+	# 	print note.ValueErrorrb
 	return render(request, 'home.html', {
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 

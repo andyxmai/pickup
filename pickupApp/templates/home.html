@@ -27,9 +27,10 @@
    
  
 </div>
-  <div class="col-xs-6">
+
+  <div class="activity-feed col-xs-6">
         
-        <h3>Activity Feed</h3>
+        <h3 class="activity-feed-label">Activity Feed</h3>
         <table id="activity">
             {% for action in actions %}
             {% if action.actor != user %}
@@ -38,21 +39,64 @@
         <div class="single-game">     
           <h5 class="activity-name">
                     {% if action.verb == "leave game" %}
-                    <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> left <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
-                    {% elif action.verb == "create game" %}
-                    <i class="fa fa-rocket fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> created <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                      <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> left <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                      </h5>
+                    {% elif action.verb == "game created" %}
+                      <i class="fa fa-star fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> created <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                      </h5>
                     {% elif action.verb == "join game" %}
-                    <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> joined <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                      <i class="fa fa-plus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> joined <a href="/game/{{action.action_object.id}}" class="game-name">{{action.action_object.name}}</a>.
+                      </h5>
                     {% elif action.verb == "started following" %}
-                    <i class="fa fa-minus-circle fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> is now following <a href="/user/{{action.target.id}}" class="game-name">{{action.target.first_name}} {{action.target.last_name}}</a>.
-                    {% elif game.sport == "golf" %}
-                    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img>
-                    {% elif game.sport == "tennis" %}
-                    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img>
-                    {% elif game.sport == "volleyball" %}
-                    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img>
+                      <i class="fa fa-rss fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> is now following <a href="/user/{{action.target.id}}" class="game-name">{{action.target.first_name}} {{action.target.last_name}}</a>. </h5>
+                    {% elif action.verb == "photo upload" %}
+                      <i class="fa fa-instagram fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> uploaded a photo for <a class="game-name" href="/game/{{action.action_object.game.id}}">{{action.action_object.game.name}}</a>:</h5> 
+                      <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <!-- The container for the modal slides -->
+        <div class="slides"></div>
+        <!-- Controls for the borderless lightbox -->
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+        <!-- The modal dialog, which will be used to wrap the lightbox content -->
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body next"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left prev">
+                            <i class="glyphicon glyphicon-chevron-left"></i>
+                            Previous
+                        </button>
+                        <button type="button" class="btn btn-primary next">
+                            Next
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+                    <div class="game_photos" style="width:100%">
+                      <div id="links">
+                        <a href="{{action.action_object.standard}}" data-gallery>
+                          <img class="thumbnail-img" src="{{action.action_object.thumbnail}}"></img>
+                      </a>
+                    </div></div>
+
+
+                      <!-- <img class="thumbnail-img" src="{{action.action_object.thumbnail}}"></img> -->
                     {% endif %}
-                    </h5>
+                    
                 <!-- <ul class="game-details">
                     <li class="game-location">{{game.location.name}}</li>
                     <li class="game-time">{{game.timeStart.time}}</li>
@@ -60,9 +104,6 @@
                 </ul> -->
             </td>
                <!--  <form action="/game/{{game.id}}"> -->
-                       <form role="form" action="/join_quit_game/" method="POST" id="join_form_{{game.id}}">{% csrf_token %}
-                    <input type="hidden" name="game_id" value="{{game.id}}">
-                  </form>
                    <!-- <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a>
                     {% if loggedinUser != game.creator %}
                      {% if loggedinUser not in game.users.all %}
@@ -95,5 +136,9 @@
     </div></td>--></tr>
 </table>
 </div>
+
+<script src="/static/js/jquery.blueimp-gallery.min.js"></script>
+<script src="/static/js/bootstrap-image-gallery.min.js"></script>
+
 {%endblock%}
 
