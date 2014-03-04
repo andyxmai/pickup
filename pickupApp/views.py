@@ -10,8 +10,6 @@ from django.http import HttpResponse
 from pickupApp.constants import location_to_coordinates
 from collections import defaultdict
 from pickupApp.constants import sports_dict
-#import smtplib # For sending emails
-#import datetime
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.contrib.messages import get_messages
@@ -82,22 +80,6 @@ def get_games(request):
 
 
 
-# {"pk": 12, 
-# "model": "actstream.action", 
-# "fields": {
-# 	"action_object_object_id": null, 
-# 	"description": null, 
-# 	"timestamp": "2014-03-02T00:24:34.843Z", 
-# 	"action_object_content_type": null, 
-# 	"actor_object_id": "1", 
-# 	"verb": "started following", 
-# 	"target_object_id": "2", 
-# 	"actor_content_type": 4, 
-# 	"data": null, 
-# 	"public": true, 
-# 	"target_content_type": 4
-# 	}
-# }
 @login_required
 def home(request):
 	#Group.objects.create(name="All Users")
@@ -110,7 +92,6 @@ def home(request):
 	mystream = user_stream(request.user)
 	#stream = actor_stream(request.user)
 	
-
 	#for action in stream:
 		#print json.stringify(action)
 		# print action
@@ -133,8 +114,10 @@ def home(request):
 
 	messages = get_messages(request)
 	unread = request.user.notifications.unread()
-	# for note in unread:
-	# 	print note.ValueErrorrb
+
+	for note in unread:
+		print note.verb
+
 	return render(request, 'home.html', {
 		'user':request.user, 
 		'games_json':json.dumps(games_data), 
