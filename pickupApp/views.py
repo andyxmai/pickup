@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from pickupApp.forms import RegisterForm, LoginForm, GameForm, CommentForm
-from pickupApp.models import Game, Location, Comment, InstagramInfo, GamePhoto, UserInfo
+from pickupApp.models import Game, Location, Comment, InstagramInfo, GamePhoto, UserInfo, Sport, UserSportLevel
 import datetime
 import json, ast
 from django.http import HttpResponse
@@ -601,4 +601,24 @@ def analytics(request):
 
 @login_required
 def first_login(request):
+	if request.method == 'POST':
+		print request.POST
+		fav_sports = json.loads(request.POST.get('sports'))
+		for sport_name in fav_sports.keys():
+			sport = Sport.objects.get(name=sport_name)
+			UserSportLevel.objects.create(user=request.user, sport=sport)
+
 	return render(request, 'first_login.html', {'user':request.user})
+
+@login_required
+def first_login2(request):
+	fav_sports = request.user.sport_set.all()
+	if request.method == 'POST':
+		for sport in fav_sports:
+			user_sport = UserSportLevel.objects.filter(user=request.user, sport=sport)[0]
+			user_sport.level = request.POST.get(sport.name)
+			user_sport.save()
+
+			return redirect('/home')
+
+	return render(request, 'first_login2.html', {'user':request.user, 'fav_sports':fav_sports})

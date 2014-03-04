@@ -52,7 +52,12 @@ class UserInfo(models.Model):
 	profile_picture = models.URLField(default='http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg')
 	user = models.OneToOneField(User)
 
+class Sport(models.Model):
+	name = models.CharField(max_length=200)
+	lovers = models.ManyToManyField(User, through='UserSportLevel')
 
-
-
+class UserSportLevel(models.Model):
+	user = models.ForeignKey(User)
+	sport = models.ForeignKey(Sport)
+	level = models.IntegerField(default=0)
 	
