@@ -614,6 +614,30 @@ def post_photos(request):
 	return redirect('/game/'+str(game.id)) 
 
 @login_required
+def invite_friends(request, game_id):
+	users = User.objects.all()
+	if request.method == 'POST':
+		invited_friends = request.POST.getlist('friends')
+		print invited_friends
+
+		if invited_friends:
+			for friend in invited_friends:
+				friend = User.objects.get(username=friend)
+				if friend != request.user: 
+					inviter = request.user.first_name + request.user.last_name
+					game = Game.objects.get(id=game_id)
+					verb = inviter + 'invited you to join' +game.name
+					notify.send(request.user,recipient=friend, verb=verb)
+
+		return redirect('/game/'+str(game_id)) 
+		
+	return render(request, 'invite_friends.html', {
+		'users':users,
+		'game_id':game_id,
+		'user': request.user
+	})
+
+@login_required
 def upload_profile_photo(request):
 	if request.method == 'POST':
 		photo_url = request.POST['photo_url']

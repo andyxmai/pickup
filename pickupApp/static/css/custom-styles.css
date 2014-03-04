@@ -144,6 +144,11 @@ background-color: #7f8c8d;
   background-color: #2ecc71;
 }
 
+.image_picker_image{
+  max-width:100px !important; 
+  height:30px;
+}
+
 
 
 
