@@ -703,9 +703,9 @@ def invite_friends(request, game_id):
 			for friend in invited_friends:
 				friend = User.objects.get(username=friend)
 				if friend != request.user: 
-					inviter = request.user.first_name + request.user.last_name
+					inviter = request.user.first_name + ' ' + request.user.last_name
 					game = Game.objects.get(id=game_id)
-					verb = inviter + 'invited you to join' +game.name
+					verb = inviter + ' invited you to join ' +game.name
 					notify.send(request.user,recipient=friend, verb=verb)
 
 		return redirect('/game/'+str(game_id)) 
