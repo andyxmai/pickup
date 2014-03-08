@@ -30,12 +30,21 @@
 <div class="container">
 	<section>
 		<h3>Analytics</h3>
-
-		<div id="player">
+		<div id="player"  class="col-md-4" style="width:35%" >
 			<h5>Your Analytics</h5>
-			<p style="margin-left:15px"><b>You have played {{games_played.count}} games</b></p>
+			<p><b>You have played {{games_played.count}} games</b></p>
 		</div>
-	    <div id="piechart_3d" style="width: 50%px; height: 300px;"></div>
+		<div id="game"  class="col-md-4" style="width:35%">
+			<h5>Game Analytics</h5>
+			<p><b>{{all_games_played.count}} games played overall</b></p>
+	  </div>
+	  <div id="sport" class="col-md-4" style="width:30%">
+			<h5>Sport Analytics</h5>
+			<p> <b> Top locations by sport: </b> <p>
+	   </div> 
+
+
+	    <div id="piechart_3d"  class="col-md-4" style="width: 35%; height: 300px;" align="left"></div>
 			
 		 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	     <script type="text/javascript">
@@ -62,14 +71,7 @@
 	      }
 	     </script>
 
-
-
-
-		<div id="game" style="margin-top:50px">
-			<h5>Game Analytics</h5>
-			<p style="margin-left:15px"><b>{{all_games_played.count}} games played overall</b></p>
-	  </div>
-			<div id="piechart_3d_2" style="width: 50%px; height: 300px;"></div>
+			<div id="piechart_3d_2" class="col-md-4" style=" width: 35%; height: 300px;" align="left"></div>
 			
 			 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	     	<script type="text/javascript">
@@ -96,15 +98,15 @@
 	        chart.draw(data, options);
 	      }
 	     </script>
-	
 
-<div id="sport">
-			<h5>Sport Analytics</h5>
-			<p style="margin-left:15px"> <b> Top locations by sport: </b> <p>
-			{% for k,v in sorted_freq_places.iteritems %}
-			<div style="margin-left:25px"> * <b> {{v.0.0}}:</b> {{v.0.1}} {{k}} games</div>
+	    <div class="col-md-4" style="margin-top:50px ; width: 30%" align="left">
+	    	{% for k,v in sorted_freq_places.iteritems %}
+			<div> * <b> {{v.0.0}}:</b> {{v.0.1}} {{k}} games</div>
 			{% endfor %}
-	   </div> 
+		</div> 
+
+
 	</section>
 </div>
+
 {% endblock %}
