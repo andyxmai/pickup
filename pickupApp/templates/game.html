@@ -30,6 +30,10 @@
         <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
           <i class="fa fa-camera-retro"></i> | Post Photos From Instagram
         </a>
+        {% else %}
+        <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code'>
+            <i class="fa fa-camera-retro"></i> | Connect to Instagram to Post Photos
+        </a>
         {% endif %} 
       {% else %}
         {% if not maxed %} 
@@ -45,6 +49,10 @@
             {% if connected_to_instagram %}
             <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
           <i class="fa fa-camera-retro"></i> | Post Photos From Instagram </a>
+            {% else %}
+            <a type="button" class="btn btn-instagram instagram" href='https://api.instagram.com/oauth/authorize/?client_id={{instagramID}}&redirect_uri={{redirectURL}}&response_type=code'>
+                <i class="fa fa-camera-retro"></i> | Connect to Instagram to Post Photos
+            </a>
             {% endif %}
           {% endif %}
         {% else %}

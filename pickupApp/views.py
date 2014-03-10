@@ -26,6 +26,7 @@ from actstream.models import Action, user_stream, actor_stream, action_object_st
 from actstream.actions import follow,unfollow
 
 from django.core import serializers
+import math, operator
 
 # Create your views here.
 def index(request):
@@ -78,14 +79,10 @@ def get_games(request):
 	return games_data
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
-
-
 @login_required
 def home(request):
 	#Group.objects.create(name="All Users")
 	games_data = get_games(request)
-	#print games_data
-	print "In home"
 
 	#print Action.objects.all()
 	print user_stream(request.user)
@@ -118,11 +115,24 @@ def home(request):
 	for note in unread:
 		print note.verb
 
+	game_recommendations = []
+	if request.user.userinfo.latitude != None:
+		game_recommendations = get_game_recommendations(request)
+	# game_count = 0
+	# recommendations = []
+	# for recommendation in game_recommendations:
+	# 	if game_count >= 5:
+	# 		break
+	# 	recommendations.append()
+	print game_recommendations
+
+
 	return render(request, 'home.html', {
-		'user':request.user, 
-		'games_json':json.dumps(games_data), 
-		'messages': messages,
-		'actions' : all_actions
+		'user'					:request.user, 
+		'games_json'			:json.dumps(games_data), 
+		'messages'				:messages,
+		'actions' 				:all_actions,
+		'game_recommendations' 	:game_recommendations
 		})
 
 def register(request):
@@ -274,14 +284,14 @@ def game(request,id):
 			'passed_game':passed_game, 
 			'maxed':maxed, 
 			'comment_form':comment_form, 
-			'connected_to_instagram':connected_to_instagram
+			'connected_to_instagram':connected_to_instagram,
+			'instagramID' : INSTAGRAM_ID,
+			'instagramSecret' : INSTAGRAM_SECRET,
+			'redirectURL' : REDIRECT_URL,
 		})
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
-
-
-
 @login_required
 def join_quit_game(request):
 	#userID = request.user.id
@@ -732,3 +742,114 @@ def invite_friends(request, game_id):
 		'game_id':game_id,
 		'user': request.user
 	})
+
+def get_fav_sports_set(request):
+	fav_sports = request.user.sport_set.all()
+	sports = set()
+	sports_dict = defaultdict(lambda:0)
+	for fav_sport in fav_sports:
+		sports.add(fav_sport.name)
+		user_sport = UserSportLevel.objects.get(user=request.user, sport=fav_sport)
+		sports_dict[fav_sport.name] = user_sport.level
+	
+	return (sports, sports_dict)
+
+
+def get_game_location_coordinates(game):
+	return (game.location.latitude, game.location.longitude)
+
+def get_user_location_coordinates(user):
+	return (user.userinfo.latitude, user.userinfo.longitude)
+
+def distance_on_unit_sphere(lat1, long1, lat2, long2):
+	# Convert latitude and longitude to 
+	# spherical coordinates in radians.
+	degrees_to_radians = math.pi/180.0
+	    
+	# phi = 90 - latitude
+	phi1 = (90.0 - lat1)*degrees_to_radians
+	phi2 = (90.0 - lat2)*degrees_to_radians
+	    
+	# theta = longitude
+	theta1 = long1*degrees_to_radians
+	theta2 = long2*degrees_to_radians
+	    
+	# Compute spherical distance from spherical coordinates.
+	    
+	# For two locations in spherical coordinates 
+	# (1, theta, phi) and (1, theta, phi)
+	# cosine( arc length ) = 
+	#    sin phi sin phi' cos(theta-theta') + cos phi cos phi'
+	# distance = rho * arc length
+
+	cos = (math.sin(phi1)*math.sin(phi2)*math.cos(theta1 - theta2) + 
+	       math.cos(phi1)*math.cos(phi2))
+	arc = math.acos( cos )
+
+	# Remember to multiply arc by the radius of the earth 
+	# in your favorite set of units to get length.
+	return arc*3963.1676
+
+def get_game_recommendations(request):
+	# weight factors and return the top 5 most 'relevant' games to user
+	recommendations = defaultdict(lambda:0)
+	(sports, sports_dict) = get_fav_sports_set(request)
+	upcoming_games = request.user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
+	for upcoming_game in upcoming_games:
+		if upcoming_game.creator != request.user:
+			currSport = Sport.objects.get(name=upcoming_game.sport)
+			weight = 0.0
+
+			#Check for user's favorite sports
+			if upcoming_game.sport in sports:
+				creator_sports = upcoming_game.creator.sport_set.all()
+				if currSport in creator_sports:
+					creator_sport = UserSportLevel.objects.get(user=upcoming_game.creator, sport=currSport)
+					creator_level = creator_sport.level
+					if sports_dict[upcoming_game.sport] == creator_level:
+						weight += 3
+					else:
+						weight += 2
+				else:
+					weight += 1
+
+			# Check for game location
+			(game_latitude, game_longitude) = get_game_location_coordinates(upcoming_game)	
+			(user_latitude, user_longitude) = get_user_location_coordinates(request.user)
+			distance = distance_on_unit_sphere(game_latitude, game_longitude, user_latitude, user_longitude)		
+			weight += 1/distance
+			
+			# Check for game players' skill level
+			players_score = 0.0
+			for player in upcoming_game.users.all():
+				player_sport = UserSportLevel.objects.filter(user=player, sport=currSport)
+				if player_sport.count():
+					player_skill = player_sport[0]
+					players_score += 1/(math.fabs(player_skill.level-sports_dict[upcoming_game.sport])+upcoming_game.users.count())
+
+			weight += players_score	
+			recommendations[upcoming_game] = weight
+
+	sorted_recommendations = sorted(recommendations.iteritems(), key=operator.itemgetter(1), reverse=True)
+	#print sorted_recommendations
+	return sorted_recommendations
+
+def recommendations(request):
+	game_recommendations = get_game_recommendations(request)
+
+	return render(request, 'recommendations.html')
+
+def store_user_location(request):
+	if request.POST:
+		latitude = request.POST.get('latitude')
+		longitude = request.POST.get('longitude')
+
+		user_info = UserInfo.objects.get(user=request.user)
+		user_info.latitude = latitude
+		user_info.longitude = longitude
+
+		user_info.save()
+
+	return HttpResponse('')
+
+

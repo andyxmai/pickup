@@ -16,7 +16,7 @@
       <i class="fa fa-pencil fa-lg"></i> Create Game</a><br/>
       <!-- <p><b> Filter games by sport </b></p> -->
   <form>
-  <label><input type="checkbox" id="all" name='sport-all'onclick="boxclick(this,'sport','all')" checked /> All </label>
+  <label><input type="checkbox" class="homesport" id="all" name='sport-all'onclick="boxclick(this,'sport','all')" checked /> All </label>
   <label><input type="checkbox" id="basketball" name='sport-bball'onclick="boxclick(this,'sport','basketball')" unchecked /> Basketball </label>
   <label><input type="checkbox" id="football" name='sport-fball' onclick="boxclick(this,'sport','football')"  unchecked /> Football </label>
   <label><input type="checkbox" id="soccer" name='sport-sball' onclick="boxclick(this,'sport','soccer')" unchecked /> Soccer</label>
@@ -24,10 +24,48 @@
   <label><input type="checkbox" id="tennis" name='sport-tball' onclick="boxclick(this,'sport','tennis')" unchecked /> Tennis</label>
   <label><input type="checkbox" id="golf" name='sport-golf' onclick="boxclick(this,'sport','golf')" unchecked /> Golf</label>
   <label><input type="checkbox" id="volleyball"  name='sport-vball' onclick="boxclick(this,'sport','volleyball')" unchecked /> Volleyball</label>
+  <!-- <button type="button" id="all" class="btn btn-homesport btn-xs" onclick="boxclick(this,'sport','all')">
+    <img class="sport-icon" src="/static/img/sports/medal/medal-25.png"></img> 
+    
+    <input type="checkbox" value="None" id="squaredTwo" name="check" /> &nbsp All
+  </button>
+  <button type="button" id="basketball" class="btn btn-homesport btn-xs" onclick="boxclick(this,'sport','basketball')">
+    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img> Basketball
+  </button>
+  <button type="button" id="football" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img> Football
+  </button>
+  <button type="button" id="soccer" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img> Soccer
+  </button>
+  <button type="button" id="frisbee" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img> Frisbee
+  </button>
+  <button type="button" id="tennis" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img> Tennis
+  </button>
+  <button type="button" id="golf" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img> Golf
+  </button>
+  <button type="button" id="volleyball" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img> Volleyball
+  </button> -->
   </form>
+
+  
+
   <div id="map-canvas"></div>
     
-  </div>
+   {% if game_recommendations %}
+    <div class="recommendations">
+      <h5>Games Recommended For You</h5>
+      {% for recommendation in game_recommendations %}
+        <p><a href="/game/{{recommendation.0.id}}">{{recommendation.0.name}}</a></p>
+      {% endfor %}
+    </div>
+    {% endif %}
+ 
+</div>
 
   <div class="activity-feed col-xs-6">
     <h3 class="activity-feed-label">Activity Feed</h3>
@@ -136,7 +174,7 @@
     </div></td>--></tr>
 </table>
 </div>
-<!-- Head of a conflict was here-->
+
 <script>
 
 var infowindow=null;
@@ -160,6 +198,17 @@ function initialize() {
     navigator.geolocation.getCurrentPosition(function(position) {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
+      $.ajax({
+        type: "POST",
+        url: "/store_user_location/",
+        data: { 
+          'csrfmiddlewaretoken':'{{csrf_token}}', 
+          'latitude' : position.coords.latitude,
+          'longitude' : position.coords.longitude
+        },
+        success: function(data) {
+        },
+      });
 
       var image = 'http://i.stack.imgur.com/orZ4x.png';
       var userLocationMarker = new google.maps.Marker({
@@ -310,26 +359,23 @@ function show(category, type) {
     }
   } else{
     if (document.getElementById("all").checked === true){
-      console.log("IT IS CHECKED!");
       document.getElementById("all").checked = false;
       for (var i=0; i<markers.length; i++) {
         markers[i].setVisible(false);
       }
-    } else {
-      console.log("IT IS NOT CHECKED!");  
     }
+    console.log("Line 368");
     for (var i=0; i<markers.length; i++) {
       if (markers[i].getTitle() == type){
-        console.log(type + " " + markers[i].getTitle());
-        if(document.getElementById(type).checked = true) {
+        if(document.getElementById(type).checked === true) {
+          console.log("Type is true");
           markers[i].setVisible(true);
         } else {
+          console.log("Type is false");
           markers[i].setVisible(false);
         }
       }
     }
-    console.log ("TYPE: " + type);
-    //document.getElementById(type).checked = true;
   }      
 }
 

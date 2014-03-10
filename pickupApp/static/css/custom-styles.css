@@ -81,6 +81,24 @@
   background-color: black;
 }
 
+button.btn-homesport {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+  color: black;
+}
+
+.homesport {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+  color: black;
+  border: 1px solid;
+}
+
+.btn-homesport:hover {
+  background-color: #c0392b;
+  color: black;
+}
+
  .btn-instagram {
   background-color: #5c88ab;
   border-color:#5c88ab;
@@ -157,4 +175,7 @@ div.skill_sports {
   margin-top: 15px;
 }
 
-
+#id_text {
+  border-color: black;
+  border: 1px solid;
+}
