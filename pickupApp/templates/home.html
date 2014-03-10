@@ -296,6 +296,7 @@ function boxclick(box,category,type) {
 }
 
 function show(category, type) {
+  // the ALL checkbox
   if (type=='all'){
     resetCheckboxes();
     if (document.getElementById("all").checked === true){
@@ -331,6 +332,7 @@ function show(category, type) {
     //document.getElementById(type).checked = true;
   }      
 }
+
 function resetCheckboxes() {
   document.getElementById("basketball").checked = false;
   document.getElementById("football").checked = false;
