@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
   {% if messages %}
-  <section style="padding-bottom:0">
+  <section style="padding-bottom:0;">
     {% for message in messages %}
-    <div class="alert alert-success alert-dismissable" style="margin-bottom:0; text-align: center">
+    <div class="alert alert-success alert-dismissable" style="margin-bottom:0; text-align: center;">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       {{message}}
     </div>
@@ -327,7 +327,7 @@ function initialize() {
             if (games_by_loc[loc][j][0][0]==marker.getTitle()){
 
               var link = "/game/" + games_by_loc[loc][j][0][1];
-              content_1 += '<p>'+ games_by_loc[loc][j][0][0]+ ': '+ '<u> <a href='+link+'>'+ games_by_loc[loc][j][0][2]+'</a></u>' +': ' + games_by_loc[loc][j][0][3]+ '/' + games_by_loc[loc][j][0][4]+ '</p>';
+              content_1 += '<p>'+ games_by_loc[loc][j][0][0]+ ': '+ '<u> <a href='+link+'>'+ games_by_loc[loc][j][0][2]+'</a></u>' +': ' + games_by_loc[loc][j][0][3]+ '/' + games_by_loc[loc][j][0][4]+ ' players'+ '</p>';
             }
               
           }
