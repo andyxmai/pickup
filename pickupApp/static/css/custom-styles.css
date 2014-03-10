@@ -179,3 +179,15 @@ div.skill_sports {
   border-color: black;
   border: 1px solid;
 }
+
+#search {
+  font-size: 115%;
+}
+
+.ui-menu .ui-menu-item a{
+  color: black;
+}
+
+.ui-autocomplete-category {
+  font-weight: bold; 
+}
