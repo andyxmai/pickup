@@ -25,6 +25,14 @@
 <label><input type="radio" id="volleyball"  name='sport' onclick="boxclick(this,'sport','volleyball')" /> Volleyball</label>
     <div id="map-canvas"></div>
    
+   {% if game_recommendations %}
+    <div class="recommendations">
+      <h5>Games Recommended For You</h5>
+      {% for recommendation in game_recommendations %}
+        <p><a href="/game/{{recommendation.0.id}}">{{recommendation.0.name}}</a></p>
+      {% endfor %}
+    </div>
+    {% endif %}
  
 </div>
 
@@ -159,6 +167,17 @@ function initialize() {
     navigator.geolocation.getCurrentPosition(function(position) {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
+      $.ajax({
+        type: "POST",
+        url: "/store_user_location/",
+        data: { 
+          'csrfmiddlewaretoken':'{{csrf_token}}', 
+          'latitude' : position.coords.latitude,
+          'longitude' : position.coords.longitude
+        },
+        success: function(data) {
+        },
+      });
 
       var image = 'http://i.stack.imgur.com/orZ4x.png';
       var userLocationMarker = new google.maps.Marker({

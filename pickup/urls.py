@@ -45,7 +45,9 @@ urlpatterns = patterns('',
     url(r'^analytics/', 'pickupApp.views.analytics', name='analytics'),
     url(r'^first_login/', 'pickupApp.views.first_login', name='first_login'),
     url(r'^first_login2/', 'pickupApp.views.first_login2', name='first_login2'),
-    url(r'^invite_friends/(\d+)$', 'pickupApp.views.invite_friends', name='invite_friends')
+    url(r'^invite_friends/(\d+)$', 'pickupApp.views.invite_friends', name='invite_friends'),
+    url(r'^recommendations/', 'pickupApp.views.recommendations', name='recommendations'),   
+    url(r'^store_user_location/', 'pickupApp.views.store_user_location', name='store_user_location'),   
 )
 
 # urlpatterns = urlpatterns + 

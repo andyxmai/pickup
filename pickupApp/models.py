@@ -11,7 +11,7 @@ class Game(models.Model):
 	sport = models.CharField(max_length=50, null=True)
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=400)
-	location = models.CharField(max_length=300, null=True)
+	#location = models.CharField(max_length=300, null=True)
 	dateCreated = models.DateTimeField(null=True)
 	timeStart = models.DateTimeField(null=True)
 	cap = models.IntegerField()
@@ -50,6 +50,8 @@ class GamePhoto(models.Model):
 
 class UserInfo(models.Model):
 	profile_picture = models.URLField(default='http://fashionlawsymposium.com/wp-content/uploads/2013/10/person-placeholder.jpg')
+	latitude = models.FloatField(null=True)
+	longitude = models.FloatField(null=True)
 	user = models.OneToOneField(User)
 
 class Sport(models.Model):
