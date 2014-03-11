@@ -101,7 +101,7 @@
 
 	    <div class="col-md-4" style="margin-top:50px ; width: 30%" align="left">
 	    	{% for k,v in sorted_freq_places.iteritems %}
-			<div> * <b> {{v.0.0}}:</b> {{v.0.1}} {{k}} games</div>
+			<div><img src="/static/images/{{k}}.png"></img>  <b>{{k}}: </b> {{v.0.1}} games at {{v.0.0}}</div>
 			{% endfor %}
 		</div> 
 

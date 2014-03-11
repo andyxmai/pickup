@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
   {% if messages %}
-  <section style="padding-bottom:0">
+  <section style="padding-bottom:0;">
     {% for message in messages %}
-    <div class="alert alert-success alert-dismissable" style="margin-bottom:0; text-align: center">
+    <div class="alert alert-success alert-dismissable" style="margin-bottom:0; text-align: center;">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       {{message}}
     </div>
@@ -12,24 +12,58 @@
   {% endif %}
   <div id="home-container" class="col-xs-12" style="background-image: url(/static/img/white_wall.png); overflow:scroll">
     <div id="map-container" class="col-xs-6">
-       <!-- <p><b> Filter games by sport </b></p> -->
        <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">
       <i class="fa fa-pencil fa-lg"></i> Create Game</a><br/>
-  <label><input type="radio" id="all" name='sport'onclick="boxclick(this,'sport','all')" checked /> All </label>
-<label><input type="radio" id="basketball" name='sport'onclick="boxclick(this,'sport','basketball')" /> Basketball </label>
-<label><input type="radio" id="football" name='sport' onclick="boxclick(this,'sport','football')"  /> Football </label>
-<label><input type="radio" id="soccer" name='sport' onclick="boxclick(this,'sport','soccer')"  /> Soccer</label>
-<label><input type="radio" id="frisbee" name='sport' onclick="boxclick(this,'sport','frisbee')"  /> Frisbee</label>
-<label><input type="radio" id="tennis" name='sport' onclick="boxclick(this,'sport','tennis')"  /> Tennis</label>
-<label><input type="radio" id="golf" name='sport' onclick="boxclick(this,'sport','golf')" /> Golf</label>
-<label><input type="radio" id="volleyball"  name='sport' onclick="boxclick(this,'sport','volleyball')" /> Volleyball</label>
-    <div id="map-canvas"></div>
-   
+      <!-- <p><b> Filter games by sport </b></p> -->
+  <form>
+  <label><input type="checkbox" class="homesport" id="all" name='sport-all'onclick="boxclick(this,'sport','all')" checked /> All </label>
+  <label><input type="checkbox" id="basketball" name='sport-bball'onclick="boxclick(this,'sport','basketball')" unchecked /> Basketball </label>
+  <label><input type="checkbox" id="football" name='sport-fball' onclick="boxclick(this,'sport','football')"  unchecked /> Football </label>
+  <label><input type="checkbox" id="soccer" name='sport-sball' onclick="boxclick(this,'sport','soccer')" unchecked /> Soccer</label>
+  <label><input type="checkbox" id="frisbee" name='sport-friball' onclick="boxclick(this,'sport','frisbee')" unchecked /> Frisbee</label>
+  <label><input type="checkbox" id="tennis" name='sport-tball' onclick="boxclick(this,'sport','tennis')" unchecked /> Tennis</label>
+  <label><input type="checkbox" id="golf" name='sport-golf' onclick="boxclick(this,'sport','golf')" unchecked /> Golf</label>
+  <label><input type="checkbox" id="volleyball"  name='sport-vball' onclick="boxclick(this,'sport','volleyball')" unchecked /> Volleyball</label>
+  <!-- <button type="button" id="all" class="btn btn-homesport btn-xs" onclick="boxclick(this,'sport','all')">
+    <img class="sport-icon" src="/static/img/sports/medal/medal-25.png"></img> 
+    
+    <input type="checkbox" value="None" id="squaredTwo" name="check" /> &nbsp All
+  </button>
+  <button type="button" id="basketball" class="btn btn-homesport btn-xs" onclick="boxclick(this,'sport','basketball')">
+    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img> Basketball
+  </button>
+  <button type="button" id="football" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img> Football
+  </button>
+  <button type="button" id="soccer" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img> Soccer
+  </button>
+  <button type="button" id="frisbee" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img> Frisbee
+  </button>
+  <button type="button" id="tennis" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img> Tennis
+  </button>
+  <button type="button" id="golf" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img> Golf
+  </button>
+  <button type="button" id="volleyball" class="btn btn-homesport btn-xs">
+    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img> Volleyball
+  </button> -->
+  </form>
+
+  
+
+  <div id="map-canvas"></div>
+    
    {% if game_recommendations %}
     <div class="recommendations">
-      <h5>Games Recommended For You</h5>
+      <h5 style="margin-top:30px; margin-bottom:30px">Games Recommended For You</h5>
       {% for recommendation in game_recommendations %}
-        <p><a href="/game/{{recommendation.0.id}}">{{recommendation.0.name}}</a></p>
+      <p>
+       <img src= '/static/images/{{recommendation.0.sport}}.png' alt="sport" style="height:50px;" align="center"> </img> 
+        <a href="/game/{{recommendation.0.id}}"><u>{{recommendation.0.name}}</u></a>
+      </p>
       {% endfor %}
     </div>
     {% endif %}
@@ -37,11 +71,10 @@
 </div>
 
   <div class="activity-feed col-xs-6">
-        
-        <h3 class="activity-feed-label">Activity Feed</h3>
-        <table id="activity">
-            {% for action in actions %}
-            {% if action.actor != user %}
+    <h3 class="activity-feed-label">Activity Feed</h3>
+      <table id="activity">
+         {% for action in actions %}
+         {% if action.actor != user %}
             <tr class="{% cycle 'odd' 'even' %}"><td class="date"><!-- <i class="fa fa-dribbble fa-lg"></i> --><span class="game-month">{{action.timestamp.date | date:"M"}} {{action.timestamp.date.day}}</span><br/><span class="game-time" style="text-align:center; font-weight: bold;">
               {{action.timestamp.time | time:"g:i A"}}</span></td><td class="info">
         <div class="single-game">     
@@ -144,6 +177,7 @@
     </div></td>--></tr>
 </table>
 </div>
+
 <script>
 
 var infowindow=null;
@@ -227,8 +261,6 @@ function initialize() {
     }
 
   }
-
-
   
   var marker; 
   var curr_sport;
@@ -259,7 +291,6 @@ function initialize() {
     }
   }
 
-
   var content_1;
   var content_2; 
   var myIcon;
@@ -277,8 +308,7 @@ function initialize() {
             null, //anchor
             new google.maps.Size(50,50) //scale
          );
-      
-  
+     
         marker = new google.maps.Marker({
           position: new google.maps.LatLng(locations[i][1] , locations[i][2]+j*0.0002),
           map: map,
@@ -286,8 +316,6 @@ function initialize() {
           icon: markerImage
         });
       markers.push(marker);
-
-
 
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
@@ -299,7 +327,7 @@ function initialize() {
             if (games_by_loc[loc][j][0][0]==marker.getTitle()){
 
               var link = "/game/" + games_by_loc[loc][j][0][1];
-              content_1 += '<p>'+ games_by_loc[loc][j][0][0]+ ': '+ '<u> <a href='+link+'>'+ games_by_loc[loc][j][0][2]+'</a></u>' +': ' + games_by_loc[loc][j][0][3]+ '/' + games_by_loc[loc][j][0][4]+ '</p>';
+              content_1 += '<p>'+ games_by_loc[loc][j][0][0]+ ': '+ '<u> <a href='+link+'>'+ games_by_loc[loc][j][0][2]+'</a></u>' +': ' + games_by_loc[loc][j][0][3]+ '/' + games_by_loc[loc][j][0][4]+ ' players'+ '</p>';
             }
               
           }
@@ -310,40 +338,64 @@ function initialize() {
     }
   }
 }
-
-
 google.maps.event.addDomListener(window, 'load', initialize);
 
+function boxclick(box,category,type) {
+  // for (var i=0; i<markers.length; i++) {
+  //   markers[i].setVisible(false);
+  // }
+  show(category, type);
+}
 
- function boxclick(box,category,type) {
-  for (var i=0; i<markers.length; i++) {
-    markers[i].setVisible(false);
-  }
-   show(category, type);
-  }
-
- function show(category, type) {
-    if (type=='all'){
+function show(category, type) {
+  // the ALL checkbox
+  if (type=='all'){
+    resetCheckboxes();
+    if (document.getElementById("all").checked === true){
       for (var i=0; i<markers.length; i++) {
-            markers[i].setVisible(true);
+        markers[i].setVisible(true);
       }
-    } else{
+    } else  {
       for (var i=0; i<markers.length; i++) {
-         if (markers[i].getTitle() == type){
-            markers[i].setVisible(true);
-         }
-       }
-     
-       document.getElementById(type).checked = true;
+        markers[i].setVisible(false);
+      }
     }
-       
-  }
+  } else{
+    if (document.getElementById("all").checked === true){
+      document.getElementById("all").checked = false;
+      for (var i=0; i<markers.length; i++) {
+        markers[i].setVisible(false);
+      }
+    }
+    console.log("Line 368");
+    for (var i=0; i<markers.length; i++) {
+      if (markers[i].getTitle() == type){
+        if(document.getElementById(type).checked === true) {
+          console.log("Type is true");
+          markers[i].setVisible(true);
+        } else {
+          console.log("Type is false");
+          markers[i].setVisible(false);
+        }
+      }
+    }
+  }      
+}
+
+function resetCheckboxes() {
+  document.getElementById("basketball").checked = false;
+  document.getElementById("football").checked = false;
+  document.getElementById("soccer").checked = false;
+  document.getElementById("frisbee").checked = false;
+  document.getElementById("tennis").checked = false;
+  document.getElementById("golf").checked = false;
+  document.getElementById("volleyball").checked = false;
+}
 
 
 </script>
 
 <script src="/static/js/jquery.blueimp-gallery.min.js"></script>
 <script src="/static/js/bootstrap-image-gallery.min.js"></script>
-
 {%endblock%}
 
