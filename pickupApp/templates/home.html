@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% block title %}{{user.get_full_name}}{%endblock%}
+
 {% block content %}
   {% if messages %}
   <section style="padding-bottom:0;">
@@ -61,7 +64,7 @@
       <h5 style="margin-top:30px; margin-bottom:30px">Games Recommended For You</h5>
       {% for recommendation in game_recommendations %}
       <p>
-       <img src= '/static/images/{{recommendation.0.sport}}.png' alt="sport" style="height:50px;" align="center"> </img> 
+       <img src= '/static/images/{{recommendation.0.sport.name}}.png' alt="sport" style="height:50px;" align="center"> </img> 
         <a href="/game/{{recommendation.0.id}}"><u>{{recommendation.0.name}}</u></a>
       </p>
       {% endfor %}

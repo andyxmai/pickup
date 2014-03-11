@@ -134,7 +134,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [1,2,5], 
-		"sport": "frisbee", 
+		"sport": 7, 
 		"description": "fratpad",
 		"location":1,
 		"cap":0
@@ -149,7 +149,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [1], 
-		"sport": "soccer", 
+		"sport": 3, 
 		"description": "fratpad",
 		"location":1,
 		"cap":0
@@ -164,7 +164,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [1], 
-		"sport": "golf", 
+		"sport": 6, 
 		"description": "fratpad",
 		"location":3,
 		"cap":3
@@ -179,7 +179,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-01-30T08:54:42Z", 
 		"users": [1], 
-		"sport": "basketball", 
+		"sport": 1, 
 		"description": "fratpad",
 		"location":2,
 		"cap":10
@@ -194,7 +194,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-02-14T10:54:45.397Z", 
 		"users": [1, 2, 3, 4, 5], 
-		"sport": "soccer", 
+		"sport": 3, 
 		"description": "Winning team gets free crepes",
 		"location":1,
 		"cap":10
@@ -209,7 +209,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-02-12T10:54:45.397Z", 
 		"users": [1, 2, 4, 5], 
-		"sport": "football", 
+		"sport": 2, 
 		"description": "Keeping football going after the Super Bowl",
 		"location":1,
 		"cap":10
@@ -224,7 +224,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-03-12T10:54:45.397Z", 
 		"users": [1, 2, 4, 5], 
-		"sport": "football", 
+		"sport": 2, 
 		"description": "Keeping football going after the Super Bowl",
 		"location":1,
 		"cap":10
@@ -239,7 +239,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-03-14T10:54:45.397Z", 
 		"users": [1, 2, 3, 4, 5], 
-		"sport": "soccer", 
+		"sport": 3, 
 		"description": "Champions League",
 		"location":1,
 		"cap":10
@@ -254,7 +254,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-04-12T10:54:45.397Z", 
 		"users": [1, 2, 4, 5], 
-		"sport": "football", 
+		"sport": 2, 
 		"description": "Competitive. Good players only",
 		"location":1,
 		"cap":10
@@ -269,7 +269,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-03-27T10:54:45.397Z", 
 		"users": [1, 2, 4, 5], 
-		"sport": "football", 
+		"sport": 2, 
 		"description": "Keeping football going after the Super Bowl",
 		"location":1,
 		"cap":10
@@ -284,7 +284,7 @@
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-03-28T10:54:45.397Z", 
 		"users": [1, 2, 3, 4, 5], 
-		"sport": "football", 
+		"sport": 2, 
 		"description": "Recreational",
 		"location":2,
 		"cap":10
@@ -327,14 +327,14 @@
 },
 {
 	"model" : "pickupApp.sport",
-	"pk" : 5,
+	"pk" : 6,
 	"fields": {
 		"name":"golf"
 	}
 },
 {
 	"model" : "pickupApp.sport",
-	"pk" : 6,
+	"pk" : 7,
 	"fields": {
 		"name":"frisbee"
 	}

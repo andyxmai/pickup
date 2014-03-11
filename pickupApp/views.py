@@ -42,7 +42,7 @@ def get_num_games():
 	num_games = defaultdict(lambda:0)
 	all_games = Game.objects.all()
 	for game in all_games: 
-		num_games[game.sport] += 1
+		num_games[game.sport.name] += 1
 
 	return num_games
 
@@ -70,7 +70,7 @@ def get_games(request):
 		game_data['creator'] = game.creator.first_name+' '+game.creator.last_name
 		game_data['description'] = game.description
 		#game_data['time_start'] = game.timeStart
-		game_data['sport'] = game.sport
+		game_data['sport'] = game.sport.name
 		game_data['curr_num_players'] = game.users.count()
 		game_data['max_num_players'] = game.cap
 		#game_data['location'] = game.location
@@ -365,11 +365,12 @@ def about(request):
 def sport(request, sport):
 	sport = sport.lower()
 	authenticated = False
-	if sport in sports_dict:
+	sport_obj = Sport.objects.get(name = sport)
+	if sport_obj:
 		if request.user.is_authenticated():
 			authenticated = True
-		games_with_sport = Game.objects.filter(sport=sport)
-		sport = sports_dict[sport]
+		#sport_obj = sport_set[0]
+		games_with_sport = Game.objects.filter(sport=sport_obj)
 		return render(request, 'sport.html', {'games_with_sport':games_with_sport, 'sport':sport, 'authenticated':authenticated})
 	else:
 		return redirect('/')
@@ -409,48 +410,6 @@ def remove_notifications(request):
 	request.user.notifications.mark_all_as_read()
 	return HttpResponse('')
 
-def search_game(request):
-	if not 'id' in request.session:
-		return redirect('/')
-
-	if request.is_ajax():
-	    q = request.GET['query']
-	    results = []
-	    games = Game.objects.filter(name__icontains = q )[:6]
-	    for game in games:
-				game_json = {}
-				game_json['id'] = game.id
-				game_json['name'] = game.name
-				game_json['type'] = 'game'
-				results.append(game_json)
-	    data = json.dumps(results)
-	else:
-	    data = 'fail'
-	
-	mimetype = 'application/json'
-	return HttpResponse(data, mimetype)
-
-def search_people(request):
-	if not 'id' in request.session:
-		return redirect('/')
-
-	if request.is_ajax():
-	    q = request.GET['query']
-	    results = []
-	    users = User.objects.filter(name__icontains = q )[:6]
-	    for user in users:
-				user_json = {}
-				user_json['id'] = user.id
-				user_json['name'] = user.first_name + ' ' + user.last_name
- 				user_json['type'] = 'user'
-				results.append(user_json)
-	    data = json.dumps(results)
-	else:
-	    data = 'fail'
-	
-	mimetype = 'application/json'
-	return HttpResponse(data, mimetype)
-
 @login_required
 def profile(request):
 	loggedinUser = request.user
@@ -487,14 +446,18 @@ def search(request):
 	q = request.GET['term']
 	results = []
 	users = User.objects.filter(Q(first_name__icontains = q)|Q(last_name__icontains = q))[:6]
-	print users
+	names = q.split()
+	if len(names) > 1:
+		users = User.objects.filter(first_name__icontains = names[0], last_name__icontains = names[1])
+	else:
+		users = User.objects.filter( Q(first_name__icontains = names[0]) | Q(last_name__icontains = names[0]))		
+	
 	if users:
-		print 'theres users for '+q
 		for user in users:
 			user_json = {}
 			user_json['id'] = user.id
-			user_json['value'] = user.first_name + ' ' + user.last_name
-			user_json['label'] = user.first_name + ' ' + user.last_name
+			user_json['value'] = user.get_full_name()
+			user_json['label'] = user.get_full_name()
 			user_json['category'] = 'People'
 			results.append(user_json)
 
@@ -507,6 +470,16 @@ def search(request):
 			game_json['label'] = game.name
 			game_json['category'] = 'Games'
 			results.append(game_json)
+
+	sports = Sport.objects.filter(name__icontains = q )[:6]
+	if sports:
+		for sport in sports:
+			sport_json = {}
+			sport_json['id'] = sport.id
+			sport_json['value'] = sport.name
+			sport_json['label'] = sport.name
+			sport_json['category'] = 'Sports'
+			results.append(sport_json)		
 
 	mimetype = 'application/json'
 	return HttpResponse(json.dumps(results), mimetype)
@@ -656,7 +629,7 @@ def analytics(request):
 	games_played = request.user.game_set.all()
 	fav_sports = defaultdict(lambda:0)
 	for game_played in games_played:
-		fav_sports[game_played.sport] += 1
+		fav_sports[game_played.sport.name] += 1
 	fav_sports = sorted(fav_sports.iteritems(),key=lambda (k,v): v,reverse=True)
 
 	# Sport Analytics
@@ -664,12 +637,12 @@ def analytics(request):
 	all_games = Game.objects.all()
 	user = request.user
 	for game in all_games:
-		if game.sport in freq_places:
-			freq_places[game.sport][game.location.name] += 1
+		if game.sport.name in freq_places:
+			freq_places[game.sport.name][game.location.name] += 1
 		else:
 			sport_loc = defaultdict(lambda:0)
 			sport_loc[game.location.name] += 1
-			freq_places[game.sport] = sport_loc
+			freq_places[game.sport.name] = sport_loc
 
 	sorted_freq_places = {}
 	for k,places in freq_places.iteritems():
@@ -680,10 +653,10 @@ def analytics(request):
 	all_games_played = Game.objects.filter(timeStart__lt=datetime.datetime.now()).order_by('-timeStart');
 	games_played_breakdown = {}
 	for game in all_games_played:
-		if game.sport in games_played_breakdown:
-			games_played_breakdown[game.sport] += 1
+		if game.sport.name in games_played_breakdown:
+			games_played_breakdown[game.sport.name] += 1
 		else:
-			games_played_breakdown[game.sport] = 1
+			games_played_breakdown[game.sport.name] = 1
 	print games_played_breakdown
 
 	return render(request, 'analytics.html', {
@@ -797,16 +770,16 @@ def get_game_recommendations(request):
 	upcoming_games = request.user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
 	for upcoming_game in upcoming_games:
 		if upcoming_game.creator != request.user:
-			currSport = Sport.objects.get(name=upcoming_game.sport)
+			currSport = upcoming_game.sport
 			weight = 0.0
 
 			#Check for user's favorite sports
-			if upcoming_game.sport in sports:
+			if upcoming_game.sport.name in sports:
 				creator_sports = upcoming_game.creator.sport_set.all()
 				if currSport in creator_sports:
 					creator_sport = UserSportLevel.objects.get(user=upcoming_game.creator, sport=currSport)
 					creator_level = creator_sport.level
-					if sports_dict[upcoming_game.sport] == creator_level:
+					if sports_dict[upcoming_game.sport.name] == creator_level:
 						weight += 3
 					else:
 						weight += 2
@@ -825,7 +798,7 @@ def get_game_recommendations(request):
 				player_sport = UserSportLevel.objects.filter(user=player, sport=currSport)
 				if player_sport.count():
 					player_skill = player_sport[0]
-					players_score += 1/(math.fabs(player_skill.level-sports_dict[upcoming_game.sport])+upcoming_game.users.count())
+					players_score += 1/(math.fabs(player_skill.level-sports_dict[upcoming_game.sport.name])+upcoming_game.users.count())
 
 			weight += players_score	
 			recommendations[upcoming_game] = weight

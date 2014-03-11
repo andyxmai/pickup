@@ -6,9 +6,13 @@ class Location(models.Model):
 	name = models.CharField(max_length=300)
 	latitude = models.FloatField()
 	longitude = models.FloatField()
+	
+class Sport(models.Model):
+	name = models.CharField(max_length=200)
+	lovers = models.ManyToManyField(User, through='UserSportLevel')
 
 class Game(models.Model):
-	sport = models.CharField(max_length=50, null=True)
+	#sport = models.CharField(max_length=50, null=True)
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=400)
 	#location = models.CharField(max_length=300, null=True)
@@ -19,6 +23,7 @@ class Game(models.Model):
 	creator = models.ForeignKey(User, related_name = "creator_of_game")
 	location = models.ForeignKey(Location)
 	users = models.ManyToManyField(User) # Game will have users that have signed up for the game
+	sport = models.ForeignKey(Sport)
 
 	@property
 	def sorted_comment_set(self):
@@ -53,10 +58,6 @@ class UserInfo(models.Model):
 	latitude = models.FloatField(null=True)
 	longitude = models.FloatField(null=True)
 	user = models.OneToOneField(User)
-
-class Sport(models.Model):
-	name = models.CharField(max_length=200)
-	lovers = models.ManyToManyField(User, through='UserSportLevel')
 
 class UserSportLevel(models.Model):
 	user = models.ForeignKey(User)

@@ -253,8 +253,10 @@
       select: function(event, ui) {
         if (ui.item.category == "People") {
           location.href = '/user/'+ui.item.id;
-        } else {
+        } else if (ui.item.category == "Games"){
           location.href = '/game/'+ui.item.id;
+        } else {
+          location.href = '/sport/'+ui.item.value;
         }
       },
       open: function(event, ui) {
