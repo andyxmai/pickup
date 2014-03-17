@@ -342,7 +342,7 @@ def delete_game(request):
 			subj = "%s Game Cancellation" % (g.name)
 			# send_an_email(receivers,subj,msg)
 
-		msg = g.name + ' (' + g.sport + ')' + ' was deleted.'
+		msg = g.name + ' (' + g.sport.name + ')' + ' was deleted.'
 		g.delete()
 		messages.success(request, msg)
 
