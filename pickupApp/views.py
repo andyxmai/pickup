@@ -189,8 +189,9 @@ def create_game(request):
 
 			#Need to handle time zones
 			datetimeStart = request.POST['dtp_input1']
-			
-			newGame = Game.objects.create(sport=sport,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
+
+			sportObj = Sport.objects.get(name=sport.lower())
+			newGame = Game.objects.create(sport=sportObj,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
 			newGame.dateCreated = datetime.datetime.now()
 			newGame.users.add(request.user)
 	
