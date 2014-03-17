@@ -13,9 +13,9 @@
     {% endfor %}
   </section>
   {% endif %}
-  <div id="home-container" class="col-xs-12" style="background-image: url(/static/img/white_wall.png); overflow:scroll">
+  <div id="home-container" class="col-xs-12" style="overflow:scroll">
     <div id="map-container" class="col-xs-6">
-       <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2">
+       <a href="/create_game" type="button" class="btn btn-success" style="position: relative; z-index:2; margin-left: auto;">
       <i class="fa fa-pencil fa-lg"></i> Create Game</a><br/>
       <!-- <p><b> Filter games by sport </b></p> -->
   <form>
@@ -63,7 +63,7 @@
     <div class="recommendations">
       <h5 style="margin-top:30px; margin-bottom:30px">Games Recommended For You</h5>
       {% for recommendation in game_recommendations %}
-      <p>
+      <p style="float: left; margin-right: 10px;">
        <img src= '/static/images/{{recommendation.0.sport.name}}.png' alt="sport" style="height:50px;" align="center"> </img> 
         <a href="/game/{{recommendation.0.id}}"><u>{{recommendation.0.name}}</u></a>
       </p>
@@ -172,7 +172,7 @@
                </form> -->
                 {% endif %}
                 {% empty %}
-                No games found. Please join one!
+                <h6 style="color: black; text-align: center;">No activity found. Join or create a game!</h6>
                 {% endfor %}
 <!--                 </div>
                 </div>

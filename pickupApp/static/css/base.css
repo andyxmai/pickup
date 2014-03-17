@@ -1,15 +1,16 @@
 #nav-search {
-	padding-top: 2px;
-	width: 500px;
+	padding-top: 4px;
+	width: 550px;
 	font-family: Arial;
 	font-size: 14px;
+	float: right;
 	/*	margin-left: auto;
 	margin-right: auto;*/
+	margin-right: 150px;
 }
 
 #navbar-links {
 	margin-top: 10px;
-	font-size: 12px;
 	width: 100%;
 	/*float: right;*/
 }
@@ -19,12 +20,24 @@
 	background-color: transparent;
 }
 
-#logout-link {
+/*#logout-link {
 	float: right;
 	margin-right: 10px;
-}
+}*/
 
 li img {
 	margin-top: -7px;
 }
 
+li.dropdown, li.name {
+	float: right;
+}
+
+li.name {
+	margin-right: 20px;
+	font-size: 16px;
+}
+
+ul.dropdown-menu {
+	left: -500px;
+}
