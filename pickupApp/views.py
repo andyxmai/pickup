@@ -149,21 +149,17 @@ def register(request):
 				new_user = User.objects.create_user(email, email, password)
 				new_user.first_name = first_name
 				new_user.last_name = last_name
-				new_user.groups = "All Users"
 				new_user.save()
+
+				userinfo = UserInfo.objects.create(user=new_user)
 
 				user = authenticate(username=email, password=password)
 				login(request, user)
 				verb = first_name + ' ' + last_name + " created an account!"
-				print verb
 				#action.send(user,verb=verb)
-
-
-				#return render(request, 'home.html', {'user': user})
-				return redirect('/home')
+				return redirect('/first_login')
 			else:
 				print form.errors
-				#return render(request, 'home.html', {'registerForm':form})
 				return redirect('/')
 		else:
 			print "INVALID FORM"
@@ -228,16 +224,12 @@ def user_login(request):
 				msg = 'Invalid username and password.'
 				messages.error(request, msg)
 				return redirect('/')
-				#return render(request, 'login.html', {'loginForm':form, 'message':message})
 		else:
 			msg = 'Invalid username and password.'
 			messages.error(request, msg)
 			return redirect('/')
-			#return render(request, 'login.html', {'loginForm':form, 'message':message})
 	else:
 		return redirect('/')
-		#form = LoginForm()
-		#return render(request, 'login.html', {'loginForm':form})
 
 @login_required
 def game(request,id):
@@ -246,11 +238,8 @@ def game(request,id):
 		game = Game.objects.get(id=id)
 		print action_object_stream(game)
 
-		# try:
-		# 	action_object_stream(game)
-		# except ValueError:
-		# 	print ValueError
 		comment_form = CommentForm(initial={'user_id': request.user.id, 'game_id':game.id})
+	
 		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
 			passed_game = True
@@ -768,7 +757,7 @@ def get_game_recommendations(request):
 	# weight factors and return the top 5 most 'relevant' games to user
 	recommendations = defaultdict(lambda:0)
 	(sports, sports_dict) = get_fav_sports_set(request)
-	upcoming_games = request.user.game_set.all().filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
+	upcoming_games = Game.objects.filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
 	for upcoming_game in upcoming_games:
 		if upcoming_game.creator != request.user:
 			currSport = upcoming_game.sport
@@ -793,19 +782,24 @@ def get_game_recommendations(request):
 			distance = distance_on_unit_sphere(game_latitude, game_longitude, user_latitude, user_longitude)		
 			weight += 1/distance
 			
-			# Check for game players' skill level
+			# Check for game players' skill level + whether the user follows the player
 			players_score = 0.0
+			following_people = following(request.user)
 			for player in upcoming_game.users.all():
 				player_sport = UserSportLevel.objects.filter(user=player, sport=currSport)
 				if player_sport.count():
 					player_skill = player_sport[0]
 					players_score += 1/(math.fabs(player_skill.level-sports_dict[upcoming_game.sport.name])+upcoming_game.users.count())
 
+				if player in following_people:
+					players_score += 0.5
+
 			weight += players_score	
 			recommendations[upcoming_game] = weight
 
 	sorted_recommendations = sorted(recommendations.iteritems(), key=operator.itemgetter(1), reverse=True)
-	#print sorted_recommendations
+	print 'game recommendations'
+	print sorted_recommendations
 	return sorted_recommendations
 
 def recommendations(request):

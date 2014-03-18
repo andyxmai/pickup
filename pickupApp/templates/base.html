@@ -94,24 +94,47 @@
         <li class="col-xs-1.5"><a class="navbar-brand" href="/"><img src="{% static 'img/logo-main.png' %}" class="img-responsive" alt="Logo"></a></li>
         {% block navlist %}
         
-        
-        <li>
-          <div id="nav-div">
-            <form class="navbar-form navbar-center" role="search">
-              <div id="nav-search" class="input-group input-group-sm col-xs-4">
-                <input type="text" class="form-control" id="search" placeholder="Search for People and Games"></input>
-              </div>
-            </form>
+        <li><div id="nav-div">
+        <form class="navbar-form navbar-center" role="search">
+          <div id="nav-search" class="input-group input-group-sm col-xs-4">
+            <input type="text" class="form-control" id="search" placeholder="Search for People and Games"></input>
           </div>
+        </form>
+        </div></li>
+         
+        <!-- <li><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li> -->
+        <li id="more" class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+            <i class="fa fa-gear fa-lg"></i>
+          </a>
+          <ul class="dropdown-menu more">
+            <li><a href="/analytics"><i class="fa fa-tasks fa-lg"></i>&nbsp;Analytics</a></li>
+            <li><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
+          </ul>
         </li>
-        <li><a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home</a></li>
-        <li><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li>
-        <li><a href="/analytics"><i class="fa fa-tasks fa-lg"></i>&nbsp;Analytics</a></li>
-        <li id="logout-link"><a href="/logout"><i class="fa fa-external-link fa-lg"></i>&nbsp;Logout</a></li>
-
-        <li class="name"><a id="nav-name" href="/profile">{{user.first_name}} {{user.last_name}}</a></li>
-
+        <li id="name" class="name"><a id="nav-name" href="/profile">{{user.first_name}}</a></li>
+        <li id="home"><a href="/">Home</a></li>
         
+
+
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+            <i class="fa fa-bell-o fa-lg"></i>
+            {% if unread_count %}<span class="badge">{{unread_count}}</span>{%endif%}
+          </a>
+          <ul class="dropdown-menu notifications">
+            {% if unread_count %}
+              {% for note in user.notifications.unread %}
+              <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+              {% endfor %}
+            {% else %}
+              {% for note in user.notifications.read %}
+              <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+          
+        </li>
         
         {% endblock %}
        <!--  <li class="dropdown"> -->
