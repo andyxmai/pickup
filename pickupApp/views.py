@@ -28,7 +28,11 @@ from actstream.actions import follow,unfollow
 from django.core import serializers
 import math, operator
 
-# Create your views here.
+
+
+# -------------------------------------------------------------------- #
+# Renders the landing page
+# -------------------------------------------------------------------- #
 def index(request):
 	print request.user
 	if request.user.is_authenticated():
@@ -46,6 +50,9 @@ def get_num_games():
 
 	return num_games
 
+# -------------------------------------------------------------------- #
+# Gets all game data and puts it in a specific format we use later (json)
+# -------------------------------------------------------------------- #
 @login_required
 def get_games(request):
 	upcoming_games = Game.objects.filter(timeStart__gte=datetime.datetime.now()).order_by('timeStart');
@@ -79,53 +86,28 @@ def get_games(request):
 	return games_data
 	#return HttpResponse(json.dumps(games_data), content_type="application/json")
 
+
+# -------------------------------------------------------------------- #
+# Function is called when home page is rendered
+# Gives the home page the necessary data to render
+# -------------------------------------------------------------------- #
 @login_required
 def home(request):
-	#Group.objects.create(name="All Users")
 	games_data = get_games(request)
-
-	#print Action.objects.all()
-	print user_stream(request.user)
 	mystream = user_stream(request.user)
-	#stream = actor_stream(request.user)
-	
-	#for action in stream:
-		#print json.stringify(action)
-		# print action
-		# print action.verb
-		# print action.actor
-		# print action.action_object
-		# print action.timestamp.strftime('%Y')
-		#data = serializers.serialize("json", Action.objects.all())
-		#print data
-
 	all_actions = mystream.filter(timestamp__lt=datetime.datetime.now()).order_by('-timestamp');
-	print "Printing all_actions"
-	print all_actions
-
 	following_people = following(request.user)
-	print "People I am following"
-	print following_people
 	if not len(following_people):
 		all_actions = []
-
 	messages = get_messages(request)
-	unread = request.user.notifications.unread()
-
-	for note in unread:
-		print note.verb
+	
+	# unread = request.user.notifications.unread()
+	# for note in unread:
+	# 	print note.verb
 
 	game_recommendations = []
 	if request.user.userinfo.latitude != None:
 		game_recommendations = get_game_recommendations(request)
-	# game_count = 0
-	# recommendations = []
-	# for recommendation in game_recommendations:
-	# 	if game_count >= 5:
-	# 		break
-	# 	recommendations.append()
-	print game_recommendations
-
 
 	return render(request, 'home.html', {
 		'user'					:request.user, 
@@ -135,6 +117,10 @@ def home(request):
 		'game_recommendations' 	:game_recommendations
 		})
 
+
+# -------------------------------------------------------------------- #
+# Registering a new user
+# -------------------------------------------------------------------- #
 def register(request):
 	if request.method == 'POST':
 		form = RegisterForm(request.POST)
@@ -156,10 +142,7 @@ def register(request):
 				login(request, user)
 				verb = first_name + ' ' + last_name + " created an account!"
 				print verb
-				#action.send(user,verb=verb)
 
-
-				#return render(request, 'home.html', {'user': user})
 				return redirect('/home')
 			else:
 				print form.errors
@@ -176,6 +159,10 @@ def register(request):
 		form = RegisterForm()
 		return redirect('/')
 
+
+# -------------------------------------------------------------------- #
+# Creating a new game
+# -------------------------------------------------------------------- #
 @login_required
 def create_game(request):
 	if request.method == 'POST':
@@ -206,10 +193,10 @@ def create_game(request):
 		gameForm = GameForm()
 		return render(request, 'create_game.html', {'gameForm':gameForm})
 
-def parse_location(location):
-	coordinates = location.split(',')
-	return (float(coordinates[0]),float(coordinates[1]))
 
+# -------------------------------------------------------------------- #
+# Logs the user in or redirects of bad login
+# -------------------------------------------------------------------- #
 def user_login(request):
 	if request.method == 'POST': 
 		form = LoginForm(request.POST)
@@ -239,6 +226,11 @@ def user_login(request):
 		#form = LoginForm()
 		#return render(request, 'login.html', {'loginForm':form})
 
+
+# -------------------------------------------------------------------- #
+# Function is called whenever a game page is rendered
+# Function gets all the necessary data to populate the game page
+# -------------------------------------------------------------------- #
 @login_required
 def game(request,id):
 	game_exists = Game.objects.filter(id=id).count()
@@ -246,10 +238,6 @@ def game(request,id):
 		game = Game.objects.get(id=id)
 		print action_object_stream(game)
 
-		# try:
-		# 	action_object_stream(game)
-		# except ValueError:
-		# 	print ValueError
 		comment_form = CommentForm(initial={'user_id': request.user.id, 'game_id':game.id})
 		# Check whether the game has already happened
 		if game.timeStart.replace(tzinfo=None) < datetime.datetime.now():
@@ -293,6 +281,9 @@ def game(request,id):
 	else:
 		return render(request, 'game.html', {'game_exists':game_exists})
 	
+# -------------------------------------------------------------------- #
+# Function is called when a user wants to quit or join a game
+# -------------------------------------------------------------------- #
 @login_required
 def join_quit_game(request):
 	#userID = request.user.id
@@ -318,10 +309,10 @@ def join_quit_game(request):
 	#return HttpResponse(response)
 	return redirect(request.META['HTTP_REFERER'])
 
-def send_an_email(receivers,subj,msg):
-	sender = "ReqTime <debugsafedriven@gmail.com>"
-	send_mail(subj, msg, sender, receivers, fail_silently=False)
 
+# -------------------------------------------------------------------- #
+# Function deletes a game and sends an email to all members of the game
+# -------------------------------------------------------------------- #
 @login_required
 def delete_game(request):
 	if request.method == 'POST':
@@ -341,7 +332,7 @@ def delete_game(request):
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
 			subj = "%s Game Cancellation" % (g.name)
-			# send_an_email(receivers,subj,msg)
+			#send_an_email(receivers,subj,msg)
 
 		msg = g.name + ' (' + g.sport.name + ')' + ' was deleted.'
 		g.delete()
@@ -349,19 +340,33 @@ def delete_game(request):
 
 	return redirect('/home')
 
+def send_an_email(receivers,subj,msg):
+	sender = "ReqTime <debugsafedriven@gmail.com>"
+	send_mail(subj, msg, sender, receivers, fail_silently=False)
+
+
+# -------------------------------------------------------------------- #
+# Function is called when the user logouts
+# -------------------------------------------------------------------- #
 def logout_view(request):
 	logout(request)
 	return redirect("/")
 
+# -------------------------------------------------------------------- #
+# Function returns a static development team page
+# -------------------------------------------------------------------- #
 def team(request):
 	return render(request, 'team.html')
 
-def services(request):
-	return render(request, 'services.html')
-
+# -------------------------------------------------------------------- #
+# Function returns a static about team page
+# -------------------------------------------------------------------- #
 def about(request):
 	return render(request, 'about.html')
 
+# -------------------------------------------------------------------- #
+# Function is deprecated
+# -------------------------------------------------------------------- #
 #@login_required
 def sport(request, sport):
 	sport = sport.lower()
@@ -376,6 +381,9 @@ def sport(request, sport):
 	else:
 		return redirect('/')
 
+# -------------------------------------------------------------------- #
+# Function is called when the user accesses a players profile page
+# -------------------------------------------------------------------- #
 @login_required
 def user(request, id):
 	loggedinUser = request.user
@@ -405,12 +413,18 @@ def user(request, id):
 		'player_connected_to_instagram': player_connected_to_instagram,
 		'is_following' : is_following
 		})
-	
+
+# -------------------------------------------------------------------- #
+# Removes all notifications of a user
+# -------------------------------------------------------------------- #
 @login_required
 def remove_notifications(request):
 	request.user.notifications.mark_all_as_read()
 	return HttpResponse('')
 
+# -------------------------------------------------------------------- #
+# Function is called when the user accesses his/her own profile page
+# -------------------------------------------------------------------- #
 @login_required
 def profile(request):
 	loggedinUser = request.user
@@ -440,9 +454,16 @@ def profile(request):
 		'following' : following(request.user)
 		})
 
+# -------------------------------------------------------------------- #
+# Function returns a list of sports currently supported
+# -------------------------------------------------------------------- #
 def sports(request):
 	return render(request, 'sports.html', {'sports_dict':sports_dict})
 
+
+# -------------------------------------------------------------------- #
+# Function controls the search bar
+# -------------------------------------------------------------------- #
 def search(request):
 	q = request.GET['term']
 	results = []
@@ -485,6 +506,10 @@ def search(request):
 	mimetype = 'application/json'
 	return HttpResponse(json.dumps(results), mimetype)
 
+
+# -------------------------------------------------------------------- #
+# Function adds a comment to a game page
+# -------------------------------------------------------------------- #
 @login_required
 def comment(request):
 	if request.method == 'POST':
@@ -510,6 +535,9 @@ def comment(request):
 	else:
 		return redirect('/')
 
+# -------------------------------------------------------------------- #
+# Function connects a users instragram profile to the user profile
+# -------------------------------------------------------------------- #
 @login_required
 def instagram_login(request):
 	code = request.GET['code']
@@ -545,6 +573,10 @@ def instagram_login(request):
 
 	return redirect('/profile')
 
+# -------------------------------------------------------------------- #
+# Function populates the photo upload choices in a game to the users
+# instagram photos (if the user is connected to instagram)
+# -------------------------------------------------------------------- #
 @login_required
 def get_instagram_photos(request, game_id):
 	instagramUser = InstagramInfo.objects.get(user=request.user)
@@ -563,6 +595,10 @@ def get_instagram_photos(request, game_id):
 		'game_id':game_id
 	})
 	
+
+# -------------------------------------------------------------------- #
+# Function posts a photo to a game page
+# -------------------------------------------------------------------- #
 @login_required
 def post_photos(request):
 	if request.method == 'POST':
@@ -581,7 +617,9 @@ def post_photos(request):
 	return redirect('/game/'+str(game.id)) 
 
 
-
+# -------------------------------------------------------------------- #
+# Function uploads a profile photo to the users profile
+# -------------------------------------------------------------------- #
 @login_required
 def upload_profile_photo(request):
 	if request.method == 'POST':
@@ -593,16 +631,14 @@ def upload_profile_photo(request):
 
 	return redirect('/profile')
 
+# -------------------------------------------------------------------- #
+# Function toggles the follow of a user
+# -------------------------------------------------------------------- #
 @login_required
 def toggle_follow(request):
 	if request.method == 'POST':
 		following_people= following(request.user)
 		follow_username = request.POST['player']
-
-		# is_following = False
-		# for user in following_people:
-		# 	if user.username == follow_username:
-		# 		is_following = True
 		is_following = follow_username in following_people
 
 		user = User.objects.get(username=follow_username)
@@ -611,19 +647,20 @@ def toggle_follow(request):
 		else:
 			unfollow(request.user, user)
 
-		#responseData = {}
 		response = ""
 		if is_following:
-			#responseData['follow'] = "No"
 			response = "No"
 		else:
-			#responseData['follow'] = "Yes"
 			response = "Yes"
 
 	# return HttpResponse(json.dumps(responseData),mimetype="application/json")
 	return HttpResponse(response)
 
 
+# -------------------------------------------------------------------- #
+# Function controls the suggest pages you see at the bottom of the
+# home page
+# -------------------------------------------------------------------- #
 @login_required
 def analytics(request):
 	# Player Analytics
@@ -669,6 +706,10 @@ def analytics(request):
 		'games_played_breakdown'	: games_played_breakdown
 	})
 
+
+# -------------------------------------------------------------------- #
+# Function
+# -------------------------------------------------------------------- #
 @login_required
 def first_login(request):
 	if request.method == 'POST':
@@ -680,6 +721,9 @@ def first_login(request):
 
 	return render(request, 'first_login.html', {'user':request.user})
 
+# -------------------------------------------------------------------- #
+# Function ???
+# -------------------------------------------------------------------- #
 @login_required
 def first_login2(request):
 	fav_sports = request.user.sport_set.all()
@@ -693,6 +737,9 @@ def first_login2(request):
 
 	return render(request, 'first_login2.html', {'user':request.user, 'fav_sports':fav_sports})
 
+# -------------------------------------------------------------------- #
+# Function ???
+# -------------------------------------------------------------------- #
 @login_required
 def invite_friends(request, game_id):
 	users = User.objects.all()
@@ -717,6 +764,10 @@ def invite_friends(request, game_id):
 		'user': request.user
 	})
 
+
+# -------------------------------------------------------------------- #
+# Function ???
+# -------------------------------------------------------------------- #
 def get_fav_sports_set(request):
 	fav_sports = request.user.sport_set.all()
 	sports = set()
@@ -764,6 +815,9 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2):
 	# in your favorite set of units to get length.
 	return arc*3963.1676
 
+# -------------------------------------------------------------------- #
+# Function ???
+# -------------------------------------------------------------------- #
 def get_game_recommendations(request):
 	# weight factors and return the top 5 most 'relevant' games to user
 	recommendations = defaultdict(lambda:0)
@@ -808,11 +862,17 @@ def get_game_recommendations(request):
 	#print sorted_recommendations
 	return sorted_recommendations
 
+# -------------------------------------------------------------------- #
+# Function ???
+# -------------------------------------------------------------------- #
 def recommendations(request):
 	game_recommendations = get_game_recommendations(request)
 
 	return render(request, 'recommendations.html')
 
+# -------------------------------------------------------------------- #
+# Function ???
+# -------------------------------------------------------------------- #
 def store_user_location(request):
 	if request.POST:
 		latitude = request.POST.get('latitude')
