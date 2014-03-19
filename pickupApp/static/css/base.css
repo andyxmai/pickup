@@ -6,7 +6,7 @@
 	float: right;
 	/*	margin-left: auto;
 	margin-right: auto;*/
-	margin-right: 150px;
+	/*margin-right: 150px;*/
 }
 
 #navbar-links {
@@ -15,29 +15,57 @@
 	/*float: right;*/
 }
 
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+.navbar-inverse .navbar-nav>.active>a.active, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
 	color: white;
 	background-color: transparent;
 }
+
+/*li a.active {
+	color: white;
+}*/
 
 /*#logout-link {
 	float: right;
 	margin-right: 10px;
 }*/
 
+li {
+	/*line-height: 20px;*/
+	font-size: 14px;
+	/*padding: 5px;*/
+}
 li img {
 	margin-top: -7px;
 }
 
-li.dropdown, li.name {
+li.dropdown, li.name, li.more, li#home {
 	float: right;
+	padding-left: 10px;
 }
 
 li.name {
-	margin-right: 20px;
-	font-size: 16px;
+	/*margin-right: 20px;*/
+	/*font-size: 16px;*/
 }
 
-ul.dropdown-menu {
-	left: -500px;
+
+li#more {
+	/*margin-right: 300px;*/
+}
+
+li.dropdown {
+}
+
+ul.dropdown-menu li {
+	font-size: 12px;
+}
+
+ul.notifications {
+	margin-top: 10px;
+	margin-left: -400px;
+	top: 108%;
+}
+
+ul.more {
+	margin-left: -126px;
 }

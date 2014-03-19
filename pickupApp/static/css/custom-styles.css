@@ -2,6 +2,11 @@
    Insert Your Custom Styles Below. All styles located in this file will
    override existing main.css stylesheets.
    ========================================================================== */ 
+.main-header-img {
+  height: 70%;
+  width: 70%;
+}
+
 .no-bold {
   font-weight: normal;
   margin-bottom:13px;
@@ -74,11 +79,9 @@
 
 #create-game-container {
   width: 1000px;
-  background-color: gray;
-}
+  margin-top: 10%;
+  background-color: none;
 
-#create-game-section {
-  background-color: black;
 }
 
 button.btn-homesport {

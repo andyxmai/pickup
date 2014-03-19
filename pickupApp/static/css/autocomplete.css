@@ -15,7 +15,8 @@
     /* prevent horizontal scrollbar */
     overflow-x: hidden;
     /* add padding for vertical scrollbar */
-    padding-right: 5px;
+    padding-right: 0px;
+    padding-left: 0px;
     background-color: white;
     width:200px;
 }
@@ -33,4 +34,29 @@
   padding-left: 0;
   margin-left:0;
   line-height: 1.5;
+}
+
+.ui-menu-item:hover{
+  background-color: #0081c2;
+  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+  transition: color 0s;
+}
+
+.ui-menu-item:focus{
+  background-color: #0081c2;
+  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+  transition: color 0s;
+}
+
+.ui-menu-item:hover > a {
+  transition: color 0s;
+  color: white;
+  
+}
+
+.ui-menu-item a {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
 }
