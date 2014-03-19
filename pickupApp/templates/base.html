@@ -122,11 +122,11 @@
           <ul class="dropdown-menu notifications">
             {% if unread_count %}
               {% for note in user.notifications.unread %}
-              <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+              <li><a href="{{note.description}}">{{note.verb}} ({{note.timesince}} ago)</a></li>
               {% endfor %}
             {% else %}
               {% for note in user.notifications.read %}
-              <li><a href="#">{{note.verb}} ({{note.timesince}} ago)</a></li>
+              <li><a href="{{note.description}}">{{note.verb}} ({{note.timesince}} ago)</a></li>
               {% endfor %}
             {% endif %}
           </ul>
