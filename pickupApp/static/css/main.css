@@ -378,10 +378,6 @@ body.nav-expanded {
 /* ==========================================================================
    Main styles
    ========================================================================== */
-section {
-  padding: 60px 0px;
-}
-
 .white-bg {
   background: #FFFFFF;
 }
@@ -1008,11 +1004,11 @@ a:hover.clients {
 /* ==========================================================================
    Sign Up styles
    ========================================================================== */
-.signup {
+/*.signup {
   background: lightgray;
   margin-top: 60px;
   padding: 20px;
-}
+}*/
 
 #create-game-page {
   background-color: lightgray;
@@ -1222,6 +1218,10 @@ ul.ads.list-inline {
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     vertical-align: middle;
     width: 100%;
+}
+
+.gray-text {
+  font-color: white;
 }
 
 /* ==========================================================================
