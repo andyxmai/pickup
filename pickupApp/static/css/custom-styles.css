@@ -74,11 +74,9 @@
 
 #create-game-container {
   width: 1000px;
-  background-color: gray;
-}
+  margin-top: 10%;
+  background-color: none;
 
-#create-game-section {
-  background-color: black;
 }
 
 button.btn-homesport {
