@@ -268,7 +268,7 @@
 		"creator": 3, 
 		"dateCreated": "2014-01-30T08:54:45.397Z", 
 		"timeStart": "2014-03-27T10:54:45.397Z", 
-		"users": [1, 2, 4, 5], 
+		"users": [1, 2, 3, 4, 5], 
 		"sport": 2, 
 		"description": "Keeping football going after the Super Bowl",
 		"location":1,

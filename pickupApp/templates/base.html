@@ -101,7 +101,7 @@
          
         <!-- <li><a href="/profile"><i class="fa fa-user fa-lg"></i>&nbsp;Profile</a></li> -->
         <li id="more" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notification">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="">
             <i class="fa fa-gear fa-lg"></i>
           </a>
           <ul class="dropdown-menu more">
@@ -177,6 +177,19 @@
 
   <script>
   {% load staticfiles %}
+  // Need to access {{csrf_token}}
+  $('#notification').click(function(){
+    $.ajax({
+      type: "POST",
+      url: "/remove_notifications/",
+      data: { 
+        'csrfmiddlewaretoken':'{{csrf_token}}' 
+      },
+      success: function(data) {
+        $( "span.badge" ).remove();
+      },
+    });
+  });
   </script>
   <script src="/static/js/base.js"></script>
   {% block javascript %}
