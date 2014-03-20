@@ -23,6 +23,12 @@ SECRET_KEY = '@i^jn^q3%#uwngsj%42ns@42bw3mxpv4*xap1%j+7=4w!ik1dg'
 DEBUG = False
 #DEBUG = not os.environ.get('REQTIME_PRODUCTION', False)
 
+ADMINS = (
+    ('Andy Mai', 'andrew.x.mai@gmail.com'),
+)
+
+MANAGERS = ADMINS
+
 DATABASES = {}
 
 TEMPLATE_DEBUG = True
