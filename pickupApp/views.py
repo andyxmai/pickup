@@ -172,6 +172,7 @@ def create_game(request):
 			sport = form.cleaned_data['sport']
 			name = form.cleaned_data['name']
 			cap = form.cleaned_data['cap']
+			description = form.cleaned_data['description']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
@@ -179,7 +180,7 @@ def create_game(request):
 			datetimeStart = request.POST['dtp_input1']
 
 			sportObj = Sport.objects.get(name=sport.lower())
-			newGame = Game.objects.create(sport=sportObj,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
+			newGame = Game.objects.create(sport=sportObj,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap, description=description)
 			newGame.dateCreated = datetime.datetime.now()
 			newGame.users.add(request.user)
 	
@@ -245,8 +246,10 @@ def game(request,id):
 
 		# Check if the game player has maxed
 		maxed = False
-		if game.users.count() >= game.cap:
-			maxed = True	
+		if game.cap:
+			if game.users.count() >= game.cap:
+				maxed = True
+
 
 		# Check if user is the creator of the game
 		is_creator = False
@@ -295,13 +298,15 @@ def join_quit_game(request):
 			game.users.remove(request.user)
 			response = 'left'
 			verb = request.user.first_name+' '+request.user.last_name+' left '+game.name
-			notify.send(request.user,recipient=game.creator, verb=verb)
+			description = '/game/'+str(game.id)
+			notify.send(request.user,recipient=game.creator, verb=verb, description=description)
 			action.send(request.user, verb="leave game", action_object=game)
 		else:
 			game.users.add(request.user)
 			response = 'joined'
 			verb = request.user.first_name+' '+request.user.last_name+' joined '+game.name
-			notify.send(request.user,recipient=game.creator, verb=verb)
+			description = '/game/'+str(game.id)
+			notify.send(request.user,recipient=game.creator, verb=verb, description=description)
 			action.send(request.user, verb="join game", action_object=game)
 	
 	#return HttpResponse(response)
@@ -325,7 +330,7 @@ def delete_game(request):
 				print user
 				receivers.append(user.username)
 				verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name
-				notify.send(request.user,recipient=user, verb=verb)
+				notify.send(request.user,recipient=user, verb=verb, description='#')
 
 			game_maker = "%s %s" % (g.creator.first_name, g.creator.last_name)
 			msg = "Unfortunately, %s has cancelled %s." % (game_maker, g.name)
@@ -520,12 +525,14 @@ def comment(request):
 
 			commenter = User.objects.get(id=user_id)
 			game = Game.objects.get(id=game_id)
-			comment = Comment.objects.create(text=text, commenter=commenter, game=game, timeStamp=datetime.datetime.now())
+
+			comment = Comment.objects.create(text=text, commenter=commenter, game=game, timeStamp=datetime.datetime.now() - datetime.timedelta(hours=7))
 
 			for player in game.users.all():
 				if commenter != player:
 					verb = commenter.first_name+' '+commenter.last_name+' left a comment for '+game.name
-					notify.send(commenter,recipient=player, verb=verb)
+					description = '/game/'+str(game.id)
+					notify.send(commenter,recipient=player, verb=verb, description=description)
 
 			return redirect('/game/'+str(game.id))
 		else:
@@ -642,6 +649,9 @@ def toggle_follow(request):
 		user = User.objects.get(username=follow_username)
 		if not is_following:
 			follow(request.user, user)
+			verb = request.user.get_full_name()+' just followed you.'
+			description = '/user/'+str(request.user.id)
+			notify.send(request.user,recipient=user, verb=verb, description=description)
 		else:
 			unfollow(request.user, user)
 
@@ -752,7 +762,8 @@ def invite_friends(request, game_id):
 					inviter = request.user.first_name + ' ' + request.user.last_name
 					game = Game.objects.get(id=game_id)
 					verb = inviter + ' invited you to join ' +game.name
-					notify.send(request.user,recipient=friend, verb=verb)
+					description = '/game/'+str(game.id)
+					notify.send(request.user,recipient=friend, verb=verb, description=description)
 
 		return redirect('/game/'+str(game_id)) 
 		
@@ -814,7 +825,7 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2):
 	return arc*3963.1676
 
 # -------------------------------------------------------------------- #
-# Function ???
+# Function recommends games to users
 # -------------------------------------------------------------------- #
 def get_game_recommendations(request):
 	# weight factors and return the top 5 most 'relevant' games to user

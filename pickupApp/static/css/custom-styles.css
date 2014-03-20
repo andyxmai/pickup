@@ -38,6 +38,7 @@
 	margin-left:40px;
 	font-size:20px;
   overflow:auto;
+  padding-bottom: 5px;
 }
 
 .transbox
@@ -111,6 +112,18 @@ button.btn-homesport {
 .btn-instagram:hover {
   background-color: #3f729b;
   border-color: #3f729b;;
+  color:white;
+}
+
+.btn-asphalt {
+  background-color: #34495e;
+  border-color:#34495e;
+  color:white;
+}
+
+.btn-asphalt:hover {
+  background-color: #2c3e50;
+  border-color:#2c3e50;
   color:white;
 }
 
@@ -202,4 +215,22 @@ button.black {
 
 .ui-autocomplete-category {
   font-weight: bold; 
+}
+
+.image_picker_image {
+  padding-top: 7px;
+}
+
+div.thumbnail > p {
+  text-align: center;
+}
+
+.signup {
+  background-color: #ecf0f1;
+}
+
+.avatar {
+  width:30px;
+  height:30px;
+  margin-right: 8px;
 }

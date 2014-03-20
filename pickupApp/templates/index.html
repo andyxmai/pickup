@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block navbar %}
+{% block navlist %}
 {% endblock %}
 {% block content %}   
     <!-- SignUp Modal -->
@@ -8,7 +8,7 @@
         <div class="modal-content signup">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Registration</h4>
+            <h4 class="modal-title" id="myModalLabel">Signup</h4>
           </div>
           <div class="modal-body">
             <!-- <ul class="list-inline social-icons-signup">
@@ -58,7 +58,7 @@
               </div>
             </form>
           </div>
-            <div style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" id="signup_submit" data-loading-text="Creating Account...">Register!</button>
+            <div style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" id="signup_submit" data-loading-text="Creating Account...">Signup!</button>
             </div>
         </div>
       </div>
@@ -74,14 +74,11 @@
               <div class="alert alert-danger">{{message}}</div> 
               {% endfor %} 
             {% endif %}  
-            <img src="/static/img/logo-main.png" class="main-header-img"></img>
-            <!-- <h1 class="main"style="font-size: 60px;">ReqTime</h1> -->
+            <!-- <img src="/static/img/logo-main.png" class="main-header-img"></img> -->
+            <h1 class="main"style="font-size: 60px;">ReqTime</h1>
             <hr>
             <h3 class="white">Your hub for pick-up sports</h3>
             <div class="modal-body">
-              <!-- <ul class="list-inline social-icons-signup">
-                <li><a class="facebook" href="{% url 'socialauth_begin' 'facebook' %}"><i class="fa fa-facebook fa-lg"></i></a></li>
-              </ul> -->
             <form class="form-horizontal" role="form" 
             id="signin_form" action="/user_login/" method="POST">{% csrf_token %}
               <div class="form-group">

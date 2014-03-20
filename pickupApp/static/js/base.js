@@ -65,18 +65,6 @@ $(document).ready(function() {
            window.location.hash = hash;
         });
     });
-    $('#notification').click(function(){
-      $.ajax({
-        type: "POST",
-        url: "/remove_notifications/",
-        data: { 
-          'csrfmiddlewaretoken':'{{csrf_token}}' 
-        },
-        success: function(data) {
-          $( "span.badge" ).remove();
-        },
-      });
-    });
     $('#search').catcomplete({
       source: '/search',
       minLength: 1,

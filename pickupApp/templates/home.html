@@ -19,40 +19,14 @@
       <i class="fa fa-pencil fa-lg"></i> Create Game</a><br/>
       <!-- <p><b> Filter games by sport </b></p> -->
   <form>
-  <label><input type="checkbox" class="homesport" id="all" name='sport-all'onclick="boxclick(this,'sport','all')" checked /> All </label>
-  <label><input type="checkbox" id="basketball" name='sport-bball'onclick="boxclick(this,'sport','basketball')" unchecked /> Basketball </label>
-  <label><input type="checkbox" id="football" name='sport-fball' onclick="boxclick(this,'sport','football')"  unchecked /> Football </label>
-  <label><input type="checkbox" id="soccer" name='sport-sball' onclick="boxclick(this,'sport','soccer')" unchecked /> Soccer</label>
-  <label><input type="checkbox" id="frisbee" name='sport-friball' onclick="boxclick(this,'sport','frisbee')" unchecked /> Frisbee</label>
-  <label><input type="checkbox" id="tennis" name='sport-tball' onclick="boxclick(this,'sport','tennis')" unchecked /> Tennis</label>
-  <label><input type="checkbox" id="golf" name='sport-golf' onclick="boxclick(this,'sport','golf')" unchecked /> Golf</label>
-  <label><input type="checkbox" id="volleyball"  name='sport-vball' onclick="boxclick(this,'sport','volleyball')" unchecked /> Volleyball</label>
-  <!-- <button type="button" id="all" class="btn btn-homesport btn-xs" onclick="boxclick(this,'sport','all')">
-    <img class="sport-icon" src="/static/img/sports/medal/medal-25.png"></img> 
-    
-    <input type="checkbox" value="None" id="squaredTwo" name="check" /> &nbsp All
-  </button>
-  <button type="button" id="basketball" class="btn btn-homesport btn-xs" onclick="boxclick(this,'sport','basketball')">
-    <img class="sport-icon" src="/static/img/sports/basketball/basketball-25.png"></img> Basketball
-  </button>
-  <button type="button" id="football" class="btn btn-homesport btn-xs">
-    <img class="sport-icon" src="/static/img/sports/rugby/rugby-25.png"></img> Football
-  </button>
-  <button type="button" id="soccer" class="btn btn-homesport btn-xs">
-    <img class="sport-icon" src="/static/img/sports/football/football-25.png"></img> Soccer
-  </button>
-  <button type="button" id="frisbee" class="btn btn-homesport btn-xs">
-    <img class="sport-icon" src="/static/img/sports/frisbee/frisbee-25.png"></img> Frisbee
-  </button>
-  <button type="button" id="tennis" class="btn btn-homesport btn-xs">
-    <img class="sport-icon" src="/static/img/sports/tennis/tennis-25.png"></img> Tennis
-  </button>
-  <button type="button" id="golf" class="btn btn-homesport btn-xs">
-    <img class="sport-icon" src="/static/img/sports/trophy/trophy-25.png"></img> Golf
-  </button>
-  <button type="button" id="volleyball" class="btn btn-homesport btn-xs">
-    <img class="sport-icon" src="/static/img/sports/volleyball/volleyball-25.png"></img> Volleyball
-  </button> -->
+    <label><input type="checkbox" class="homesport" id="all" name='sport-all'onclick="boxclick(this,'sport','all')" checked /> All </label>
+    <label><input type="checkbox" id="basketball" name='sport-bball'onclick="boxclick(this,'sport','basketball')" unchecked /> Basketball </label>
+    <label><input type="checkbox" id="football" name='sport-fball' onclick="boxclick(this,'sport','football')"  unchecked /> Football </label>
+    <label><input type="checkbox" id="soccer" name='sport-sball' onclick="boxclick(this,'sport','soccer')" unchecked /> Soccer</label>
+    <label><input type="checkbox" id="frisbee" name='sport-friball' onclick="boxclick(this,'sport','frisbee')" unchecked /> Frisbee</label>
+    <label><input type="checkbox" id="tennis" name='sport-tball' onclick="boxclick(this,'sport','tennis')" unchecked /> Tennis</label>
+    <label><input type="checkbox" id="golf" name='sport-golf' onclick="boxclick(this,'sport','golf')" unchecked /> Golf</label>
+    <label><input type="checkbox" id="volleyball"  name='sport-vball' onclick="boxclick(this,'sport','volleyball')" unchecked /> Volleyball</label>
   </form>
 
   
@@ -96,39 +70,39 @@
                     {% elif action.verb == "photo upload" %}
                       <i class="fa fa-instagram fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> uploaded a photo for <a class="game-name" href="/game/{{action.action_object.game.id}}">{{action.action_object.game.name}}</a>:</h5> 
                       <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
-    <div id="blueimp-gallery" class="blueimp-gallery">
-        <!-- The container for the modal slides -->
-        <div class="slides"></div>
-        <!-- Controls for the borderless lightbox -->
-        <h3 class="title"></h3>
-        <a class="prev">‹</a>
-        <a class="next">›</a>
-        <a class="close">×</a>
-        <a class="play-pause"></a>
-        <ol class="indicator"></ol>
-        <!-- The modal dialog, which will be used to wrap the lightbox content -->
-        <div class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body next"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left prev">
-                            <i class="glyphicon glyphicon-chevron-left"></i>
-                            Previous
-                        </button>
-                        <button type="button" class="btn btn-primary next">
-                            Next
-                            <i class="glyphicon glyphicon-chevron-right"></i>
-                        </button>
+            <div id="blueimp-gallery" class="blueimp-gallery">
+                <!-- The container for the modal slides -->
+              <div class="slides"></div>
+                <!-- Controls for the borderless lightbox -->
+                <h3 class="title"></h3>
+                <a class="prev">‹</a>
+                <a class="next">›</a>
+                <a class="close">×</a>
+                <a class="play-pause"></a>
+                <ol class="indicator"></ol>
+                <!-- The modal dialog, which will be used to wrap the lightbox content -->
+                <div class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title"></h4>
+                            </div>
+                            <div class="modal-body next"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left prev">
+                                    <i class="glyphicon glyphicon-chevron-left"></i>
+                                    Previous
+                                </button>
+                                <button type="button" class="btn btn-primary next">
+                                    Next
+                                    <i class="glyphicon glyphicon-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
   
                     <div class="game_photos" style="width:100%">
                       <div id="links">
@@ -138,50 +112,229 @@
                     </div></div>
 
 
-                      <!-- <img class="thumbnail-img" src="{{action.action_object.thumbnail}}"></img> -->
                     {% endif %}
-                    
-                <!-- <ul class="game-details">
-                    <li class="game-location">{{game.location.name}}</li>
-                    <li class="game-time">{{game.timeStart.time}}</li>
-                    <li class="game-status">Status: {{game.users.count}}/{{game.cap}} Players</li>
-                </ul> -->
             </td>
-               <!--  <form action="/game/{{game.id}}"> -->
-                   <!-- <td class="links"> <a href="/game/{{game.id}}" class="btn btn-default visit-game">Game Details</a>
-                    {% if loggedinUser != game.creator %}
-                     {% if loggedinUser not in game.users.all %}
-                        {% if game.users.all.count < game.cap %}
-                    <button id="join_{{game.id}}" type="button" class="btn btn-success visit-game join_button">
-                        
-                        <i class="fa fa-plus fa-md"></i>Join</button> </td>
-                        {% endif %}
-                    {% else %}
-                        <button type="button" class="visit-game btn btn-danger join_button" id="leave_{{game.id}}">
-                        <i class="fa fa-minus fa-lg"></i> Leave</button> 
-
-                    {% endif %}
-                    {% else %}
-                    <form role="form" action="/delete_game/" method="POST" id="delete_form">{% csrf_token %}
-                      <input type="hidden" name="game_id" value="{{game.id}}">
-                    </form>
-                    <button type="button" class="btn btn-danger delete_button visit-game" id="delete">
-                      <i class="fa fa-trash-o fa-lg"></i> Delete Game
-                    </button> 
-                    {% endif %}
-               </form> -->
                 {% endif %}
                 {% empty %}
                 <h6 style="color: black; text-align: center;">No activity found. Join or create a game!</h6>
                 {% endfor %}
-<!--                 </div>
-                </div>
-            </div> 
-    </div></td>--></tr>
+</tr>
 </table>
 </div>
 
-<script src="/static/js/home.js"></script>
+<script>
+var infowindow=null;
+var markers= new Array ();
+
+function initialize() {
+
+  var myLatlng = new google.maps.LatLng(37.422, -122.16);
+  var initialLocation;
+  var browserSupportFlag = new Boolean();
+
+  var mapOptions = {
+    zoom: 14,
+    //center: myLatlng
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+      $.ajax({
+        type: "POST",
+        url: "/store_user_location/",
+        data: { 
+          'csrfmiddlewaretoken':'{{csrf_token}}', 
+          'latitude' : position.coords.latitude,
+          'longitude' : position.coords.longitude
+        },
+        success: function(data) {
+        },
+      });
+
+      var image = 'http://i.stack.imgur.com/orZ4x.png';
+      var userLocationMarker = new google.maps.Marker({
+        position: initialLocation,
+        map: map,
+        icon: image
+      });
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  } else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+      initialLocation = myLatlng;
+    } else {
+      alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+      initialLocation = myLatlng;
+    }
+    map.setCenter(initialLocation);
+  }
+
+  var locations = new Array();
+  var games={};
+
+  var json = '{{games_json|safe}}';
+  var json_game_string = JSON.parse(json);
+  //console.log(json_game_string);
+
+  var i=0
+  for (var key in json_game_string) {
+    if (json_game_string.hasOwnProperty(key)) {
+      var hash_key = key;
+      var object = json_game_string[key];
+      var lat = object['location_info']['latitude'];
+      var longi = object ['location_info']['longitude'];
+      games[hash_key]= object['games']
+      locations[i]= new Array();
+      locations[i].push(hash_key);
+      locations[i].push(lat);
+      locations[i].push(longi);
+      i+=1;
+    }
+
+  }
+  
+  var marker; 
+  var curr_sport;
+
+  var infowindow = new google.maps.InfoWindow;
+  
+  var games_by_loc = {};
+
+  for (var key in games) {
+    if (json_game_string.hasOwnProperty(key)) {
+      games_by_loc[key] = [new Array()];
+    }
+    var i=0;
+    for (var key_2 in games[key]) {
+      games_by_loc[key][i]=new Array();
+      var curr_game = (games[key][key_2]);
+      var game_id = curr_game['id'];
+      var sport = curr_game['sport'];
+      var name = curr_game['name'];
+      var remaining= curr_game['curr_num_players'];
+      var total = curr_game['max_num_players'];
+      if (!total){
+        total="Unlimited";
+      }
+      var game_arr = [sport, game_id,  name, remaining, total ]
+      games_by_loc[key][i].push(game_arr);
+      i+=1;
+    }
+  }
+
+  var content_1;
+  var content_2; 
+  var myIcon;
+
+  for (i = 0; i < locations.length; i++) { 
+      loc = locations[i][0]
+      for (j=0; j<games_by_loc[loc].length; j++){
+        loc_string=games_by_loc[loc][j][0]
+        curr_sport= loc_string[0];
+        var markerImage;
+        markerImage = new google.maps.MarkerImage(
+            '/static/images/'+curr_sport+'.png',
+            new google.maps.Size(50,50), //size
+            null, //origin
+            null, //anchor
+            new google.maps.Size(50,50) //scale
+         );
+     
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(locations[i][1] , locations[i][2]+j*0.0002),
+          map: map,
+          title: curr_sport,
+          icon: markerImage
+        });
+      markers.push(marker);
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          var content_1 = '<div style="font-weight:bold; text-align:center">' + locations[i][0] + '</div>';
+          loc = locations[i][0]
+          var content_1 = '<p> <b>'+loc + '</b> </p>';
+          for (j=0; j<games_by_loc[loc].length; j++){
+            console.log(games_by_loc[loc][j][0]);
+            if (games_by_loc[loc][j][0][0]==marker.getTitle()){
+
+              var link = "/game/" + games_by_loc[loc][j][0][1];
+              content_1 += '<p>'+ games_by_loc[loc][j][0][0]+ ': '+ '<u> <a href='+link+'>'+ games_by_loc[loc][j][0][2]+'</a></u>' +': ' + games_by_loc[loc][j][0][3]+ '/' + games_by_loc[loc][j][0][4]+ ' players'+ '</p>';
+            }
+              
+          }
+          infowindow.setContent(content_1);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+  }
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+function boxclick(box,category,type) {
+  // for (var i=0; i<markers.length; i++) {
+  //   markers[i].setVisible(false);
+  // }
+  show(category, type);
+}
+
+function show(category, type) {
+  // the ALL checkbox
+  if (type=='all'){
+    resetCheckboxes();
+    if (document.getElementById("all").checked === true){
+      for (var i=0; i<markers.length; i++) {
+        markers[i].setVisible(true);
+      }
+    } else  {
+      for (var i=0; i<markers.length; i++) {
+        markers[i].setVisible(false);
+      }
+    }
+  } else{
+    if (document.getElementById("all").checked === true){
+      document.getElementById("all").checked = false;
+      for (var i=0; i<markers.length; i++) {
+        markers[i].setVisible(false);
+      }
+    }
+    console.log("Line 368");
+    for (var i=0; i<markers.length; i++) {
+      if (markers[i].getTitle() == type){
+        if(document.getElementById(type).checked === true) {
+          console.log("Type is true");
+          markers[i].setVisible(true);
+        } else {
+          console.log("Type is false");
+          markers[i].setVisible(false);
+        }
+      }
+    }
+  }      
+}
+
+function resetCheckboxes() {
+  document.getElementById("basketball").checked = false;
+  document.getElementById("football").checked = false;
+  document.getElementById("soccer").checked = false;
+  document.getElementById("frisbee").checked = false;
+  document.getElementById("tennis").checked = false;
+  document.getElementById("golf").checked = false;
+  document.getElementById("volleyball").checked = false;
+}
+</script>
 
 
 <script src="/static/js/jquery.blueimp-gallery.min.js"></script>
