@@ -9,3 +9,4 @@ django-notifications-hq
 django-activity-stream==0.4.5beta1
 south
 jsonfield
+django-social-auth
