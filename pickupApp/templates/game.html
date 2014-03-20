@@ -24,7 +24,7 @@
           <i class="fa fa-trash-o fa-lg"></i> Delete Game
         </button> 
         
-        <a type="button" class="btn btn-instagram instagram" href='/invite_friends/{{game.id}}' id="" data-toggle="modal" data-target="#friendsModal"> Invite friends </a>
+        <a type="button" class="btn btn-asphalt" href='/invite_friends/{{game.id}}' id="" data-toggle="modal" data-target="#friendsModal"> Invite Players </a>
 
         {% if connected_to_instagram %}
         <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
@@ -46,7 +46,7 @@
           {% else %}
             <button type="button" class="btn btn-danger join_button" id="leave">
               <i class="fa fa-minus fa-lg"></i> Leave</button>
-            <a type="button" class="btn btn-instagram instagram" href='/invite_friends/{{game.id}}' id="" data-toggle="modal" data-target="#friendsModal"> Invite friends </a> 
+            <a type="button" class="btn btn-asphalt" href='/invite_friends/{{game.id}}' id="" data-toggle="modal" data-target="#friendsModal"> Invite Players </a> 
             {% if connected_to_instagram %}
             <a type="button" class="btn btn-instagram instagram" href='/get_instagram_photos/{{game.id}}' id="" data-toggle="modal" data-target="#photosModal">
           <i class="fa fa-camera-retro"></i> | Post Photos From Instagram </a>

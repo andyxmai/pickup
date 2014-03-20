@@ -35,5 +35,21 @@
 {% endblock %}
 
 {% block javascript %}
+<script>
+$("#next_step_button").click(function() {
+	$.ajax({
+	  type: "POST",
+	  url: "/first_login/",
+	  data: { 
+	    'csrfmiddlewaretoken':'{{csrf_token}}',
+	    'sports': localStorage.getItem("sports")
+	  },
+	  success: function(data) {
+	  	localStorage.clear();
+	    window.location.href = '/first_login2';
+	  },
+	});
+});
+</script>
 <script src="/static/js/first_login.js"></script>
 {% endblock %}

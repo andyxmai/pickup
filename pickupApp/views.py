@@ -245,8 +245,10 @@ def game(request,id):
 
 		# Check if the game player has maxed
 		maxed = False
-		if game.users.count() >= game.cap:
-			maxed = True	
+		if game.cap:
+			if game.users.count() >= game.cap:
+				maxed = True
+
 
 		# Check if user is the creator of the game
 		is_creator = False

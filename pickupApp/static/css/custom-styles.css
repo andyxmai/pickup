@@ -114,6 +114,18 @@ button.btn-homesport {
   color:white;
 }
 
+.btn-asphalt {
+  background-color: #34495e;
+  border-color:#34495e;
+  color:white;
+}
+
+.btn-asphalt:hover {
+  background-color: #2c3e50;
+  border-color:#2c3e50;
+  color:white;
+}
+
 .btn-facebook {
   background-color: #2b4b90;
   border-color: #2b4b90;
@@ -202,4 +214,16 @@ button.black {
 
 .ui-autocomplete-category {
   font-weight: bold; 
+}
+
+.image_picker_image {
+  padding-top: 7px;
+}
+
+div.thumbnail > p {
+  text-align: center;
+}
+
+.signup {
+  background-color: #ecf0f1;
 }
