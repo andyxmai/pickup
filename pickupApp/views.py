@@ -649,6 +649,9 @@ def toggle_follow(request):
 		user = User.objects.get(username=follow_username)
 		if not is_following:
 			follow(request.user, user)
+			verb = request.user.get_full_name()+' just followed you.'
+			description = '/user/'+str(request.user.id)
+			notify.send(request.user,recipient=user, verb=verb, description=description)
 		else:
 			unfollow(request.user, user)
 
@@ -822,7 +825,7 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2):
 	return arc*3963.1676
 
 # -------------------------------------------------------------------- #
-# Function ???
+# Function recommends games to users
 # -------------------------------------------------------------------- #
 def get_game_recommendations(request):
 	# weight factors and return the top 5 most 'relevant' games to user
