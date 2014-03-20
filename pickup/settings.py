@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'pickupApp',
     'notifications',
     'actstream',
-    #'social_auth'
+    'south'
 )
 
 MIDDLEWARE_CLASSES = (
