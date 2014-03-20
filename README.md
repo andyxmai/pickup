@@ -18,8 +18,8 @@ Version: 1.0
 
 About
 ---------------------
-***
-	ReqTime is a social network for pick-up sports that enables you easily create, find, and join games being played near you. The motivation behind this app is based on logistic challenges we have faced organizing pickup games and tracking expected attendance.
+
+ReqTime is a social network for pick-up sports that enables you easily create, find, and join games being played near you. The motivation behind this app is based on logistic challenges we have faced organizing pickup games and tracking expected attendance.
 
 
 Packages Used
