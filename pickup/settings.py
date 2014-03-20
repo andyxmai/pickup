@@ -20,8 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '@i^jn^q3%#uwngsj%42ns@42bw3mxpv4*xap1%j+7=4w!ik1dg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 #DEBUG = not os.environ.get('REQTIME_PRODUCTION', False)
+
+DATABASES = {}
 
 TEMPLATE_DEBUG = True
 

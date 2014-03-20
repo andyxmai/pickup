@@ -72,6 +72,7 @@
  
   <div style="display:block">
     <div class="transbox left" >
+      <p  class="players">Name: {{game.name}}</p>
       <p  class="players">Creator: <a href="/user/{{game.creator.id}}">{{game.creator.first_name}} {{game.creator.last_name}}</a></p>
       <p  class="players">Sport: <a href="/sport/{{game.sport.name}}">{{game.sport.name}}</a></p>
       <p  class="players">Location: {{game.location.name}}</p>
@@ -80,7 +81,7 @@
       <p  class="players">Players
         <ol>
           {% for player in game.users.all %}
-          <li id="{{player.id}}" class="players"><a href="/user/{{player.id}}">{{player.first_name}} {{player.last_name}}</a></li>
+          <li id="{{player.id}}" class="players"><a href="/user/{{player.id}}"><img src="{{player.userinfo.profile_picture}}" class="avatar" />{{player.first_name}} {{player.last_name}}</a></li>
           {% endfor %}
         </ol>
       </p>
