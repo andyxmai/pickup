@@ -524,7 +524,8 @@ def comment(request):
 
 			commenter = User.objects.get(id=user_id)
 			game = Game.objects.get(id=game_id)
-			comment = Comment.objects.create(text=text, commenter=commenter, game=game, timeStamp=datetime.datetime.now())
+
+			comment = Comment.objects.create(text=text, commenter=commenter, game=game, timeStamp=datetime.datetime.now() - datetime.timedelta(hours=7))
 
 			for player in game.users.all():
 				if commenter != player:
