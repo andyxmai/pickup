@@ -36,13 +36,22 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-FACEBOOK_APP_ID              = '703715933005935'
-FACEBOOK_API_SECRET          = 'db08833ea92e2d493fe0b17d74b4cf42'
-FACEBOOK_URL                 = 'http://127.0.0.1:8000/profile/'
+if DEBUG:
+    FACEBOOK_APP_ID              = '703715933005935'
+    FACEBOOK_API_SECRET          = 'db08833ea92e2d493fe0b17d74b4cf42'
+    FACEBOOK_URL                 = 'http://127.0.0.1:8000/profile/'
 
-INSTAGRAM_ID = '91352210f6374c08a9b3c20286c6d8e7'
-INSTAGRAM_SECRET = 'd8b74583559c491cb7373f8733cc95ec'
-REDIRECT_URL = 'http://127.0.0.1:8000/instagram_login'
+    INSTAGRAM_ID = '91352210f6374c08a9b3c20286c6d8e7'
+    INSTAGRAM_SECRET = 'd8b74583559c491cb7373f8733cc95ec'
+    REDIRECT_URL = 'http://127.0.0.1:8000/instagram_login'
+else:
+    FACEBOOK_APP_ID              = '386574128151198'
+    FACEBOOK_API_SECRET          = '6223003370aaebb550559494027c111d'
+    FACEBOOK_URL                 = 'http://reqtime.herokuapp.com/profile/'
+
+    INSTAGRAM_ID = '845a7a26a2b843cd960fca5f87c50d56'
+    INSTAGRAM_SECRET = '007324e2cf8b464886cb51dd57717ccd'
+    REDIRECT_URL = 'http://reqtime.herokuapp.com/instagram_login'
 
 # Application definition
 
