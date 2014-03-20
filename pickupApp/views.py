@@ -172,6 +172,7 @@ def create_game(request):
 			sport = form.cleaned_data['sport']
 			name = form.cleaned_data['name']
 			cap = form.cleaned_data['cap']
+			description = form.cleaned_data['description']
 			location_name = form.cleaned_data['location']
 			location = Location.objects.get(name=location_name)
 
@@ -179,7 +180,7 @@ def create_game(request):
 			datetimeStart = request.POST['dtp_input1']
 
 			sportObj = Sport.objects.get(name=sport.lower())
-			newGame = Game.objects.create(sport=sportObj,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap)
+			newGame = Game.objects.create(sport=sportObj,name=name,timeStart=datetimeStart, creator=request.user, location=location, cap=cap, description=description)
 			newGame.dateCreated = datetime.datetime.now()
 			newGame.users.add(request.user)
 	
