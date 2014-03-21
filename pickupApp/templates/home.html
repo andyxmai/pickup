@@ -70,49 +70,62 @@
                     {% elif action.verb == "photo upload" %}
                       <i class="fa fa-instagram fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> uploaded a photo for <a class="game-name" href="/game/{{action.action_object.game.id}}">{{action.action_object.game.name}}</a>:</h5> 
                       <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
-            <div id="blueimp-gallery" class="blueimp-gallery">
-                <!-- The container for the modal slides -->
-              <div class="slides"></div>
-                <!-- Controls for the borderless lightbox -->
-                <h3 class="title"></h3>
-                <a class="prev">‹</a>
-                <a class="next">›</a>
-                <a class="close">×</a>
-                <a class="play-pause"></a>
-                <ol class="indicator"></ol>
-                <!-- The modal dialog, which will be used to wrap the lightbox content -->
-                <div class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"></h4>
-                            </div>
-                            <div class="modal-body next"></div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default pull-left prev">
-                                    <i class="glyphicon glyphicon-chevron-left"></i>
-                                    Previous
-                                </button>
-                                <button type="button" class="btn btn-primary next">
-                                    Next
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                      <div id="blueimp-gallery" class="blueimp-gallery">
+                          <!-- The container for the modal slides -->
+                        <div class="slides"></div>
+                          <!-- Controls for the borderless lightbox -->
+                          <h3 class="title"></h3>
+                          <a class="prev">‹</a>
+                          <a class="next">›</a>
+                          <a class="close">×</a>
+                          <a class="play-pause"></a>
+                          <ol class="indicator"></ol>
+                          <!-- The modal dialog, which will be used to wrap the lightbox content -->
+                          <div class="modal fade">
+                              <div class="modal-dialog">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <button type="button" class="close" aria-hidden="true">&times;</button>
+                                          <h4 class="modal-title"></h4>
+                                      </div>
+                                      <div class="modal-body next"></div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-default pull-left prev">
+                                              <i class="glyphicon glyphicon-chevron-left"></i>
+                                              Previous
+                                          </button>
+                                          <button type="button" class="btn btn-primary next">
+                                              Next
+                                              <i class="glyphicon glyphicon-chevron-right"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
   
-                    <div class="game_photos" style="width:100%">
-                      <div id="links">
-                        <a href="{{action.action_object.standard}}" data-gallery>
-                          <img class="thumbnail-img" src="{{action.action_object.thumbnail}}"></img>
-                      </a>
-                    </div></div>
+                        <div class="game_photos" style="width:100%">
+                          <div id="links">
+                            <a href="{{action.action_object.standard}}" data-gallery>
+                              <img class="thumbnail-img" src="{{action.action_object.thumbnail}}"></img>
+                            </a>
+                          </div>
+                        </div>
 
+                  {% elif action.verb == "profile photo" %}
+                      <i class="fa fa-facebook fa-xs"></i> <a href="/user/{{action.actor.id}}" class="user-name">{{action.actor.first_name}} {{action.actor.last_name}}</a> uploaded a profile picture:</h5> 
+                      <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+                        <div class="game_photos" style="width:100%">
+                          <div id="links">
+                            <a href="{{action.action_object.profile_picture}}" data-gallery>
+                              <img class="thumbnail-img" src="{{action.action_object.profile_picture}}"></img>
+                            </a>
+                          </div>
+                        </div>
 
-                    {% endif %}
+                  {% else %}
+                    Unlogged activity feed action...</h5>
+                  {% endif %}
             </td>
                 {% endif %}
                 {% empty %}

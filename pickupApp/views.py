@@ -322,7 +322,7 @@ def delete_game(request):
 		game_id = request.POST['game_id']
 		g = Game.objects.get(id=game_id)
 		verb = request.user.first_name+' '+request.user.last_name+' cancelled '+g.name;
-		action.send(request.user,verb=verb,action_object=g)
+		#action.send(request.user,verb=verb,action_object=g)
 		receivers = []
 		allUsers = g.users.all()
 		if len(allUsers) != 0:
